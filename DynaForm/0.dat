@@ -1,0 +1,10 @@
+HTTP/1.1 302 Found
+Transfer-Encoding: chunked
+Location: /orgmast-idp/Identity/Account/Admin/ActivateUserConfirmation
+Server: Microsoft-IIS/8.5
+X-Powered-By: ASP.NET
+X-Frame-Options: SAMEORIGIN
+Date: Thu, 30 Jul 2020 00:56:34 GMT
+
+0
+

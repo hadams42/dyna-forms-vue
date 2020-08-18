@@ -1,0 +1,6 @@
+syntax: glob
+node_modules/
+.gitignore
+.editorconfig
+package-lock.json
+vue-dyna.code-workspace

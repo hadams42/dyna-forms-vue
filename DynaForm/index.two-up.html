@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+		<title>vue-dyna</title>
+		<link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+		<link href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="http://local-dynaform.deltasights.com/Styles/scss/dashboard.css">	
+		<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+		<!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+		
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script> -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		
+		<link href="https://js.arcgis.com/4.6/esri/css/main.css" rel="stylesheet">
+		<script src="https://js.arcgis.com/4.6/"></script>
+
+		
+	</head>
+  <body style="padding: 0">
+
+		<!---------------------------------------------------------------------->
+		<!------------------- HIDDEN ELEMENTS LAYOUT --------------------------->
+		<!---------------------------------------------------------------------->
+
+		<!-- Sample Placeholders -->
+		<div style="display: none">
+			<div id="NoSelectionPlaceholder" style="">
+				<h5>Select a contact from the list above</h5>
+				<div>For assistance, email support@test.org</div>
+			</div>
+			<div id="RenderErrorPlaceholder" style="">
+				<h5>Cannot load form</h5>
+				<div>Maybe replace this with a modal dialog.</div>
+			</div>
+		</div>		
+
+
+		<!---------------------------------------------------------------------->
+		<!-----------------------PAGE LEVEL CODE ------------------------------->
+		<!---------------------------------------------------------------------->
+
+		<!-- 1. Configure page level dyna vue settings (must appear first) -->
+		<script>
+			_Dyna = {
+				apiServer: "http://local-dynaform.deltasights.com",
+				imagePath: "/src/assets/",
+				debugMode: true,
+				logEmitters: false,
+				logHandlers: true,
+				hideInternals: true,
+				logServerCalls: true,
+			}
+		</script>
+
+		<!-- 2. Include DynaView Script -->
+		<script src="/dist/build.js"></script>
+		
+
+		<!---------------------------------------------------------------------->
+		<!-----------------------FORM LEVEL CODE ------------------------------->
+		<!---------------------------------------------------------------------->
+
+		<!-- Repeat for each form -->
+		<div id="MasterContainer"></div>
+		<script>
+			var _MasterContainerSettings = {
+				name: "MasterContainer",
+				mode: "dyna-form",
+				readonly: false,
+
+				form: {
+					definition: null, //JS Form definition. Null if using API. 
+					autoLoad: true,
+					data: null,
+					clearDefaults: false,
+					serverApi: {
+						enabled: true,
+						formId: 8, //null if instanceId is specified
+						allowedActions: "R-U-F-G",
+						renderAction: "G",
+						instanceId: null, //_instanceId, //"0ba3d225-d274-498f-9323-76deb8482513",
+					}
+				},
+				onContainerLoad: function(success, error) {
+					this.logEvent(arguments, this);
+
+					this.CrudHelpers_SelectionGridContainerLoad( {
+						FormGroupId: "contact",
+					});
+				},						
+			};
+
+			RenderDynaContainer(
+				"MasterContainer", 
+				_MasterContainerSettings, 
+				"container_instance_15945",
+				true,
+				'43dfdddff',
+				'contact',
+				'',
+				false
+				
+				);
+
+		</script>
+
+		<!-- Repeat for each form -->
+		<div id="DetailContainer"></div>
+		<script>
+			var _DetailContainerSettings = {
+				name: "DetailContainer",
+				mode: "dyna-content",
+				readonly: false,
+				
+				//--------------------
+				form: {
+					definition: null, //null when using remote api
+					autoLoad: true,
+					data: null, // form field values
+					clearDefaults: false, // "true" = override form's defaults with values in 'data'. "false" = merge instead of override
+					serverApi: {
+						enabled: true,
+						formId: 1,
+						allowedActions: "", //supplied by CrudHelper on recordkey change
+						renderAction: "", //supplied by CrudHelper on recordkey change
+						instanceId: null //supplied by CrudHelper on recordkey change
+					}
+				},
+				//--------------------
+				content: {
+					definition: {
+						//url: "/src/sample.html",
+						//html: "this is <b>static</b> text",
+						domElement: "#NoSelectionPlaceholder",
+
+						// onContentLoad: function(success, error) {
+						// 	this.logEvent(arguments, this);
+						// },
+
+						// onContentRender: function(success, error) {
+						// 	this.logEvent(arguments, this);
+						// },
+
+					},
+				},
+				//--------------------
+				onContainerLoad: function(success, error) {
+					this.logEvent(arguments, this);
+
+					this.CrudHelpers_DataEntryContainerLoad( {
+						FormGroupId: "contact",
+						ErrorPlaceholder: "#RenderErrorPlaceholder",
+						NoSelectionPlaceholder: "#NoSelectionPlaceholder",
+						DeleteConfirmationDialog: {
+							Caption: "Confirm Delete",
+							Text: "Delete this record?"
+						}
+					});
+				
+				},						
+
+				// onContainerRender: function(success, error) {
+				// 	this.logEvent(arguments, this);
+				// },						
+			};
+
+			RenderDynaContainer(
+				"DetailContainer", 
+				_DetailContainerSettings, 
+				"container_instance_23945",
+				true,
+				'43dd7fdddff',
+				'contact',
+				'',
+				false
+				
+				);
+
+		</script>
+
+	</body>
+</html>

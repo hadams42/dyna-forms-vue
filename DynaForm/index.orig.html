@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+		<title>vue-dyna</title>
+		<link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+		<link href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="http://local-dynaform.deltasights.com/Styles/scss/dashboard.css">	
+		<link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+		<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+		<!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+		
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script> -->
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> 
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		
+		
+	</head>
+  <body style="padding: 0">
+		<script>
+
+		//Contact grid form -- is in the database
+		//==============================================================
+		const urlParams = new URLSearchParams(window.location.search);
+		const _instanceId = urlParams.get('instanceId');
+
+		//==============================================================
+		var _MasterContainerSettings = {
+			name: "MasterContainer",
+			mode: "dyna-form",
+			form: {
+				autoLoad: true,
+				definition: null,
+				data: null,
+				clearDefaults: false,
+				serverApi: {
+					enabled: true,
+					formId: 5, //null if instanceId is specified
+					allowedActions: "G-F",
+					renderAction: "G",
+					instanceId: null, //_instanceId, //"0ba3d225-d274-498f-9323-76deb8482513",
+				}
+			},
+			onLoad: function(success, error) {
+				this.logEvent(arguments, this);
+
+				this.CrudHelpers_SelectionGridContainerLoad( {
+					FormGroupId: "contact",
+				});
+				
+			},						
+		};
+
+		//==============================================================
+		var _DetailContainerSettings = {
+			name: "DetailContainer",
+			mode: "dyna-content",
+			readonly: false,
+			
+			//--------------------
+			form: {
+				autoLoad: true,
+				definition: null, //null when using remote api
+				data: null,
+				clearDefaults: false,
+				serverApi: {
+					enabled: true,
+					formId: 1,
+				}
+			},
+			//--------------------
+			content: {
+				definition: {
+					//url: "/src/sample.html",
+					//html: "this is <b>static</b> text",
+					domElement: "NoSelectionPlaceholder",
+
+					onLoad: function(success, error) {
+						this.logEvent(arguments, this);
+					},
+					onRender: function(success, error) {
+						this.logEvent(arguments, this);
+					},
+
+				},
+			},
+			//--------------------
+			onLoad: function(success, error) {
+				this.logEvent(arguments, this);
+
+				this.CrudHelpers_DataEntryContainerLoad( {
+					FormGroupId: "contact",
+					ErrorPlaceholder: "#RenderErrorPlaceholder",
+					DeleteConfirmationDialog: {
+						Caption: "Confirm Delete",
+						Text: "Delete this record?"
+					}
+				});
+			
+			},						
+
+			onRender: function(success, error) {
+				this.logEvent(arguments, this);
+			},						
+		};
+
+
+	</script>
+
+		<!---------------------------------------------------------------------->
+		<!------------------- HIDDEN ELEMENTS LAYOUT --------------------------->
+		<!---------------------------------------------------------------------->
+
+		<!-- Sample Placeholders -->
+		<div style="display: none">
+			<div id="NoSelectionPlaceholder" style="">
+				<h5>Select a contact from the list above</h5>
+				<div>For assistance, email support@test.org</div>
+			</div>
+			<div id="RenderErrorPlaceholder" style="">
+				<h5>Cannot load form</h5>
+				<div>Maybe replace this with a modal dialog.</div>
+			</div>
+		</div>		
+
+		<!---------------------------------------------------------------------->
+		<!------------------------------ HTML LAYOUT --------------------------->
+		<!---------------------------------------------------------------------->
+
+		<div >
+			<div id="MasterContainer"></div>
+			<div id="DetailContainer"></div>
+		</div>
+
+		<!---------------------------------------------------------------------->
+		<!------------------------------ RENDER CODE --------------------------->
+		<!---------------------------------------------------------------------->
+
+		<script>
+			//Global settings must appear before script include
+			_Dyna = {
+				apiServer: "http://local-dynaform.deltasights.com",
+				imagePath: "/src/assets/",
+				debugMode: true,
+				logEmitters: true,
+				logHandlers: false,
+				hideInternals: true,
+				logServerCalls: false,
+			}
+
+
+		</script>
+
+		<script src="/dist/build.js"></script>
+		<script>
+
+			// RenderContainer("#MasterContainer", _MasterContainerSettings, "ea7bb149-83d1-45e8-af35-38fb28fe6b90");
+			// RenderContainer("#DetailContainer", _DetailContainerSettings, "ea7bb149-83d1-45e8-af35-38fb28fe6b90");
+
+			RenderContainer("#MasterContainer", _MasterContainerSettings, "container_instance_15945");
+			RenderContainer("#DetailContainer", _DetailContainerSettings, "container_instance_23945");
+
+		</script>
+
+		<style>
+			button.light-button  {
+				background-color: transparent !important;
+				color: black !important;
+			}
+
+			.icon-row {
+				margin-bottom: 1rem;
+				/* border-bottom: #ccc 2px solid; */
+				background-color: #dde0fa;
+				border-radius: 5px 5px 0px 0px;
+				padding: .5rem;
+			}
+
+			.icon-row .form-group {
+				margin-bottom: 0;
+			}
+
+			#MasterContainer {
+				background-color: #f5edda;
+			}
+
+			.grid-thead {
+				background-color: #dfdfdf;
+			}
+
+			.grid-tbody-tr {
+				cursor: pointer;
+			}
+
+			.grid-select-column,
+			.grid-view td {
+				vertical-align: middle;
+			}
+		</style>
+
+		
+</body>
+</html>

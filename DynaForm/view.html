@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+	</head>
+	<body>
+		<script type="text/javascript">
+			try {
+				delete window.jQuery;
+				delete window.jQuery.migrateWarnings;
+			} 
+			catch (e) {
+			}
+		</script>
+		<script src="/scripts/pdftron/jquery/jquery-3.2.1.min.js" type="text/javascript"/>
+		<script src="/scripts/pdftron/jquery/jquery-migrate-3.0.0.min.js" type="text/javascript"/>
+		<script src="/scripts/pdftron/WebViewer.js" type="text/javascript"/>
+		<script src="/scripts/pdftron/html5/ControlUtils.js" type="text/javascript"/>
+		<script src="/scripts/pdftron/WebViewerLoader.js" type="text/javascript"/>
+		<script type="text/javascript">
+			//xodUrl = "http://local-ebstore.adventistdigitallibrary.org/api/proxy/repo-proxy?guid=d43805dd328b5b4cca6422b34f7f4b8a"; 
+			xodUrl = "https://repo.adventistdigitallibrary.org/adl-22/adl-22251211.xod";
+		</script>
+
+
+		<div id="book-viewer">
+			<div id="objectViewer" style="width: 100%; min-height: 600px; border: 1px solid silver;"/>
+		</div>
+
+	</body>
+</html>
+	
