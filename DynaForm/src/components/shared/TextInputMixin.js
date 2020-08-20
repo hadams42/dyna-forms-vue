@@ -20,8 +20,15 @@ export default {
 	methods: {
 
 		//--------------------------------------------------------------------------------------------
-		renderField: function(watchedField) {
+		renderField: function(watchedField, clearValue) {
 			//watchedField is the field that changed and triggered this render.
+			if (clearValue) {
+				this.clearValue();
+			}
+
+			if (this.enableLocalStorage) {
+				this.fieldChangeEvent(localStorage[this.formType + "__" + this.name]);
+			}
 
 			//Call enableServerRender if enabled
 			if (this.enableServerRender == true) {

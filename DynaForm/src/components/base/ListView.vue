@@ -133,7 +133,8 @@
 													v-for="(option, optionIndex) in getOptions(item)"
 													:key="optionIndex"
 													@click.stop="actionClick(option.action, item[keyField])"
-													>{{option.caption}}</b-dropdown-item>
+													>{{option.caption}}
+												</b-dropdown-item>
 											</b-dropdown>
 										</div>
 									</div>
@@ -146,7 +147,7 @@
 									:stacked="stackedWidth"
 									:items="items"
 									:fields="fields"
-									:current-page.sync="currentPage"
+									:current-page.sync="DisplayValues.currentPage"
 									:per-page.sync="dataProvider.rowsPerPage"
 									:sort-by.sync="sortBy"
 									:sort-desc.sync="sortDescending"
@@ -173,9 +174,9 @@
 										<span 
 											:key="'data-' + index"
 											:class="['non-editable-text', field.class]"
-											v-b-popover="{content: data.item[field.helpTextKey], boundaryPadding: 20, placement: 'auto', trigger: 'hover focus click blur'  }"
+											v-b-popover="{content: field.helpText == null || field.helpText == '' ? data.item[field.helpTextKey] : field.helpText, boundaryPadding: 20, placement: 'auto', trigger: 'hover focus click blur'  }"
 											tabindex="0"
-											:disabled="data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length <= data.item[field.key].length">
+											:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length <= data.item[field.key].length) && (field.helpText == null || field.helpText == '')">
 												<span v-html="getFormattedValue(data.item[field.key], field.key)"></span>
 										</span>
 
@@ -215,7 +216,7 @@
 						<b-pagination 
 							:total-rows="totalRows" 
 							:per-page="computedRowsPerPage" 
-							v-model="currentPage" 
+							v-model="DisplayValues.currentPage" 
 							v-if="DisplayValues.paginate"
 							size="sm"
 							align="right"
@@ -233,7 +234,7 @@
 				Selected Ids: {{DisplayValues.selectedRecordKeys}}
 				| Active Id: {{DisplayValues.activeRecordKey}}
 				| Page #: {{DisplayValues.activeRecordKey}}
-				| Current Page: {{currentPage}}
+				| Current Page: {{DisplayValues.currentPage}}
 				| Per Page: {{computedRowsPerPage}}
 				| Busy: {{DisplayValues.busy}}
 				| Total Rows: {{totalRows}}
@@ -310,6 +311,7 @@ export default {
 				tableMinHeight: 0,
 				isInitialRender: true,
 				isFlashProtected: true,
+	      currentPage: (this.dataProvider == null || this.dataProvider.initialPage == null) ? 1 : this.dataProvider.initialPage,
 				buttonVariant: this.buttonVariant || "secondary",
 				activeTemplate: localStorage[this.name+'_activeTemplate'] != null ?  localStorage[this.name+'_activeTemplate'] : this.activeTemplate || "list",
 				listTemplateIcon: this.listTemplateIcon == null ? 'fas fa-th-large' : this.listTemplateIcon,
@@ -339,7 +341,6 @@ export default {
 			// fields: (this.dataProvider == null || this.dataProvider.fieldDefinition == null) ? null : this.dataProvider.fieldDefinition,
  			// items: this.dataProvider == null ? null : this.dataProvider.providerType == "api" ? this.dataApi : this.dataProvider.providerType == "static" && this.dataProvider.data != null ? this.dataProvider.data : null,
 			itemArray: [],
-      currentPage: (this.dataProvider == null || this.dataProvider.initialPage == null) ? 1 : this.dataProvider.initialPage,
       sortBy: (this.dataProvider == null || this.dataProvider.initialSort == null) ? localStorage[this.name+'_initialSortBy'] : this.dataProvider.initialSort,
       sortDescending: localStorage[this.name+'_initialSortDescending'] == null ? this.dataProvider == null ? false : this.dataProvider.initialSortDescending : localStorage[this.name+'_initialSortDescending'] === 'true',
 			pageSizeOptions: (this.dataProvider == null || this.dataProvider.pageSizeOptions == null) ? null : this.dataProvider.pageSizeOptions,
@@ -465,13 +466,13 @@ export default {
 		// Grid Methods
 		//--------------------------------------------------------------------------------------------
 		refresh: function() {
-			this.currentPage = 1;
+			this.DisplayValues.currentPage = 1;
 			this.refreshGrid();
 		},
 		
 		//--------------------------------------------------------------------------------------------
 		refreshGrid: function() {
-			this.currentPage = 1;
+			//this.DisplayValues.currentPage = 1;
 			this.debounce(this.updateGridKey(), 200);
 		},
 
@@ -480,8 +481,8 @@ export default {
 			if (isChecked) {
 				this.DisplayValues.selectedRecordKeys = [];
 				if (this.itemArray.length > 0) {
-					var startIndex = (this.currentPage * this.computedRowsPerPage) - this.computedRowsPerPage;
-					var endIndex = (this.currentPage * this.computedRowsPerPage); 
+					var startIndex = (this.DisplayValues.currentPage * this.computedRowsPerPage) - this.computedRowsPerPage;
+					var endIndex = (this.DisplayValues.currentPage * this.computedRowsPerPage); 
 					if (endIndex > this.itemArray.length) endIndex = this.itemArray.length;
 					for (var i = startIndex; i<endIndex; i++) 
 					{
@@ -514,6 +515,8 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		dataApi: function(ctx, callback) {
+			localStorage[this.name + "_CurrentPage"] = this.DisplayValues.currentPage; 
+
 			var currentTableHeight = this.$refs.listGroupContainer.clientHeight + 0;
 			this.DisplayValues.tableMinHeight = currentTableHeight;
 			this.ServerInterface.RenderPage(
@@ -589,7 +592,7 @@ export default {
 				}.bind(this),
 				callback,
 				this.instanceId,
-				this.currentPage, 
+				this.DisplayValues.currentPage, 
 				this.computedRowsPerPage, 
 				this.sortBy, 
 				this.sortDescending ? 'desc' : 'asc',
@@ -693,8 +696,8 @@ export default {
 		// 	this.DisplayValues.headerCheckboxState = !this.DisplayValues.headerCheckboxState;
 		// 	this.DisplayValues.selectedRecordKeys = [];
 		// 	if (this.DisplayValues.headerCheckboxState && this.items.length > 0) {
-		// 		var startIndex = (this.currentPage * this.computedRowsPerPage) - this.computedRowsPerPage;
-		// 		var endIndex = (this.currentPage * this.computedRowsPerPage); 
+		// 		var startIndex = (this.DisplayValues.currentPage * this.computedRowsPerPage) - this.computedRowsPerPage;
+		// 		var endIndex = (this.DisplayValues.currentPage * this.computedRowsPerPage); 
 		// 		if (endIndex > this.items.length) endIndex = this.items.length;
 		// 		for (var i = startIndex; i<endIndex; i++) 
 		// 		{
@@ -881,8 +884,8 @@ export default {
 		this.renderField();
 
 		//Listen for render event
-		this.onFilterEvent("_Render", 884, this.guid + this.formType + this.name, (self, watchedField) => {
-				this.renderField(watchedField);
+		this.onFilterEvent("_Render", 884, this.guid + this.formType + this.name, (self, watchedField, clearValue = false) => {
+				this.renderField(watchedField, clearValue);
 		});
 		
 

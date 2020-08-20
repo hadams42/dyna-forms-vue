@@ -8,6 +8,8 @@ export default {
 
 	props: [
 		'placeholder',
+		'defaultValue',
+		'enableLocalStorage'
 	],
 
 	data () {
@@ -23,16 +25,28 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	methods: {
 
-	//--------------------------------------------------------------------------------------------
-	fieldChangeEvent: function(value, propogate = true) {
+		//---------------------------------------------------------------------------------------------------
+		clearValue() {
+			if (this.defaultValue != null) {
+				this.fieldChangeEvent(this.defaultValue);
+			}
+
+			if (this.enableLocalStorage) {
+				localStorage[this.formType + "__" + this.name] = this.defaultValue;
+			}
+
+		},
+
+		//--------------------------------------------------------------------------------------------
+		fieldChangeEvent: function(value, propogate = true) {
 
 		if (propogate == true) {
-			this.$emit('change', value);
-		}
-	},
+				this.$emit('change', value);
+			}
+		},
 
-	//--------------------------------------------------------------------------------------------
-	fieldInputEvent: function(value) {
+		//--------------------------------------------------------------------------------------------
+		fieldInputEvent: function(value) {
 			if (typeof this.onInput != "undefined") {
 				var p = this.findParent(); 
 				var cancel = this.onInput.call(this,
@@ -106,14 +120,22 @@ export default {
 		this.emitFilterEvent("_FieldRendered", this.guid + this.formType, this.formName, this.name);
 
 		//Listen for render event
-		this.onFilterEvent("_Render", 115, this.guid + this.formType + this.name, (self, watchedField) => {
-			this.renderField(watchedField);
+		this.onFilterEvent("_Render", 115, this.guid + this.formType + this.name, (self, watchedField, clearValue = false) => {
+			this.renderField(watchedField, clearValue);
 		});
 		
 		//Listen for field change event
 		this.onFilterEvent("_FieldChange", 120, this.guid + this.formType + this.name, (self) => {
 				this.fieldInputEvent();
 		});
+
+		if (this.enableLocalStorage) {
+		//Listen for field change event
+			this.onEvent("UpdateLocalStorage", (self) => {
+				localStorage[this.formType + "__" + this.name] = this.valueModel;	
+			});
+		}
+	
 
 	},	
 

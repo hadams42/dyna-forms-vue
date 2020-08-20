@@ -36,8 +36,12 @@ export default {
 		},
 
 		//--------------------------------------------------------------------------------------------
-		renderField: function(watchedField) {
-			//watchedField is the field that changed and triggered this render
+		renderField: function(watchedField, clearValue) {
+			//watchedField is the field that changed and triggered this render.
+			if (clearValue) {
+				this.clearValue();
+			}
+
 			if (typeof watchedField == "undefined") {
 				watchedField = null;
 			}

@@ -260,8 +260,8 @@ export default {
 		this.renderField();
 
 		//Listen for render event
-		this.onFilterEvent("_Render", 263, this.guid + this.formType + this.name, (self, watchedField) => {
-				this.renderField(watchedField);
+		this.onFilterEvent("_Render", 263, this.guid + this.formType + this.name, (self, watchedField, clearValue = false) => {
+				this.renderField(watchedField, clearValue);
 		});
 	},
 
