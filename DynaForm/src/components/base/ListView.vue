@@ -246,7 +246,7 @@
 		</div>
 </template>
 <script>
-/* The DynaForm Responsive Forms Engine. Copyright 2018 by The Infogetics Group, LLC
+/* The DynaForm Responsive Forms Engine. Copyright 2020 by The Infogetics Group, LLC
 Licensed under the MIT License | https://opensource.org/licenses/MIT  */
 
 
@@ -515,7 +515,7 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		dataApi: function(ctx, callback) {
-			localStorage[this.name + "_CurrentPage"] = this.DisplayValues.currentPage; 
+			localStorage[this.name + "__CurrentPage"] = this.DisplayValues.currentPage; 
 
 			var currentTableHeight = this.$refs.listGroupContainer.clientHeight + 0;
 			this.DisplayValues.tableMinHeight = currentTableHeight;

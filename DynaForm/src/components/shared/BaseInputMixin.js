@@ -1,4 +1,4 @@
-/* The DynaForm Responsive Forms Engine. Copyright 2018 by The Infogetics Group, LLC
+/* The DynaForm Responsive Forms Engine. Copyright 2020 by The Infogetics Group, LLC
 Licensed under the MIT License | https://opensource.org/licenses/MIT  */
 
 
@@ -29,12 +29,10 @@ export default {
 		clearValue() {
 			if (this.defaultValue != null) {
 				this.fieldChangeEvent(this.defaultValue);
+				if (this.enableLocalStorage) {
+					localStorage[this.formType + "__" + this.name] = this.defaultValue ;
+				}
 			}
-
-			if (this.enableLocalStorage) {
-				localStorage[this.formType + "__" + this.name] = this.defaultValue;
-			}
-
 		},
 
 		//--------------------------------------------------------------------------------------------
@@ -132,7 +130,9 @@ export default {
 		if (this.enableLocalStorage) {
 		//Listen for field change event
 			this.onEvent("UpdateLocalStorage", (self) => {
-				localStorage[this.formType + "__" + this.name] = this.valueModel;	
+				if (this.valueModel != null) {
+					localStorage[this.formType + "__" + this.name] = this.valueModel;	
+				}
 			});
 		}
 	

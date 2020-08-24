@@ -82,9 +82,9 @@
 </template>
 <script>
 
-/* The DynaForm Responsive Forms Engine. Copyright 2018 by The Infogetics Group, LLC
+/* The DynaForm Responsive Forms Engine. Copyright 2020 by The Infogetics Group, LLC
 Licensed under the MIT License | https://opensource.org/licenses/MIT  
-Portions of the typeahead code is licensed under the MIT open-source license. 2018.
+Portions of the typeahead code is licensed under the MIT open-source license. 2020.
 Author: Alex Urquhart. Email: alexurquhart@gmail.com. Web: https://alexurquhart.com */
 
 import { Utilities } from "../../Utilities.js";

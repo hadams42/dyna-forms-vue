@@ -143,9 +143,9 @@
 										:class="['non-editable-text', field.class, getFormattedClass(data.item[field.key],field.key,data.item)]"
 										v-b-popover="{content: field.helpText == null || field.helpText == '' ? data.item[field.helpTextKey] : field.helpText, boundaryPadding: 20, placement: 'auto', trigger: 'hover focus click blur'  }"
 										tabindex="0"
-										:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length <= data.item[field.key].length) && (field.helpText == null || field.helpText == '')">
-									 >
-											<span v-html="getFormattedValue(data.item[field.key], field.key)"></span>
+										:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length <= data.item[field.key].length) && (field.helpText == null || field.helpText == '')"
+									>
+										<span v-html="getFormattedValue(data.item[field.key], field.key)"></span>
 									</span>
 
 									<b-form-checkbox 
@@ -259,7 +259,7 @@
 		</div>
 </template>
 <script>
-/* The DynaForm Responsive Forms Engine. Copyright 2018 by The Infogetics Group, LLC
+/* The DynaForm Responsive Forms Engine. Copyright 2020 by The Infogetics Group, LLC
 Licensed under the MIT License | https://opensource.org/licenses/MIT  */
 
 

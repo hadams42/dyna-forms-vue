@@ -11,6 +11,7 @@
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				@locked="onLockToggle()"
+				:requiredField="rules != null && rules.required == true ? true : false"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 			>
 			</component-label>
@@ -43,7 +44,7 @@
 		</div>
 </template>
 <script>
-// /* The DynaForm Responsive Forms Engine. Copyright 2018 by The Infogetics Group, LLC
+// /* The DynaForm Responsive Forms Engine. Copyright 2020 by The Infogetics Group, LLC
 // Licensed under the MIT License | https://opensource.org/licenses/MIT  */
 
 // 

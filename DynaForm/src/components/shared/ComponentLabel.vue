@@ -5,7 +5,7 @@
 		v-if="text != null && text != ''"				
 	>
 		<span v-html="getTemplate()"></span>
-
+		
 		<a v-if="helpText != null || helpUrl != null"
 				class="help"
 				:tabindex="-1"
@@ -28,21 +28,18 @@
 			>
 				<i class="fas fa-lock"></i>
 			</a>
- 			
-			<!-- <a v-if="DisplayValues.locked == false"
-				class="lock-icon"
-				href="#"
-				@click="toggleLock()"
-			>
-				<i class="fas fa-unlock"></i>
-			</a>  -->
-
 		</span>
+
+		<span v-if="requiredField" 
+			class="required-indicator"
+			v-b-popover.hover.click.blur.auto="'Required'"
+		>*</span>
+
 	</label>
 </template>
 
 <script>
-/* The DynaForm Responsive Forms Engine. Copyright 2018 by The Infogetics Group, LLC
+/* The DynaForm Responsive Forms Engine. Copyright 2020 by The Infogetics Group, LLC
 Licensed under the MIT License | https://opensource.org/licenses/MIT  */
 
 import { Utilities } from "../../Utilities.js";
@@ -57,7 +54,8 @@ export default {
 		'helpUrl',
 		'locked',
 		'lockMessage',
-		'unlockable'
+		'unlockable',
+		'requiredField'
 		],
 	
 	data () {
@@ -71,6 +69,8 @@ export default {
 			}
 		}
 	},
+
+
 
 
 	watch: {

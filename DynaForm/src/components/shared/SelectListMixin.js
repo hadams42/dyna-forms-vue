@@ -1,4 +1,4 @@
-/* The DynaForm Responsive Forms Engine. Copyright 2018 by The Infogetics Group, LLC
+/* The DynaForm Responsive Forms Engine. Copyright 2020 by The Infogetics Group, LLC
 Licensed under the MIT License | https://opensource.org/licenses/MIT  */
 
 
@@ -48,10 +48,6 @@ export default {
 
 			//Call enableServerRender if enabled
 			if (this.enableServerRender == true) {
-				//Warn if both local and server renders are specified
-				if ((this.onRender != null && this.onRender != "") || (this.options != null && this.options.length > 0)) {
-					console.log("WARNING: Local event 'onRender' and locally specified options are ignored when enableServerRender is enabled. [" + this.name + "]");
-				}
 				
 				//Call server render interface
 				var p = this.findParent();
@@ -63,7 +59,10 @@ export default {
 					p.ActiveFormData,
 					function(data) {
 						this.updateOptions();
-						if (this.updateByValue != null) {
+						if (this.enableLocalStorage) {
+							this.updateFromLocalStorage();
+						}
+						else if (this.updateByValue != null) {
 							this.updateByValue(data[this.name]);
 						} 
 						else {
@@ -109,8 +108,24 @@ export default {
 						console.log("Error: ", e, this.name);
 					}.bind(this)
 				);
+				this.updateFromLocalStorage();
 			} else {
+				this.updateFromLocalStorage();
 				this.onAfterRenderEvent();
+			}
+		},
+
+		//--------------------------------------------------------------------------------------------
+		updateFromLocalStorage() {
+			if (this.enableLocalStorage) {
+				var savedValue = localStorage[this.formType + "__" + this.name];
+				if (savedValue != null && savedValue != "") {
+					this.valueModel = savedValue;
+				}
+				else {
+					this.valueModel = this.defaultValue || "*";
+				}
+				
 			}
 		},
 

@@ -11,6 +11,7 @@
 				:helpUrl="helpUrl"
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
+				:requiredField="rules != null && rules.required == true ? true : false"
 				@locked="onLockToggle()"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 			>
@@ -74,7 +75,7 @@
 
 <script>
 
-/* The DynaForm Responsive Forms Engine. Copyright 2018 by The Infogetics Group, LLC
+/* The DynaForm Responsive Forms Engine. Copyright 2020 by The Infogetics Group, LLC
 Licensed under the MIT License | https://opensource.org/licenses/MIT  
 Portions of the date picker code is licensed under the MIT open-source license.
 Copyright (c) Charlie Kassel <ck@charliekassel.com> */
