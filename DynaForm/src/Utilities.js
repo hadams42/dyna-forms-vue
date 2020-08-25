@@ -166,19 +166,17 @@ export const Utilities = class Utilities {
 		this.FormatNumber = function(value, show_nulls) {
 			var valueString = "" + value;
 			var valueFloat = valueString == "" ? 0 : parseFloat(valueString.replace(/,/g, ''));
-			value = (valueFloat/1);
-
-			if (show_nulls && value == null) {
+			
+			if (show_nulls && (valueFloat/1) == null) {
 				return 'NULL'
 			}
 			
 			if (isNaN(value)) {
 				return value;
 			} else {
-				let val = (value/1);//.replace('.', ',')
+				let val = (value/1);
 
 				return parseFloat(val.toFixed(2)).toLocaleString().replace(/\.([0-9])$/, ".$10");
-				//return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 			}
 		};
 

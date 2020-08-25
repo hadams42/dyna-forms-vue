@@ -154,6 +154,9 @@
 									:responsive="true"
 									:empty-text="emptyText"
 									:fixed="fixedColumns"
+									:selectable="selectable"
+									:select-mode="selectMode"
+									:selected-variant="selectedVariant"
 									class="report-group"
 									small
 									thead-class="grid-thead"
@@ -276,6 +279,9 @@ export default {
 		'debugMode',
 		'autoRender',
 		'selectedRecordKeys',
+		'selectable',
+		'selectMode',
+		'selectedVariant',
 		'initialParameters',
 		'instanceId',
 		'enablePagination',
