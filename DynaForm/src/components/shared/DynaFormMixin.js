@@ -209,7 +209,7 @@ export default {
 				this.emitEvent("FieldChanged", this.guid, this.formType, changedField, value, this.ActiveFormData);
 
 				if (this.ActiveFormSettings.autoSaveValidFields) {
-					this.autoSaveEvent();
+					this.autoSaveForm();
 				}
 
 				var i = this.ValidationCollector.findIndex(o => o.FieldName === changedField);
@@ -313,7 +313,7 @@ export default {
 		},
 
 		//---------------------------------------------------------------------------------------------------
-		autoSaveEvent: function() {
+		autoSaveForm: function() {
 			var cancel = false;
 			//Call local auto-save handler if defined
 			if (this.ActiveFormSettings != null && this.ActiveFormSettings.onAutoSave != null && this.ActiveFormSettings.onAutoSave != "") {

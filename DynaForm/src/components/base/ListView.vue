@@ -169,6 +169,16 @@
 									@row-clicked="rowClicked"
 									@refreshed="gridRendered"
 								>
+
+									<template slot="head(isSelected)"> 
+										<b-form-checkbox 
+											v-if="showSelectAll"
+											:plain="true"
+											@click.native="headerCheckboxChanged()"
+											:checked="DisplayValues.headerCheckboxState"
+										></b-form-checkbox>
+									</template>
+
 									<template 
 										v-for="(field, index) in fields || []"
 										:slot="field == null ? 'cell(DefaultField)' : 'cell(' + field.key + ')'" 
@@ -664,14 +674,14 @@ export default {
 		
 		//--------------------------------------------------------------------------------------------
 		gridRendered: function() {
-			if (this.DisplayValues.isInitialRender == false) {
+			//if (this.DisplayValues.isInitialRender == false) {
 				if (this.DisplayValues.isFlashProtected) {
 					this.Utilities.FlashProtect();
 					this.DisplayValues.isFlashProtected = false;
 				}
-			} else {
-				this.DisplayValues.isInitialRender = false;
-			}
+			//} else {
+			//	this.DisplayValues.isInitialRender = false;
+			//}
 		},
 
 		//--------------------------------------------------------------------------------------------
@@ -741,17 +751,7 @@ export default {
 			let newKey = item[this.keyField];
 			this.DisplayValues.activeRecordKey = newKey;
 			this.$emit('change', this.DisplayValues.activeRecordKey);
-			this.fieldInputEvent(newKey);
-			// if (this.onChange != null && this.onChange != "") {
-			// 	var p = this.findParent(); 
-			// 	this.onChange.call(this,
-			// 		this.DisplayValues,
-			// 		p.ActiveFormData,
-			// 		function(e) {
-			// 				console.log("Error: ", e, this.name);
-			// 		}.bind(this)
-			// 	);
-			// }    
+			this.fieldInputEvent(newKey, item);
 		},
 
 		//--------------------------------------------------------------

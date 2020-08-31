@@ -67,7 +67,8 @@ export default {
 		'hideMissingValues',
 		'format',
 		'commas',
-		'hidden'
+		'hidden',
+		'readValuesFromSelf'
 		],
 	
 	data () {
@@ -83,7 +84,7 @@ export default {
 				hideMissingValues: this.hideMissingValues == null ? false : this.hideMissingValues,
 				commas: this.commas == null ? "" : this.commas, 
 				hidden: this.hidden == null ? false : this.hidden,
-
+				readValuesFromSelf: this.readValuesFromSelf == null ? false : this.readValuesFromSelf,
 			}
 		}
 	},
@@ -130,14 +131,13 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		renderField: function(watchedField) {
-			//watchedField is the field that changed and triggered this render.
-			//Call enableServerRender if enabled
+			var p = this.findParent(); 
+
 			if (this.enableServerRender == true) {
 				if (this.onRender != null && this.onRender != "") {
 					console.log("WARNING: Local event 'onRender' ignored when enableServerRender is enabled. [" + this.name + "]");
 				}
 				//Call server render interface
-				var p = this.findParent();
 				this.ServerInterface.RenderField(this,
 					this.instanceId,
 					this.name,
@@ -145,7 +145,11 @@ export default {
 					this.DisplayValues,
 					p.ActiveFormData,
 					function() {
-						this.DisplayValues.templateHtml = p.ActiveFormData[this.name];
+						if (this.DisplayValues.readValuesFromSelf) {
+							this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData[this.name]);
+						} else {
+							this.DisplayValues.templateHtml = p.ActiveFormData[this.name];
+						}
 						this.onAfterRenderEvent();
 					}.bind(this)
 					,function(e) {
@@ -157,7 +161,6 @@ export default {
 
 			//Else, call local onRender if specified
 			else if (this.onRender != null && this.onRender != "") {
-				var p = this.findParent(); 
 				this.onRender.call(this,
 					this.DisplayValues,
 					p.ActiveFormData,
@@ -170,20 +173,20 @@ export default {
 					}.bind(this)
 				);
 				
-				this.DisplayValues.templateHtml = this.getTemplate.call(this);
+				this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData);
 				this.onAfterRenderEvent();
 			} 
 			else {
-				this.DisplayValues.templateHtml = this.getTemplate.call(this);
+				this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData);
 				this.onAfterRenderEvent();
 			}
 		},
 		
 		//--------------------------------------------------------------------------------------------
-		getTemplate: function() {
+		getTemplate: function(templateValues) {
+
 			var result = null;
 			if (this.template != null) {
-				var p = this.findParent();
 				result = this.template;
 				var re = /\{(.+?)\}/g;
 				var match;
@@ -197,9 +200,9 @@ export default {
 					if (match) {
 						if (match[1].includes(".")) {
 							var e = match[1].split(".");
-							v = p.ActiveFormData[e[0]][e[1]] || '';
+							v = templateValues[e[0]][e[1]] || '';
 						} else {
-							v = p.ActiveFormData[match[1]] || '';
+							v = templateValues[match[1]] || '';
 						}
 						var replacementValue = null;
 						if (v.length == 10) {

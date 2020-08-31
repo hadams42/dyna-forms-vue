@@ -134,9 +134,17 @@ export const Utilities = class Utilities {
 						break;
 					case "GROUP":
 						break;
+					case "P":
+							if (result == 0) {
+								result = "<1%";	
+							}
+							else { 
+								result = result + "%";
+							}
+							break;
 					case "T":
 						break;
-					}
+						}
 
 				if ((format.startsWith("N") || format.startsWith("C")) && result.startsWith("-") ) {
 					result = "(" + result.substring(1) + ")"

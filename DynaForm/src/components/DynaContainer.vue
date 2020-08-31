@@ -23,11 +23,12 @@
 		:hide-header="false"
 		size="lg"
 		:no-fade="true"
+		:no-close-on-backdrop="true"
 		:hide-backdrop="false"
 		ok-only
 		ok-title="Close"
 		button-size="sm"		
-		:dialog-class="[modalCssClass != null ? modalCssClass : '']"
+		:dialog-class="[modalCssClass != null ? modalCssClass : '', this.name]"
 	>
 		<component 
 			:is="ActiveComponent.ComponentType"

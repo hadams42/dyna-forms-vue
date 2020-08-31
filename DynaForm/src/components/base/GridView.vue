@@ -84,7 +84,7 @@
 								@row-clicked="rowClicked"
 								@refreshed="gridRenderedEvent"
 							>
-								<template slot="head(isSelected)"> <!--slot-scope="data"-->
+								<template slot="head(isSelected)"> 
 									<b-form-checkbox 
 										v-if="showSelectAll"
 										:plain="true"
@@ -832,14 +832,14 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		gridRenderedEvent: function() {
-			if (this.DisplayValues.isInitialRender == false) {
+			//if (this.DisplayValues.isInitialRender == false) {
 				if (this.DisplayValues.isFlashProtected) {
 					this.Utilities.FlashProtect();
 					this.DisplayValues.isFlashProtected = false;
 				}
-			} else {
-				this.DisplayValues.isInitialRender = false;
-			}
+			//} else {
+			//	this.DisplayValues.isInitialRender = false;
+			//}
 		},
 
 		//--------------------------------------------------------------------------------------------

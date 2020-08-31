@@ -44,7 +44,7 @@ export default {
 		},
 
 		//--------------------------------------------------------------------------------------------
-		fieldInputEvent: function(value) {
+		fieldInputEvent: function(value, context = null) {
 			if (typeof this.onInput != "undefined") {
 				var p = this.findParent(); 
 				var cancel = this.onInput.call(this,
@@ -53,7 +53,8 @@ export default {
 					p.ActiveFormData,
 					function(e) {
 						console.log("Error: ", e, this.name);
-					}.bind(this)
+					}.bind(this),
+					context
 				);
 				return cancel;
 			}	
