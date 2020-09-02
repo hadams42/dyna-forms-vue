@@ -134,9 +134,6 @@ export default {
 			var p = this.findParent(); 
 
 			if (this.enableServerRender == true) {
-				if (this.onRender != null && this.onRender != "") {
-					console.log("WARNING: Local event 'onRender' ignored when enableServerRender is enabled. [" + this.name + "]");
-				}
 				//Call server render interface
 				this.ServerInterface.RenderField(this,
 					this.instanceId,
@@ -156,11 +153,10 @@ export default {
 						console.log("Error: ", e, this.name);
 					}.bind(this)
 				);
-				return;
 			} 
 
-			//Else, call local onRender if specified
-			else if (this.onRender != null && this.onRender != "") {
+			//Call local onRender if specified
+			if (this.onRender != null && this.onRender != "") {
 				this.onRender.call(this,
 					this.DisplayValues,
 					p.ActiveFormData,
@@ -172,14 +168,17 @@ export default {
 						console.log("Error: ", e, this.name);
 					}.bind(this)
 				);
-				
-				this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData);
-				this.onAfterRenderEvent();
+
+				if (this.DisplayValues.readValuesFromSelf) {
+					this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData[this.name]);
+				} else {
+					this.DisplayValues.templateHtml = p.ActiveFormData[this.name];
+					this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData);
+				}
+
 			} 
-			else {
-				this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData);
-				this.onAfterRenderEvent();
-			}
+
+			this.onAfterRenderEvent();
 		},
 		
 		//--------------------------------------------------------------------------------------------
