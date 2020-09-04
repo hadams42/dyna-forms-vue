@@ -26,6 +26,7 @@
 		:no-close-on-backdrop="true"
 		:hide-backdrop="false"
 		ok-only
+		static
 		ok-title="Close"
 		button-size="sm"		
 		:dialog-class="[modalCssClass != null ? modalCssClass : '', this.name]"

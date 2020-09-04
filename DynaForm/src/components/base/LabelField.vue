@@ -80,6 +80,7 @@ export default {
 				variant: this.variant == null ? 'secondary' : this.variant,
 				badgeContainer: this.badgeContainer == null ? 'h4' : this.badgeContainer,
 				templateHtml: "",
+				template: this.template,
 				customClasses: this.customClasses == null ? '' : this.customClasses,
 				hideMissingValues: this.hideMissingValues == null ? false : this.hideMissingValues,
 				commas: this.commas == null ? "" : this.commas, 
@@ -128,12 +129,12 @@ export default {
 			} 
 		},
 
-
 		//--------------------------------------------------------------------------------------------
 		renderField: function(watchedField) {
 			var p = this.findParent(); 
 
 			if (this.enableServerRender == true) {
+
 				//Call server render interface
 				this.ServerInterface.RenderField(this,
 					this.instanceId,
@@ -142,11 +143,30 @@ export default {
 					this.DisplayValues,
 					p.ActiveFormData,
 					function() {
-						if (this.DisplayValues.readValuesFromSelf) {
+						if (this.DisplayValues.readValuesFromSelf && p.ActiveFormData[this.name] != null) {
 							this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData[this.name]);
-						} else {
-							this.DisplayValues.templateHtml = p.ActiveFormData[this.name];
+						} 
+						else {
+							this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData);
 						}
+						if (this.onRender != null && this.onRender != "") {
+							this.onRender.call(this,
+								this.DisplayValues,
+								p.ActiveFormData,
+								watchedField,
+								function() {
+								}.bind(this)
+								,function(e) {
+									console.log("Error: ", e, this.name);
+								}.bind(this)
+							);
+							if (this.DisplayValues.readValuesFromSelf && p.ActiveFormData[this.name] != null) {
+								this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData[this.name]);
+							} 
+							else {
+								this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData);
+							}
+						} 
 						this.onAfterRenderEvent();
 					}.bind(this)
 					,function(e) {
@@ -156,37 +176,37 @@ export default {
 			} 
 
 			//Call local onRender if specified
-			if (this.onRender != null && this.onRender != "") {
+			else if (this.onRender != null && this.onRender != "") {
 				this.onRender.call(this,
 					this.DisplayValues,
 					p.ActiveFormData,
 					watchedField,
 					function() {
-						//Success code here
 					}.bind(this)
 					,function(e) {
 						console.log("Error: ", e, this.name);
 					}.bind(this)
 				);
 
-				if (this.DisplayValues.readValuesFromSelf) {
+				if (this.DisplayValues.readValuesFromSelf && p.ActiveFormData[this.name] != null) {
 					this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData[this.name]);
-				} else {
-					this.DisplayValues.templateHtml = p.ActiveFormData[this.name];
+				} 
+				else {
 					this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData);
 				}
-
 			} 
-
-			this.onAfterRenderEvent();
+			else {
+				this.DisplayValues.templateHtml = this.getTemplate.call(this, p.ActiveFormData);
+			 	this.onAfterRenderEvent();
+			}
 		},
 		
 		//--------------------------------------------------------------------------------------------
 		getTemplate: function(templateValues) {
 
 			var result = null;
-			if (this.template != null) {
-				result = this.template;
+			if (this.DisplayValues.template != null) {
+				result = this.DisplayValues.template;
 				var re = /\{(.+?)\}/g;
 				var match;
 				var isFound = false;

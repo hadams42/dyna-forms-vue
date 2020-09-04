@@ -78,7 +78,20 @@ export const Utilities = class Utilities {
 			var result =  value;
 
 			//If this is a date format
-			if (format.toUpperCase().startsWith("DATE")) {
+			if (format.toUpperCase().startsWith("PERCENT")) {
+				var pctFormat = format.substring(7);
+				pctFormat = this.ReplaceAll(pctFormat.trim(), "(", "");
+				pctFormat = this.ReplaceAll(pctFormat, ")", "");
+				if (pctFormat == "" ) pctFormat = '<1%';
+				if (result == 0) {
+					result = pctFormat;	
+				}
+				else { 
+					result = result + "%";
+				}				
+			}
+			//If this is a date format
+			else if (format.toUpperCase().startsWith("DATE")) {
 				var dateFormat = format.substring(4);
 				dateFormat = this.ReplaceAll(dateFormat.trim(), "(", "");
 				dateFormat = this.ReplaceAll(dateFormat, ")", "");
@@ -134,14 +147,6 @@ export const Utilities = class Utilities {
 						break;
 					case "GROUP":
 						break;
-					case "P":
-							if (result == 0) {
-								result = "<1%";	
-							}
-							else { 
-								result = result + "%";
-							}
-							break;
 					case "T":
 						break;
 						}

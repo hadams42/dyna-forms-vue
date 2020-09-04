@@ -62,9 +62,7 @@
 				</b-row>
 				<b-row>
 					<b-col xs="12" class="pl-0" >
-						<div 
-							:style="'min-height: ' + DisplayValues.tableMinHeight + 'px'" 
-							ref="listGroupContainer">
+						<div :style="'min-height: ' + DisplayValues.tableMinHeight + 'px'" ref="listGroupContainer">
 							<div 
 								:class="[ itemArray == null || itemArray.length == 0 ? 'empty' :'' ]"
 							>
@@ -103,6 +101,7 @@
 													:checked="isRowSelected(item)"
 													@change="checkboxChanged(item[keyField])"
 											></b-form-checkbox>
+
 											<div class="star"
 												v-b-popover.hover.click.blur.top="item._Flag"
 												tabindex="0"
@@ -110,11 +109,13 @@
 											>
 												<i class="fas fa-star"></i>
 											</div>
+											
 											<div 
 												class="list-view-template"
 												v-html="fillListItemTemplate(item)"
 												@click="rowClicked(item, index)"									
 											></div>
+
 										</div>
 										<div 
 											v-if="actionButtonSettings.visible && getOptions(item) != null && getOptions(item).length > 0"
@@ -195,6 +196,7 @@
 
 										<b-form-checkbox 
 											v-if="field.key == 'isSelected'"
+											:style="{display: showItemCheckbox == false ? 'none' : '' } "
 											:class="[field.class]"
 											:key="'checkbox-' + index"
 											:data-value="data.item[keyField]"
