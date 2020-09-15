@@ -207,12 +207,14 @@ export const ServerInterface = class ServerInterface {
 		//--------------------------------------------------------------
 		//Auto-save form
 		//--------------------------------------------------------------
-		this.AutoSaveForm = function(sender, instanceId, data, error) {
+		this.AutoSaveForm = function(sender, instanceId, data, success, error) {
 			this.Log("AutoSaveForm", arguments, sender);
 			//Submit form to server 
 			this.Form.AutoSaveForm.call(this.Form, instanceId, data).then(function(responseJson) {
 				if (responseJson.success == true) {
-					//Do not merge updates during autosave
+					if (success != null && success != "") {
+						success.call(sender);
+					}
 				} else {
 					error(responseJson.message);
 				}

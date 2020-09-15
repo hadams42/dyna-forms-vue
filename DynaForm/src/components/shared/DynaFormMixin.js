@@ -313,7 +313,7 @@ export default {
 		},
 
 		//---------------------------------------------------------------------------------------------------
-		autoSaveForm: function() {
+		autoSaveForm: function(callback=null) {
 			var cancel = false;
 			//Call local auto-save handler if defined
 			if (this.ActiveFormSettings != null && this.ActiveFormSettings.onAutoSave != null && this.ActiveFormSettings.onAutoSave != "") {
@@ -331,6 +331,7 @@ export default {
 					this.ServerInterface.AutoSaveForm(this,
 							this.instanceId, 
 							this.ActiveFormData, 
+							callback,
 							function(e) {
 								console.log("AUTO-SAVE ERROR:", e);
 								this.makeToast("Save Error" + " (" + this.ActiveFormSettings.formType + ")" ,e)
