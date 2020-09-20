@@ -73,6 +73,7 @@
 									<div>
 										{{emptyText}}
 									</div>
+									<div>
 									<b-link
 										v-if="DisplayValues.buttons.showRefreshButton"
 										@click="refreshButtonClick"
@@ -82,7 +83,7 @@
 										<i class="icon small-size fas fa-sync-alt"></i>
 										<span class="icon-label small-size"></span>
 									</b-link>
-
+									</div>
 								</div>
 
 								<div v-if="DisplayValues.activeTemplate !== 'report'"
@@ -95,7 +96,7 @@
 										:class="[layoutClasses.item, isRowSelected(item) ? 'selected' : '']"
 									>
 										<div 
-											:class="['d-flex','justify-content-start', DisplayValues.activeTemplate == 'grid' ? '' : 'align-items-center']">
+											:class="['','justify-content-start', DisplayValues.activeTemplate == 'grid' ? '' : 'align-items-center']">
 											<b-form-checkbox  v-if="showItemCheckbox != false"
 													class="list-view-checkbox"
 													:checked="isRowSelected(item)"
@@ -464,9 +465,9 @@ export default {
 					break;
 				case "list": 
 					this.layoutClasses.list = "list-group";
-					this.layoutClasses.empty = "list-group-item empty-text d-flex justify-content-between";
-					this.layoutClasses.item = "list-group-item d-flex justify-content-between";
-					this.layoutClasses.actionButton = "d-flex justify-content-end align-items-end";
+					this.layoutClasses.empty = "empty-text";
+					this.layoutClasses.item = "list-group-item";
+					this.layoutClasses.actionButton = "";
 					this.layoutClasses.data = "";
 					break;
 				case "report": 
