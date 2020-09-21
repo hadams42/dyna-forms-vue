@@ -145,7 +145,7 @@ import ArrowBar from "./base/ArrowBar";
 import MapPicker from "./base/MapPicker";
 import AlertField from "./base/AlertField";
 import FundingInput from "./base/FundingInput";
-
+import RichTextInput from "./base/RichTextInput";
 
 export default {
   name: "DynaForm",
@@ -183,7 +183,8 @@ export default {
 		MapPicker,
 		CarouselView,
 		AlertField,
-		FundingInput
+		FundingInput,
+		RichTextInput		
 	},
 	
 	props: [
