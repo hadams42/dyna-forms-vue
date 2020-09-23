@@ -293,10 +293,16 @@ export default {
 			}
 		},
 
+		test: function() {
+			var x=1;
+		},
+
 		//--------------------------------------------------------------------------------------------
 		updateEditor: function() {
-			this.editor.setContent(this.valueModel, false);
-			this.editor.focus();
+			this.$nextTick(function() {
+				this.editor.setContent(this.valueModel, false);
+				this.editor.focus();
+			});
 		},
 
 
@@ -304,7 +310,8 @@ export default {
 		renderField: function(watchedField, clearValue) {
 			//watchedField is the field that changed and triggered this render.
 			if (clearValue) {
-				this.clearValue();
+				this.valueModel = "";
+				this.editor.setContent(null, false);
 			}
 			
 			if (this.enableLocalStorage) {

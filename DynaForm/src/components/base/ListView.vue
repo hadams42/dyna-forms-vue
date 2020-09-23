@@ -77,7 +77,7 @@
 									<b-link
 										v-if="DisplayValues.buttons.showRefreshButton"
 										@click="refreshButtonClick"
-										class="icon-button button-input float-right ml-3"
+										class="icon-button button-input ml-3"
 										type="button"
 									>
 										<i class="icon small-size fas fa-sync-alt"></i>

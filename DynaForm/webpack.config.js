@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
   entry: './src/main.js',
@@ -7,7 +8,10 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: 'build.js'
-  },
+	},
+	plugins: [
+    new HardSourceWebpackPlugin()
+  ],
   module: {
     rules: [
       {

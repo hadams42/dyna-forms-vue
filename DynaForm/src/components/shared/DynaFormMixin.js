@@ -71,6 +71,7 @@ export default {
 				appendToast: false,
 				toaster: "b-toaster-bottom-right",
 				variant: variant,
+				toastClass: "toaster-container"
 			})
 		},
 
