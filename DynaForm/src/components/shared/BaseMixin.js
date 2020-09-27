@@ -166,8 +166,8 @@ export default {
 		},
 
 		//--------------------------------------------------------------------------------------------
-		renderRemoteField: function(fieldName, clearValue = false) {
-			this.emitFilterEvent("_Render", this.guid + this.formType + fieldName, this.name, clearValue);							
+		renderRemoteField: function(fieldName, clearValue = false, focus = false) {
+			this.emitFilterEvent("_Render", this.guid + this.formType + fieldName, this.name, clearValue, focus);							
 		},
 
 		//--------------------------------------------------------------------------------------------

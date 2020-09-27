@@ -1,6 +1,6 @@
 <template>
 		<b-form-group
-			:class="['checkbox-input  ', DisplayValues.customClasses]"
+			:class="['checkbox-input', DisplayValues.mode, DisplayValues.customClasses, name]"
 			v-show="DisplayValues.visible"			
 		>
 			<component-label
@@ -17,7 +17,7 @@
 			</component-label>
 
 			<b-form-radio-group
-				v-if="DisplayValues.switch == false && OptionList != null && OptionList.length > 1"
+				v-if="DisplayValues.switch == false && OptionList != null && OptionList.length > 1 && DisplayValues.mode == 'radio'"
 				v-model="valueModel"
 				:state="validationState"
 				:options="OptionList"
@@ -28,7 +28,7 @@
 			></b-form-radio-group>
 
 			<b-form-checkbox 
-				v-if="DisplayValues.switch == true || OptionList == null || OptionList.length <= 1"
+				v-if="DisplayValues.mode == 'radio' && (DisplayValues.switch == true || OptionList == null || OptionList.length <= 1)"
 				:id="name"
 				v-model="valueModel"
 				:state="validationState"
@@ -42,6 +42,20 @@
 					{{OptionList != null && OptionList.length > 1 ? valueModel == true ? OptionList[0].text : OptionList[1].text : ''}}
 				</div>
 			</b-form-checkbox>
+
+			<b-form-checkbox-group 
+				v-if="DisplayValues.mode == 'buttons'"
+				:id="name"
+				v-model="valueModel"
+				:options="OptionList"
+				:state="validationState"
+				:size="size"
+				buttons
+				:disabled="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)"
+				@change="fieldChangeEvent($event); fieldInputEvent($event)"
+			>
+			</b-form-checkbox-group>
+
 			<b-form-invalid-feedback>
 				<ul
 					v-if="this.Validation.Status  > 0 && this.Validation.MessageList.length > 0"
@@ -79,6 +93,7 @@ export default {
   props: [
 		'options', 
 		'switch', 
+		'mode',
 		],
 
 	data () {
@@ -89,6 +104,7 @@ export default {
 				visible: this.visible == null ? true : this.visible,
 				options: this.options == null ? [] : this.options,
 				switch: this.switch == null ? true : this.switch,
+				mode: this.mode == null ? 'radio' : this.mode,
 				customClasses: this.customClasses == null ? '' : this.customClasses,
 			}
 		}

@@ -1,6 +1,6 @@
 <template>
 		<b-form-group 
-			class="tag-input"
+			:class="['tag-input', name]"
 			v-show="DisplayValues.visible"
 		>
 			<component-label
@@ -10,8 +10,9 @@
 				:helpUrl="helpUrl"
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
-				@locked="onLockToggle()"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
+				:requiredField="rules != null && rules.required == true ? true : false"
+				@locked="onLockToggle()"				
 			>
 			</component-label>
 

@@ -9,7 +9,8 @@ export default {
 	props: [
 		'placeholder',
 		'defaultValue',
-		'enableLocalStorage'
+		'enableLocalStorage',
+		'autoRender',
 	],
 
 	data () {
@@ -26,12 +27,15 @@ export default {
 	methods: {
 
 		//---------------------------------------------------------------------------------------------------
-		clearValue() {
+		clearValue(fallbackDefaultValue) {
 			if (this.defaultValue != null) {
 				this.fieldChangeEvent(this.defaultValue);
 				if (this.enableLocalStorage) {
 					localStorage[this.formType + "__" + this.name] = this.defaultValue ;
 				}
+			}
+			else {
+				this.fieldChangeEvent(this.fallbackDefaultValue);
 			}
 		},
 
@@ -113,14 +117,16 @@ export default {
 		this.loadFieldEvent();
 
 		//Perform initial render
-		this.renderField();
+		if (this.autoRender !== false) {
+			this.renderField();
+		}
 
 		//Send bus message that this field has been rendered
 		this.emitFilterEvent("_FieldRendered", this.guid + this.formType, this.formName, this.name);
 
 		//Listen for render event
-		this.onFilterEvent("_Render", 115, this.guid + this.formType + this.name, (self, watchedField, clearValue = false) => {
-			this.renderField(watchedField, clearValue);
+		this.onFilterEvent("_Render", 115, this.guid + this.formType + this.name, (self, watchedField, clearValue = false, focus = false) => {
+			this.renderField(watchedField, clearValue, focus);
 		});
 		
 		//Listen for field change event

@@ -287,33 +287,39 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	methods: {
 
+		//--------------------------------------------------------------------------------------------
 		editorUpdated: function() {
 			if (this.editor != null) {
 				this.valueModel = this.editor.getHTML();
 			}
 		},
 
-		test: function() {
-			var x=1;
-		},
-
 		//--------------------------------------------------------------------------------------------
 		updateEditor: function() {
 			this.$nextTick(function() {
 				this.editor.setContent(this.valueModel, false);
+			});
+		},
+
+		//--------------------------------------------------------------------------------------------
+		focusEditor: function() {
+			this.$nextTick(function() {
 				this.editor.focus();
 			});
 		},
 
-
 		//--------------------------------------------------------------------------------------------
-		renderField: function(watchedField, clearValue) {
+		renderField: function(watchedField, clearValue, focus) {
 			//watchedField is the field that changed and triggered this render.
 			if (clearValue) {
 				this.valueModel = "";
 				this.editor.setContent(null, false);
 			}
 			
+			if (focus) {
+				this.focusEditor();
+			}
+
 			if (this.enableLocalStorage) {
 				var savedValue = localStorage[this.formType + "__" + this.name];
 				this.fieldChangeEvent(savedValue == null ? this.defaultValue : savedValue);

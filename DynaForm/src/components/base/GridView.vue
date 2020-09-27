@@ -292,7 +292,6 @@ export default {
 		'instanceId',
 		'enablePagination',
 		'showFooter',
-		'autoRender',
 		'onNewButtonClick',
 		'buttonAlignment',
 		'minWidth',
