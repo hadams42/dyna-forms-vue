@@ -10,7 +10,7 @@ module.exports = {
     filename: 'build.js'
 	},
 	plugins: [
-    new HardSourceWebpackPlugin()
+    new HardSourceWebpackPlugin(),
   ],
   module: {
     rules: [
@@ -19,7 +19,7 @@ module.exports = {
         use: [
           'vue-style-loader',
 					'css-loader',
-					'sass-loader'
+					'sass-loader',
         ],
       },      {
         test: /\.vue$/,

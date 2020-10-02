@@ -1,5 +1,5 @@
 <template>
-    <div class="tags-input-root">
+    <div class="tags-input-root" style="position: relative">
 
         <div :class="wrapperClass + ' tags-input'">
             <span class="tags-input-badge tags-input-badge-pill tags-input-badge-selected-default"
@@ -489,9 +489,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.tags-input-root {
-    position: relative;
-}
-</style>

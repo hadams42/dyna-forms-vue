@@ -9,6 +9,6 @@ pushd C:\Development\GlobalMission\AM-MPS\MissionFunding\MissionFunding\Scripts
 call update.bat
 popd
 
-pushd C:\Development\~ADL\EbstoreWeb\EbstoreWeb\Scripts\
+pushd C:\Development\EbstoreV8\EbstoreV8\Scripts\
 call update.bat
 popd
