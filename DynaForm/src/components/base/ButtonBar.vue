@@ -84,8 +84,6 @@
 				v-if="(mode == null || mode == 'buttons') && DisplayValues.group == true && DisplayValues.switchGroup == true" 
 				class=""
 			>
-	
-	
 				<b-form-select
 					v-model="SelectedGroupIndex"
 					class="button-bar-group-select"
@@ -155,10 +153,11 @@
 				<b-input-group-append>
 					<b-button
 						size="sm"
-						style="margin-top: 2px; max-height: 29px;"
+						style="margin-top: 2px; max-height: 30px;"
 						:variant="DisplayValues.buttonVariant"
 						@click="buttonClicked()"
-					>{{DisplayValues.buttonText}}</b-button>
+						v-html="DisplayValues.buttonText"
+					></b-button>
 				</b-input-group-append>
 				</b-input-group>
 			</div>
@@ -257,7 +256,13 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		buttonClicked: function(option=null) {
 			if (this.readonly == true) return;
-			this.updateByOption(option);
+			
+			if (option != null) {
+				this.updateByOption(option);
+			} else {
+				this.updateByValue(this.valueModel);
+			}
+			
 		},
 
 		//--------------------------------------------------------------------------------------------
@@ -268,6 +273,31 @@ export default {
 				}
 			}
 		},
+
+		//--------------------------------------------------------------------------------------------
+		updateByOption: function(option=null) {
+			//Set all buttons to inactive
+			this.OptionList.map(function(o) { o.active=false });
+
+			//Set this button to active
+			option.active = true;
+
+			//Trigger field input event (must come before update value model)
+			var cancel = this.fieldInputEvent(option.value);
+			if (cancel == true) return;
+
+			//Trigger option selection  event
+			cancel = this.selectionChangeEvent(option);
+			if (cancel == true) return;
+
+			//Update value model
+			this.valueModel = option.value;
+
+			//Perform clicked action
+			if (cancel != true) {
+				this.performButtonAction(option);
+			}
+		},		
 
 		//--------------------------------------------------------------------------------------------
 		getTemplate: function(s) {
@@ -417,30 +447,7 @@ export default {
 			}
 		},
 
-		//--------------------------------------------------------------------------------------------
-		updateByOption: function(option=null) {
-			//Set all buttons to inactive
-			this.OptionList.map(function(o) { o.active=false });
 
-			//Set this button to active
-			option.active = true;
-
-			//Trigger field input event (must come before update value model)
-			var cancel = this.fieldInputEvent(option.value);
-			if (cancel == true) return;
-
-			//Trigger option selection  event
-			cancel = this.selectionChangeEvent(option);
-			if (cancel == true) return;
-
-			//Update value model
-			this.valueModel = option.value;
-
-			//Perform clicked action
-			if (cancel != true) {
-				this.performButtonAction(option);
-			}
-		},
 
 		//--------------------------------------------------------------------------------------------
 		//Button bars support both onClick, with local actions, and server actions

@@ -49,7 +49,8 @@
 				v-model="valueModel"
 				:options="OptionList"
 				:state="validationState"
-				:size="size"
+				size="sm"
+				:class="[DisplayValues.block ? 'block' : '']"
 				buttons
 				:disabled="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)"
 				@change="fieldChangeEvent($event); fieldInputEvent($event)"
@@ -94,6 +95,7 @@ export default {
 		'options', 
 		'switch', 
 		'mode',
+		'block',
 		],
 
 	data () {
@@ -105,6 +107,7 @@ export default {
 				options: this.options == null ? [] : this.options,
 				switch: this.switch == null ? true : this.switch,
 				mode: this.mode == null ? 'radio' : this.mode,
+				block: this.block == null ? false : this.block,
 				customClasses: this.customClasses == null ? '' : this.customClasses,
 			}
 		}

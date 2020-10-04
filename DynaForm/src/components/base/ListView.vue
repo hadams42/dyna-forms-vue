@@ -168,7 +168,7 @@
 									tfoot-class="grid-tfoot"
 									tfoot-tr-class="grid-tfoot-tr"
 									:hover="true"
-									@row-clicked="rowClicked"
+									@xrow-clicked="rowClicked"
 									@refreshed="gridRendered"
 								>
 
@@ -186,14 +186,17 @@
 										:slot="field == null ? 'cell(DefaultField)' : 'cell(' + field.key + ')'" 
 										slot-scope="data" 
 									>
-										<span 
+										<div 
 											:key="'data-' + index"
+											v-if="field.key !== 'isSelected'"
+											@click="rowClicked(data.item, index, $event)"
 											:class="['non-editable-text', field.class]"
 											v-b-popover="{content: field.helpText == null || field.helpText == '' ? data.item[field.helpTextKey] : field.helpText, boundaryPadding: 20, placement: 'auto',  html: true, trigger: 'hover focus click blur'  }"
 											tabindex="0"
-											:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length <= data.item[field.key].length) && (field.helpText == null || field.helpText == '')">
-												<span v-html="getFormattedValue(data.item[field.key], field.key)"></span>
-										</span>
+											:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length <= data.item[field.key].length) && (field.helpText == null || field.helpText == '')"
+										>
+											<span v-html="getFormattedValue(data.item[field.key], field.key)"></span>
+										</div>
 
 										<b-form-checkbox 
 											v-if="field.key == 'isSelected'"

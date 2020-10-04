@@ -244,7 +244,6 @@ export default {
 						cssClass: this.DisplayValues.options[i]["cssClass"],
 						helpUrl: this.DisplayValues.options[i]["helpUrl"],
 						activity: this.DisplayValues.options[i]["activity"],
-						selected: this.DisplayValues.options[i]["selected"],
 						altText: this.DisplayValues.options[i]["altText"],
 					};
 					list.push(o);
