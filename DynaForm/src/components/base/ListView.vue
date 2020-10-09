@@ -14,7 +14,7 @@
 				<b-row v-if="itemArray != null && itemArray.length != 0 && DisplayValues.showButtonBar" 
 					class="icon-button-row"
 				>
-					<b-col md="12" class="pt-3 mb-1" >
+					<b-col md="12" class="mb-1" >
 						<b-link
 							v-if="DisplayValues.buttons.showRefreshButton"
 							@click="refreshButtonClick"

@@ -48,7 +48,7 @@
 				<div 
 					v-for="group in GroupList"
 					:key="group.index == null ? '0' : group.index"
-					style="margin-right: 4rem; margin-bottom: 5px; padding: 5px; margin-top: 5px;"
+					style="margin-bottom: 5px; padding: 5px; margin-top: 5px;"
 				>
 					<label for="name"> {{groupLabel}} {{group.label}}</label><br>
 					<b-button-group
@@ -94,7 +94,7 @@
 					<option
 						v-for="group in GroupList"
 						:key="group.index == null ? '0' : group.index"
-						style="margin-right: 4rem; margin-bottom: 5px; padding: 5px; margin-top: 5px;"
+						style="margin-bottom: 5px; padding: 5px; margin-top: 5px;"
 						:value="group.index"
 						size="sm"
 					>{{groupLabel}} {{group.label}}
