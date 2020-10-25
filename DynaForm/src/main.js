@@ -9,7 +9,7 @@ import BootstrapVue from "bootstrap-vue"
 import DynaContainer from "./components/DynaContainer.vue";
 import LiteBus from "./LiteBus"
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
 Vue.use(BootstrapVue)
 Vue.use(LiteBus)
 
@@ -24,7 +24,7 @@ window["DynaCheck"] = function() {
 
 window["RenderDynaContainer"] = function(
 		ElementId, //Element Id
-		Settings, //Settings variable
+		Settings, //Settings variable 
 		InstanceId, //InstanceId
 		ClearDefaults=false, //Clear defaults (T/F)
 		FormGroupId, //FormGroupId
@@ -46,7 +46,7 @@ window["RenderDynaContainer"] = function(
 				settings: Settings,
 				formGroupId: FormGroupId,
 				componentUrl: ComponentUrl,
-				name: Settings.name,
+				name: Settings.name, 
 				guid: Settings.guid,
 				containerInstanceId: InstanceId,
 				clearDefaults: ClearDefaults,
