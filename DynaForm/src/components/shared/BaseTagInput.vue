@@ -1,20 +1,21 @@
 <template>
     <div class="tags-input-root" style="position: relative">
-
         <div :class="wrapperClass + ' tags-input'">
             <span class="tags-input-badge tags-input-badge-pill tags-input-badge-selected-default"
                 v-for="(badge, index) in tagBadges"
                 :key="index"
-								:style="{'background-color': getTagBackgroundColorByText(badge), 'color': getTagColorByText(badge)}"
+								:style="{'color': getTagColorByText(badge)}"
             >
                 <span v-html="badge"></span>
 
-                <i href="#" 
+                <i v-if="viewOnly == false" 
+									href="#" 
 									class="tags-input-remove" 
 									@click.prevent="removeTag(index)"
 								></i>
             </span>
-            <input type="text"
+            <input v-if="viewOnly == false"
+								type="text"
                 ref="taginput"
                 :placeholder="placeholder"
                 v-model="input"
@@ -37,7 +38,7 @@
         </div>
 
         <!-- Typeahead/Autocomplete -->
-        <div v-show="searchResults.length">
+        <div v-show="searchResults.length && viewOnly == false">
             <p v-if="typeaheadStyle === 'badges'" :class="'typeahead-${typeaheadStyle}'">
                 <span v-for="(tag, index) in searchResults"
                     :key="index"
@@ -81,13 +82,16 @@ export default {
 				existingColorsConcat: String,
 				existingBackgroundColorsConcat: String,
 
+				viewOnly: {
+            type: Boolean,
+            default: false
+				},
         value: {
             type: [Array, String],
             default: () => {
                 return [];
             }
         },
-
         typeahead: {
             type: Boolean,
             default: false
@@ -95,12 +99,12 @@ export default {
 
         defaultColor: {
             type: String,
-            default: '#fff'
+            default: '#080808;'
 				},
 				
         defaultBackgroundColor: {
             type: String,
-            default: '#888'
+            default: '#fefefe'
         },
 
         typeaheadStyle: {
@@ -230,7 +234,7 @@ export default {
 
 				getTagColorByText(text) {
 					for (var i=0; i<this.existingTags.length; i++) {
-						var escapedText = this.existingTags[i].replace(/\s/g, '&nbsp;');
+						var escapedText = this.existingTags[i];
 							if (escapedText == text) {
 									try {
 										return this.existingColors[i];
@@ -241,18 +245,18 @@ export default {
 					return this.defaultColor;
 				},
 
-				getTagBackgroundColorByText(text) {
-					for (var i=0; i<this.existingTags.length; i++) {
-						var escapedText = this.existingTags[i].replace(/\s/g, '&nbsp;');
-							if (escapedText == text) {
-									try {
-										return this.existingBackgroundColors[i];
-									} catch (e) {
-									}
-							}
-					}
-					return this.defaultBackgroundColor;
-				},
+				// getTagBackgroundColorByText(text) {
+				// 	for (var i=0; i<this.existingTags.length; i++) {
+				// 		var escapedText = this.existingTags[i];
+				// 			if (escapedText == text) {
+				// 					try {
+				// 						return this.existingBackgroundColors[i];
+				// 					} catch (e) {
+				// 					}
+				// 			}
+				// 	}
+				// 	return this.defaultBackgroundColor;
+				// },
 
 
         escapeRegExp(string) {
@@ -287,7 +291,7 @@ export default {
 									this.input = '';
 								}
             }
-        },
+				},
 
         tagFromSearchOnClick(tag) {
             this.tagFromSearch(tag);
@@ -315,7 +319,7 @@ export default {
 
             // Attach the tag if it hasn't been attached yet
             if (!this.tagSelected(slug)) {
-                this.tagBadges.push(text.replace(/\s/g, '&nbsp;'));
+                this.tagBadges.push(text);//.replace(/\s/g, '&nbsp;'));
                 this.tags.push(slug);
             }
 

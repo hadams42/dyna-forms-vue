@@ -1,5 +1,5 @@
 <template>
-	<div :class="['label-field component-label', name]"
+	<div :class="['label-field component-label', name, customClasses]"
 		v-if="DisplayValues.templateHtml != null && DisplayValues.templateHtml != '' && DisplayValues.visible != false"
 		v-show="DisplayValues.hidden == false"
 	>

@@ -1,7 +1,8 @@
 <template>
 		<b-form-group 
-			:class="['tag-input', name]"
+			:class="['tag-input view', name]"
 			v-show="DisplayValues.visible"
+			@click.native="containerClickEvent" 
 		>
 			<component-label
 				:forId="name"
@@ -23,9 +24,8 @@
 				:limit="DisplayValues.limit"
 				:typeahead-activation-threshold="0"
 				:placeholder="placeholder"
-				@tags-updated="tagsUpdatedEvent"
-				@tag-added="tagAddedEvent"
-				@tag-removed="tagRemovedEvent"
+				@container-click="dfdfgd()"
+				:viewOnly="true"
 				:typeahead-style="DisplayValues.typeaheadStyle"
     		:existing-tags-concat="DisplayValues.existingTagsConcat"
     		:existing-colors-concat="DisplayValues.existingTagColors"
@@ -33,31 +33,10 @@
 				:only-existing-tags="DisplayValues.onlyExistingTags"
 				:default-color = "defaultColor"
 				:default-background-color = "defaultBackgroundColor"
-    		:typeahead="true">
+    		:typeahead="true"
+			>
 			</base-tag-input >
 
-			<b-form-input 
-				:state="validationState"
-				:style="{'display': 'none'}"
-			></b-form-input>
-
-			<b-form-invalid-feedback>
-				<ul
-					v-if="this.Validation.Status  > 0 && this.Validation.MessageList.length > 0"
-					class="help-block list-unstyled" 
-					style="padding-left: 4px; margin-bottom: 0"
-				>
-					<li v-for="(msg, index) in this.Validation.MessageList"
-						:key="index"
-					>
-					{{msg.Label}}
-						<a 
-							:href="msg.Url"
-							v-if="msg.Url != null"
-						><span class="glyphicon glyphicon-question-sign"></span></a>
-					</li>
-				</ul>
-			</b-form-invalid-feedback>
 		</b-form-group>
 </template>
 
@@ -72,7 +51,7 @@ import baseTagInput  from '../shared/BaseTagInput';
 import ComponentLabel from "../shared/ComponentLabel";
 
 export default {
-  name: 'TagInput',
+  name: 'TagView',
 	
 	components: { baseTagInput, ComponentLabel },
 	
@@ -88,7 +67,7 @@ export default {
 		"placeholder",
 		"onlyExistingTags",
 		"defaultColor",
-		"defaultBackgroundColor",
+		"defaultBackgroundColor"
 		],
 	
 	data () {
@@ -116,35 +95,10 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	methods: {
 
-		changeEvent: function(e) {
-		},
-
-		//--------------------------------------------------------------------------------------------
-		tagAddedEvent: function(tag) {
-			this.DisplayValues.existingTags[tag] = tag;
-		},
-
-		//--------------------------------------------------------------------------------------------
-		tagRemovedEvent: function(tag) {
-		
-		},
-
-		//--------------------------------------------------------------------------------------------
-		tagsUpdatedEvent: function(tags) {
-			var tagList = null;
-			if (tags != null && Array.isArray(tags)) {
-				tagList = tags.join(",");
-			} else {
-				tagList = tags;
-			}
-
-			if (tagList != this.DisplayValues.selectedTags) {
-				this.fieldChangeEvent(tagList);
-				this.DisplayValues.selectedTags = tagList;
-			}
-			this.fieldInputEvent();
-
-		},
+	//--------------------------------------------------------------------------------------------
+	containerClickEvent() {
+		this.fieldInputEvent();
+	},
 
 	//--------------------------------------------------------------------------------------------
 		renderField: function(watchedField) {

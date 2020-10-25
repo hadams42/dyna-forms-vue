@@ -1,6 +1,6 @@
 <template>
 	<div
-		:class="['button-input', name]"
+		:class="['alert-field', name]"
 		v-show="DisplayValues.visible && (computedReadOnly == false || alwaysShow == true)"
 		:style="DisplayValues.hidden ? 'visibility: hidden' : ''"
 	>

@@ -79,7 +79,6 @@ export const FormActions = class FormActions {
 			//--------- Auto Redirect -----------
 			}	else if (typeof Action.autoRedirect != "undefined" &&  Action.autoRedirect != null && (Action.autoRedirect.target != null && Action.autoRedirect.target || Action.autoRedirect.href != null)) {
 				var target = Action.autoRedirect.target;
-				var allowedActions = Action.autoRedirect.allowedActions != null ? Action.autoRedirect.allowedActions : "";
 				var renderAction = Action.autoRedirect.renderAction != null ? Action.autoRedirect.renderAction : "";
 				var renderCommand = Action.autoRedirect.command != null ? Action.autoRedirect.command : "";
 				data = {
@@ -88,7 +87,7 @@ export const FormActions = class FormActions {
 					target: target,
 					command: renderCommand,
 					targetUrl: Action.autoRedirect.href == null ? Sender.targets[target] : Action.autoRedirect.href,
-					allowedActions: allowedActions,
+					allowedActions: "*", //for legacy compatibility
 					renderAction: renderAction,
 				}
 				utilities.Redirect(redirectUrl, data, "post");

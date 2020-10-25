@@ -133,6 +133,7 @@ import DateInput from "./base/DateInput";
 import AdvancedDateInput from "./base/AdvancedDateInput";
 import UploadControl from "./base/UploadControl";
 import TagInput from "./base/TagInput";
+import TagView from "./base/TagView";
 import AutoSuggestInput from "./base/AutoSuggestInput";
 import MapView from "./base/MapView";
 import MapStaticView from "./base/MapStaticView";
@@ -140,7 +141,7 @@ import WordCloud from "./base/WordCloudView";
 import KpiView from "./base/KpiView";
 import GalleryView from "./base/GalleryView";
 import CarouselView from "./base/CarouselView";
-//import PDFTronView from "./base/PDFTronView";
+import PDFTronView from "./base/PDFTronView";
 import ArrowBar from "./base/ArrowBar";
 import MapPicker from "./base/MapPicker";
 import AlertField from "./base/AlertField";
@@ -172,13 +173,14 @@ export default {
 		DateInput,
 		AdvancedDateInput,
 		TagInput,
+		TagView,
 		AutoSuggestInput,
 		MapView,
 		MapStaticView,
 		WordCloud,
 		KpiView,
 		GalleryView,
-		//PDFTronView,
+		PDFTronView,
 		ArrowBar,
 		MapPicker,
 		CarouselView,
