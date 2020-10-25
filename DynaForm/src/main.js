@@ -9,7 +9,7 @@ import BootstrapVue from "bootstrap-vue"
 import DynaContainer from "./components/DynaContainer.vue";
 import LiteBus from "./LiteBus"
 
-Vue.config.productionTip = true;
+Vue.config.productionTip = false;
 Vue.use(BootstrapVue)
 Vue.use(LiteBus)
 

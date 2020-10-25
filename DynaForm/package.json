@@ -5,7 +5,7 @@
   "description": "Dynamic Vue component framework",
   "author": "The Infogetics Group, LLC",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --progress ",
+    "build": "cross-env NODE_ENV=production webpack --progress --mode production",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot"
   },
   "dependencies": {

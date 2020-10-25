@@ -2,6 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const TerserPlugin = require('terser-webpack-plugin');
+process.env.NODE_ENV = "production"
 
 module.exports = {
 	entry: './src/main.js',
@@ -18,8 +19,8 @@ module.exports = {
     }
   },	
 	externals: {
-		"bootstrap-vue": "bootstrap-vue",
-		"vue": "vue"
+		'bootstrap-vue': 'BootstrapVue',
+		vue: 'Vue'
 	},
 	plugins: [
 		new VueLoaderPlugin(),
@@ -72,7 +73,6 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        //exclude: /node_modules/
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
