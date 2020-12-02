@@ -208,13 +208,53 @@
 											:plain="true"
 											@change="checkboxChanged(data.item[keyField])"
 										></b-form-checkbox> 
+
+										<div 
+											v-if="field.key == 'actionButtons' && actionButtonSettings.visible && getOptions(item) != null && getOptions(item).length > 1"
+											:class="['action-button', layoutClasses.actionButton, field.class]"
+											:key="'action-button-' + index"
+											>
+											<b-dropdown 
+												size="sm" 
+												split 
+												right
+												:variant="DisplayValues.buttonVariant"
+												:text="getOptions(data.item)[0].text" 
+												class="m-2"
+												@click.stop="actionClick(getOptions(data.item)[0].action, data.item[keyField])"
+											>
+												<b-dropdown-item 
+													v-for="(option, optionIndex) in getOptions(data.item)"
+													:key="optionIndex"
+													@click.stop="actionClick(option.action, data.item[keyField])"
+													>{{option.text}}
+												</b-dropdown-item>
+											</b-dropdown>
+										</div>
+
+										<div 
+											v-if="field.key == 'actionButtons' && actionButtonSettings.visible && getOptions(item) != null && getOptions(item).length == 1"
+											:class="['action-button', layoutClasses.actionButton, field.class]"
+											:key="'action-button-' + index"
+											>
+											<b-button 
+												size="sm" 
+												:variant="DisplayValues.buttonVariant"
+												v-html="getOptions(data.item)[0].text" 
+												class="m-2"
+												@click.stop="actionClick(getOptions(data.item)[0].action, data.item[keyField])"
+											>
+											</b-button>
+										</div>
+
+
 									</template>
 								</b-table>	
 							</div>
 						</div>						
 					</b-col>
 				</b-row>
-				<b-row v-if="itemArray != null && itemArray.length > 0">
+				<b-row v-if="itemArray != null && itemArray.length > 0 && DisplayValues.paginate == true">
 					<b-col sm="12" class="my-1 pagination-container">
 						<b-form-group 
 							style="width: auto;"
@@ -236,7 +276,6 @@
 							:total-rows="totalRows" 
 							:per-page="computedRowsPerPage" 
 							v-model="DisplayValues.currentPage" 
-							v-if="DisplayValues.paginate"
 							size="sm"
 							align="right"
 							class="my-0" 
@@ -291,6 +330,7 @@ export default {
 		'showTemplateButton',
 		'showConfirmDialog',
 		'showMessageDialog',
+		'showHeader',
 		'dataProvider',
 		'debugMode',
 		'autoRender',
@@ -335,11 +375,12 @@ export default {
 				isFlashProtected: true,
 	      currentPage: (this.dataProvider == null || this.dataProvider.initialPage == null) ? 1 : this.dataProvider.initialPage,
 				buttonVariant: this.buttonVariant || "secondary",
-				activeTemplate: localStorage[this.name+'_activeTemplate'] != null ?  localStorage[this.name+'_activeTemplate'] : this.activeTemplate || "list",
+				activeTemplate: this.getLocalStorage(this.name+'_activeTemplate') != null ?  this.getLocalStorage(this.name+'_activeTemplate') : this.activeTemplate || "list",
 				listTemplateIcon: this.listTemplateIcon == null ? 'fas fa-th-large' : this.listTemplateIcon,
 				gridTemplateIcon: this.gridTemplateIcon == null ? 'fa fa-bars' : this.gridTemplateIcon,
 				reportTemplateIcon: this.reportTemplateIcon == null ? 'fas fa-table' : this.reportTemplateIcon,
 				showButtonBar: this.showButtonBar == null ? true : this.showButtonBar,
+				showHeader: this.showHeader == null ? false : this.showHeader,
 				buttons: {
 					showNewButton: this.showNewButton == null ? true : this.showNewButton,
 					showDeleteButton: this.showDeleteButton == null ? true : this.showDeleteButton,
@@ -363,8 +404,8 @@ export default {
 			// fields: (this.dataProvider == null || this.dataProvider.fieldDefinition == null) ? null : this.dataProvider.fieldDefinition,
  			// items: this.dataProvider == null ? null : this.dataProvider.providerType == "api" ? this.dataApi : this.dataProvider.providerType == "static" && this.dataProvider.data != null ? this.dataProvider.data : null,
 			itemArray: [],
-      sortBy: (this.dataProvider == null || this.dataProvider.initialSort == null) ? localStorage[this.name+'_initialSortBy'] : this.dataProvider.initialSort,
-      sortDescending: localStorage[this.name+'_initialSortDescending'] == null ? this.dataProvider == null ? false : this.dataProvider.initialSortDescending : localStorage[this.name+'_initialSortDescending'] === 'true',
+      sortBy: (this.dataProvider == null || this.dataProvider.initialSort == null) ? this.getLocalStorage(this.name+'_initialSortBy') : this.dataProvider.initialSort,
+      sortDescending: this.getLocalStorage(this.name+'_initialSortDescending') == null ? this.dataProvider == null ? false : this.dataProvider.initialSortDescending : this.getLocalStorage(this.name+'_initialSortDescending') === 'true',
 			pageSizeOptions: (this.dataProvider == null || this.dataProvider.pageSizeOptions == null) ? null : this.dataProvider.pageSizeOptions,
 			actionButtonSettings: {
 				visible: (this.actionButton == null || this.actionButton.visible == null) ? false : this.actionButton.visible,
@@ -385,6 +426,16 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		// List Methods
 		//--------------------------------------------------------------------------------------------
+
+		getLocalStorage: function(key) {
+			if (this.enableLocalStorage) {
+				return localStorage[key];
+			}
+			else  {
+				return null;
+			}
+		},
+
 		fillListItemTemplate: function(item) {
 			var result = "";
 			switch (this.DisplayValues.activeTemplate) {
@@ -913,7 +964,7 @@ export default {
 		computedRowsPerPage: {
 			get () { 
 				if (this.DisplayValues.paginate) {
-					return (this.dataProvider == null || this.dataProvider.rowsPerPage == null) ? localStorage[this.name+'_rowsPerPage'] || 10 : localStorage[this.name+'_rowsPerPage'] || this.dataProvider.rowsPerPage;
+					return (this.dataProvider == null || this.dataProvider.rowsPerPage == null) ? this.getLocalStorage(this.name+'_rowsPerPage') || 10 : this.getLocalStorage(this.name+'_rowsPerPage') || this.dataProvider.rowsPerPage;
 				} else {
 					return 99999;
 				}

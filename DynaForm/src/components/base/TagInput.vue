@@ -95,9 +95,9 @@ export default {
 		return {
 			DisplayValues: {
 				selectedTags: this.value,
-				existingTags: {},
-				existingTagColors: {},
-				existingTagBackgroundColors: {},
+				existingTags: [],
+				existingTagColors: "",
+				existingTagBackgroundColors: "",
 				existingTagsConcat: "",
 				name: this.name,
 				label: this.label,
@@ -206,10 +206,10 @@ export default {
 		} 
 		else if (this.tagField != null) {
 			var p = this.findParent(); 
-			this.DisplayValues.existingTags = p.ActiveFormData[this.tagField].split(',');
+			this.DisplayValues.existingTags = p.ActiveFormData[this.tagField];
 			this.DisplayValues.existingTagsConcat = this.DisplayValues.existingTags.join("|");
-			this.DisplayValues.existingTagColors = this.tagColorField == null ? [] : p.ActiveFormData[this.tagColorField].split(',');
-			this.DisplayValues.existingTagBackgroundColors = this.tagBackgroundColorField == null ? [] : p.ActiveFormData[this.tagBackgroundColorField].split(',');
+			this.DisplayValues.existingTagColors = this.tagColorField == null ? "" : p.ActiveFormData[this.tagColorField];
+			this.DisplayValues.existingTagBackgroundColors = this.tagBackgroundColorField == null ? "" : p.ActiveFormData[this.tagBackgroundColorField];
 		}
 	},
 

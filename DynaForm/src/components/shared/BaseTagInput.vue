@@ -78,9 +78,18 @@ export default {
     props: {
         elementId: String,
 
-				existingTagsConcat: String,
-				existingColorsConcat: String,
-				existingBackgroundColorsConcat: String,
+				existingTagsConcat: {
+            type: String,
+            default: ""
+				},
+				existingColorsConcat: {
+            type: String,
+            default: ""
+				},
+				existingBackgroundColorsConcat: {
+            type: String,
+            default: ""
+				},
 
 				viewOnly: {
             type: Boolean,
@@ -169,8 +178,8 @@ export default {
             tagBadges: [],
             tags: [],
 						existingTags: this.existingTagsConcat == null ? [] : this.existingTagsConcat.split("|"),
-						existingColors: this.existingColorsConcat == null ? [] : this.existingColorsConcat,
-						existingBackgroundColors: this.existingBackgroundColorsConcat == null ? [] : this.existingBackgroundColorsConcat,
+						existingColors: this.existingColorsConcat == null ? [] : this.existingColorsConcat.split(","),
+						existingBackgroundColors: this.existingBackgroundColorsConcat == null ? [] : this.existingBackgroundColorsConcat.split(","),
 
             input: '',
             oldInput: '',
