@@ -13,7 +13,7 @@
 	</component-label>
 
 	<arrow-bar
-		:steps="steps != null ? steps : getSegmentLabels(DisplayValues.segments)"
+		:steps="DisplayValues.steps != null ? DisplayValues.steps : getSegmentLabels(DisplayValues.segments)"
 		:key="key"
 		:style="'no-arrows'"
 		:hideNumbers="true"
@@ -53,6 +53,7 @@ export default {
 			DisplayValues: {
 				name: this.name,
 				label: this.label,
+				steps: this.steps,
 				visible: this.visible == null ? true : this.visible,
 				segments: this.segments == null ? [] : this.segments,
 				progressVariant: this.progressVariant == null ? 'success' : this.progressVariant,

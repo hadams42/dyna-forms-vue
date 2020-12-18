@@ -140,7 +140,7 @@
 									<span 
 										:key="'data-' + index"
 										v-if="field.editable != 'true' || data.item['_IsLocked'] == 1 || computedReadOnly == true"
-										:class="['non-editable-text', field.class, getFormattedClass(data.item[field.key],field.key,data.item)]"
+										:class="['non-editable-text', field.class, getFormattedClass(data.item[field.key],field.key,data.item), field.helpTextKey, data.item[field.classKey] == null ? '' : data.item[field.classKey]]"
 										v-b-popover="{content: field.helpText == null || field.helpText == '' ? data.item[field.helpTextKey] : field.helpText, boundaryPadding: 20, placement: 'auto', html: true, trigger: 'hover focus click blur'  }"
 										tabindex="0"
 										:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length <= data.item[field.key].length) && (field.helpText == null || field.helpText == '')"

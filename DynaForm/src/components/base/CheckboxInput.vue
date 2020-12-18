@@ -48,6 +48,8 @@
 				:id="name"
 				v-model="valueModel"
 				:options="OptionList"
+				html-field="text"
+				value-field="value"
 				:state="validationState"
 				size="sm"
 				:class="[DisplayValues.block ? 'block' : '']"

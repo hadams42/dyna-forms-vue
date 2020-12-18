@@ -168,7 +168,7 @@
 									tfoot-class="grid-tfoot"
 									tfoot-tr-class="grid-tfoot-tr"
 									:hover="true"
-									@xrow-clicked="rowClicked"
+									@row-clicked="rowClicked"
 									@refreshed="gridRendered"
 								>
 
@@ -185,15 +185,16 @@
 										v-for="(field, index) in fields || []"
 										:slot="field == null ? 'cell(DefaultField)' : 'cell(' + field.key + ')'" 
 										slot-scope="data" 
+
 									>
 										<div 
 											:key="'data-' + index"
 											v-if="field.key !== 'isSelected'"
-											@click="rowClicked(data.item, index, $event)"
+											
 											:class="['non-editable-text', field.class]"
 											v-b-popover="{content: field.helpText == null || field.helpText == '' ? data.item[field.helpTextKey] : field.helpText, boundaryPadding: 20, placement: 'auto',  html: true, trigger: 'hover focus click blur'  }"
 											tabindex="0"
-											:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length <= data.item[field.key].length) && (field.helpText == null || field.helpText == '')"
+											:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length == data.item[field.key].length) && (field.helpText == null || field.helpText == '')"
 										>
 											<span v-html="getFormattedValue(data.item[field.key], field.key)"></span>
 										</div>
@@ -241,7 +242,7 @@
 												size="sm" 
 												:variant="DisplayValues.buttonVariant"
 												v-html="getOptions(data.item)[0].text" 
-												class="m-2"
+												:class="['m-2', 'key-' + data.item[keyField]]"
 												@click.stop="actionClick(getOptions(data.item)[0].action, data.item[keyField])"
 											>
 											</b-button>
@@ -400,9 +401,8 @@ export default {
       totalRows: (this.dataProvider == null || this.dataProvider.data == null) ? 0 : this.dataProvider.data.length,
 			providerType: (this.dataProvider == null || this.dataProvider.providerType == null) ? 'static' : this.dataProvider.providerType,
 			fields: this.autoRender === false ? [] : (this.dataProvider == null || this.dataProvider.fieldDefinition == null) ? null : this.dataProvider.fieldDefinition,
- 			items: this.autoRender === false ? [] : this.dataProvider == null ? null : this.dataProvider.providerType == "api" ? this.dataApi : this.dataProvider.providerType == "static" && this.dataProvider.data != null ? this.dataProvider.data : null,
-			// fields: (this.dataProvider == null || this.dataProvider.fieldDefinition == null) ? null : this.dataProvider.fieldDefinition,
- 			// items: this.dataProvider == null ? null : this.dataProvider.providerType == "api" ? this.dataApi : this.dataProvider.providerType == "static" && this.dataProvider.data != null ? this.dataProvider.data : null,
+			fieldDict: {}, 
+			items: this.autoRender === false ? [] : this.dataProvider == null ? null : this.dataProvider.providerType == "api" ? this.dataApi : this.dataProvider.providerType == "static" && this.dataProvider.data != null ? this.dataProvider.data : null,
 			itemArray: [],
       sortBy: (this.dataProvider == null || this.dataProvider.initialSort == null) ? this.getLocalStorage(this.name+'_initialSortBy') : this.dataProvider.initialSort,
       sortDescending: this.getLocalStorage(this.name+'_initialSortDescending') == null ? this.dataProvider == null ? false : this.dataProvider.initialSortDescending : this.getLocalStorage(this.name+'_initialSortDescending') === 'true',
@@ -528,7 +528,7 @@ export default {
 					this.layoutClasses.list = "report-group";
 					this.layoutClasses.empty = "report-group-item empty-text d-flex justify-content-between";
 					this.layoutClasses.item = "report-item-template resp-table-row";
-					this.layoutClasses.actionButton = "d-flex justify-content-end align-items-end";
+					this.layoutClasses.actionButton = "d-flex justify-content-start align-items-start";
 					this.layoutClasses.data = "";
 					break;
 			}
@@ -587,10 +587,18 @@ export default {
 		},
 
 		//--------------------------------------------------------------------------------------------
+		getFormattedClass: function(value, key, item) {
+			if (this.fieldDict[key] != null) {
+
+				return item[this.fieldDict[key].classKey];
+			}
+			
+		},
+
+		//--------------------------------------------------------------------------------------------
 		dataApi: function(ctx, callback) {
 			localStorage[this.name + "__CurrentPage"] = this.DisplayValues.currentPage; 
-
-			var currentTableHeight = this.$refs.listGroupContainer.clientHeight + 0;
+ 			var currentTableHeight = this.$refs.listGroupContainer.clientHeight + 0;
 			this.DisplayValues.tableMinHeight = currentTableHeight;
 			this.ServerInterface.RenderPage(
 				this, 
@@ -602,10 +610,18 @@ export default {
 					}
 					if (this.dataProvider == null || this.dataProvider.fieldDefinition == null) this.fields = responseJson.fields;
 					this.itemArray = responseJson.items;
-					//parse formats out of fields
+
+					//loop through field list
 					for (var i=0; i<this.fields.length; i++) {
-						this.formats[this.fields[i].key] = this.fields[i].format;
+
+						this.fieldDict[this.fields[i].key] = this.fields[i];
 						
+						//parse out tdClass
+						//if (this.fields[i].key == 'tdClass') {
+						this.fields[i].tdClass = this.getFormattedClass;
+						//}
+						//parse formats out of fields	
+						this.formats[this.fields[i].key] = this.fields[i].format;
 						if (this.fields[i].label != null) {
 							var p = this.findParent();
 							var result = this.fields[i].label;
