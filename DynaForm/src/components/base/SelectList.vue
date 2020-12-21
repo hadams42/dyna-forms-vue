@@ -114,11 +114,11 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	created() {
 
-			for (var i=0; i<this.OptionList.length;i++) {
-				if (this.OptionList[i].selected == true) {
-					this.valueModel = this.OptionList[i].value;
-				}
+		for (var i=0; i<this.OptionList.length;i++) {
+			if (this.OptionList[i].selected == true) {
+				this.valueModel = this.OptionList[i].value;
 			}
+		}
 
 	},
 	

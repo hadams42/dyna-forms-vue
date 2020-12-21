@@ -17,7 +17,25 @@
 			>
 			</component-label>
 
-		
+			<base-tag-input
+				:element-id="name + '_TagInput'"
+    		:value="DisplayValues.selectedTags"
+				:add-tags-on-comma="true"
+				:limit="DisplayValues.limit"
+				:typeahead-activation-threshold="0"
+				:placeholder="placeholder"
+				@container-click="dfdfgd()"
+				:viewOnly="true"
+				:typeahead-style="DisplayValues.typeaheadStyle"
+    		:existing-tags-concat="DisplayValues.existingTagsConcat"
+    		:existing-colors-concat="DisplayValues.existingTagColors"
+    		:existing-background-colors-concat="DisplayValues.existingTagBackgroundColors"
+				:only-existing-tags="DisplayValues.onlyExistingTags"
+				:default-color = "defaultColor"
+				:default-background-color = "defaultBackgroundColor"
+    		:typeahead="true"
+			>
+			</base-tag-input >
 
 		</b-form-group>
 </template>
@@ -29,29 +47,37 @@ Licensed under the MIT License | https://opensource.org/licenses/MIT  */
 
 import validationMixin from "../shared/ValidationMixin.js";
 import baseInputMixin from "../shared/BaseInputMixin.js";
+import baseTagInput  from '../shared/BaseTagInput';
 import ComponentLabel from "../shared/ComponentLabel";
 
 export default {
   name: 'TagView',
 	
-	components: { ComponentLabel },
+	components: { baseTagInput, ComponentLabel },
 	
 	props: [
 		"limit",
-
-		"existingTags",
-		"existingTagField",
-
+		"tags",
+		"tagField",
+		"tagColors",
+		"tagColorField",
+		"tagBackgroundColors",
+		"tagBackgroundColorField",
 		"typeaheadStyle",
 		"placeholder",
 		"onlyExistingTags",
+		"defaultColor",
+		"defaultBackgroundColor"
 		],
 	
 	data () {
 		return {
 			DisplayValues: {
 				selectedTags: this.value,
-				existingTags: [],
+				existingTags: {},
+				existingTagColors: {},
+				existingTagBackgroundColors: {},
+				existingTagsConcat: "",
 				name: this.name,
 				label: this.label,
 				visible: this.visible == null ? true : this.visible,
@@ -127,12 +153,17 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	created: function() {
-		var p = this.findParent(); 
-		if (this.existingTags != null) {
-			this.DisplayValues.existingTags = this.existingTags;
+		if (this.tags != null) {
+			this.DisplayValues.existingTags = this.tags;
+			this.DisplayValues.existingTagColors = this.tagColors == null ? [] : this.tagColors;
+			this.DisplayValues.existingTagBackgroundColors = this.tagBackgroundColors == null ? [] : this.tagBackgroundColors;
 		} 
-		else if (this.tagField && p.ActiveFormData[this.tagField]) {
+		else if (this.tagField != null) {
+			var p = this.findParent(); 
 			this.DisplayValues.existingTags = p.ActiveFormData[this.tagField].split(',');
+			this.DisplayValues.existingTagsConcat = this.DisplayValues.existingTags.join("|");
+			this.DisplayValues.existingTagColors = this.tagColorField == null ? [] : p.ActiveFormData[this.tagColorField].split(',');
+			this.DisplayValues.existingTagBackgroundColors = this.tagBackgroundColorField == null ? [] : p.ActiveFormData[this.tagBackgroundColorField].split(',');
 		}
 	},
 
