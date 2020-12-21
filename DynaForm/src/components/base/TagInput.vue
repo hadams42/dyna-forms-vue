@@ -138,7 +138,6 @@ export default {
 					c = this.OptionList[i].color;
 				}
 			}
-			console.log("fore",c);
 			return c;
 		},
 
@@ -150,7 +149,6 @@ export default {
 					c = this.OptionList[i].backgroundColor;
 				}
 			}
-			console.log("bacl",c);
 			return c;
 		}
 
