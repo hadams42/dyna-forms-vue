@@ -16,8 +16,14 @@
 			>
 			</component-label>
 
-			<b-form-tags :id="'tags-with-dropdown-' + name" v-model="valueModel" no-outer-focus class="mb-2">
-        <template v-slot="{ tags, disabled, addTag, removeTag }">
+			<b-form-tags 
+				:id="'tags-with-dropdown-' + name" 
+				v-model="valueModel" 
+				no-outer-focus 
+				separator=",;"
+				class="mb-2"
+			>
+        <template v-slot="{ tags, inputAttrs, inputHandlers, addTag, removeTag }">
           <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
             <li v-for="tag in tags" :key="tag" class="list-inline-item">
               <b-form-tag
@@ -29,36 +35,26 @@
               >{{ tag }}</b-form-tag>
             </li>
           </ul>
-
-          <b-dropdown 
-						size="sm"
-						variant="none" 
-						v-if="AvailableOptions.length > 0"
-					>
-            <template #button-content>
-              <span 
-								class="placeholder"
-								v-html="DisplayValues.placeholder"
-								></span>
-            </template>
-          </b-dropdown>
-
 					<b-dropdown-item-button
 						v-for="option in AvailableOptions"
 						:key="option.value"
 						:value="option.value"
 						@click="onOptionClick({ option, addTag })"
-						
 					>
+						<span class="option-icon" :style="{ 'color': option.backgroundColor == null ? DisplayValues.defaultBackgroundColor : option.backgroundColor }"
+						><i class="fas fa-plus"></i></span>
 						<span class="option-text"
 						:style="{ 'color': option.backgroundColor == null ? DisplayValues.defaultBackgroundColor : option.backgroundColor }"
 						>{{ option.text }} </span>
-						<span class="option-icon" :style="{ 'color': option.backgroundColor == null ? DisplayValues.defaultBackgroundColor : option.backgroundColor }"
-						><i class="fas fa-tag"></i></span>
 					</b-dropdown-item-button>
-					<b-dropdown-text class="no-tags-text dropdown-item" v-if="AvailableOptions.length === 0">
-						{{ DisplayValues.emptyPlaceholder}}
-					</b-dropdown-text>
+					<b-input-group aria-controls="my-custom-tags-list">
+          	<input
+							v-bind="inputAttrs"
+							v-on="inputHandlers"
+							:placeholder="DisplayValues.placeholder"
+							class="form-control">
+	        </b-input-group>
+
         </template>
       </b-form-tags>
 
@@ -103,7 +99,6 @@ export default {
 		'onlyExistingTags',
 		'defaultColor',
 		'defaultBackgroundColor',
-		'emptyPlaceholder',
 		],
 	
 	data () {
@@ -116,8 +111,7 @@ export default {
 				customClasses: this.customClasses == null ? '' : this.customClasses,
 				limit: this.limit == null ? 0 : this.limit,
 				onlyExistingTags: this.onlyExistingTags == null ? false : this.onlyExistingTags,
-				placeholder: this.placeholder == null ? null : this.placeholder,
-				emptyPlaceholder: this.emptyPlaceholder == null ? null : this.emptyPlaceholder,
+				placeholder: this.placeholder == null ? "New Tag" : this.placeholder,
 				defaultColor: this.defaultColor == null ? 'white' : this.defaultColor,
 				defaultBackgroundColor: this.defaultBackgroundColor == null ? '#346392' : this.defaultBackgroundColor,
 			},
