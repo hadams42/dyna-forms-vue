@@ -1,8 +1,7 @@
 <template>
 		<b-form-group 
-			:class="['tag-input view', name]"
+			:class="['tag-view', name]"
 			v-show="DisplayValues.visible"
-			@click.native="containerClickEvent" 
 		>
 			<component-label
 				:forId="name"
@@ -17,7 +16,25 @@
 			>
 			</component-label>
 
-		
+			<b-form-tags 
+				:id="'tags-with-dropdown-' + name" 
+				v-model="valueModel" 
+				no-outer-focus 
+				no-tag-remove
+				:disabled="true"
+				@click.native="fieldInputEvent()"
+			>
+        <template v-slot="{ tags }">
+          <ul v-if="tags.length > 0" class="list-inline d-inline-block">
+            <li v-for="tag in tags" :key="tag" class="list-inline-item">
+              <b-form-tag
+                :title="tag"
+								:style="{ 'color': getColor(tag), 'backgroundColor': getBackgroundColor(tag) }"
+              >{{ tag }}</b-form-tag>
+            </li>
+          </ul>
+        </template>
+      </b-form-tags>
 
 		</b-form-group>
 </template>
@@ -28,6 +45,7 @@ Licensed under the MIT License | https://opensource.org/licenses/MIT  */
 
 
 import validationMixin from "../shared/ValidationMixin.js";
+import selectListMixin from "../shared/SelectListMixin.js";
 import baseInputMixin from "../shared/BaseInputMixin.js";
 import ComponentLabel from "../shared/ComponentLabel";
 
@@ -38,103 +56,99 @@ export default {
 	
 	props: [
 		"limit",
-
-		"existingTags",
-		"existingTagField",
-
-		"typeaheadStyle",
-		"placeholder",
-		"onlyExistingTags",
+		'options', 
+		'onlyExistingTags',
+		'defaultColor',
+		'defaultBackgroundColor',
 		],
 	
 	data () {
 		return {
 			DisplayValues: {
-				selectedTags: this.value,
-				existingTags: [],
 				name: this.name,
 				label: this.label,
 				visible: this.visible == null ? true : this.visible,
+				options: this.options == null ? [] : this.options,
+				customClasses: this.customClasses == null ? '' : this.customClasses,
 				limit: this.limit == null ? 0 : this.limit,
-				add: this.typeaheadStyle == null ? "badges" : this.typeaheadStyle,
 				onlyExistingTags: this.onlyExistingTags == null ? false : this.onlyExistingTags,
+				defaultColor: this.defaultColor == null ? 'white' : this.defaultColor,
+				defaultBackgroundColor: this.defaultBackgroundColor == null ? '#346392' : this.defaultBackgroundColor,
 			},
 		}
 	},
 
-	mixins: [baseInputMixin, validationMixin],
+	mixins: [baseInputMixin, selectListMixin, validationMixin],
 
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	methods: {
 
-	//--------------------------------------------------------------------------------------------
-	containerClickEvent() {
-		this.fieldInputEvent();
-	},
-
-	//--------------------------------------------------------------------------------------------
-		renderField: function(watchedField) {
-			//watchedField is the field that changed and triggered this render.
-
-			//Call enableServerRender if enabled
-			if (this.enableServerRender == true) {
-				if (this.onRender != null && this.onRender != "") {
-					console.log("WARNING: Local event 'onRender' ignored when enableServerRender is enabled. [" + this.name + "]");
+		//--------------------------------------------------------------------------------------------
+		getColor: function(tag) {
+			var c = this.DisplayValues.defaultColor;
+			for (var i = 0; i<this.OptionList.length; i++) {
+				if (this.OptionList[i].value == tag && this.OptionList[i].color) {
+					c = this.OptionList[i].color;
 				}
-				//Call server render interface
-				var p = this.findParent();
-				this.ServerInterface.RenderField(this,
-					this.instanceId,
-					this.name,
-					watchedField,
-					this.DisplayValues,
-					p.ActiveFormData,
-					function() {
-						this.onAfterRenderEvent();
-					}.bind(this)
-					,function(e) {
-						console.log("Error: ", e, this.name);
-					}.bind(this)
-				);
-				return;
-			} 
-
-			//Else, call local onRender if specified
-			else if (this.onRender != null && this.onRender != "") {
-				var p = this.findParent(); 
-				this.onRender.call(this,
-					this.DisplayValues,
-					p.ActiveFormData,
-					watchedField,
-					function() {
-						//Success code here
-						this.onAfterRenderEvent();
-					}.bind(this)
-					,function(e) {
-						console.log("Error: ", e, this.name);
-					}.bind(this)
-				);
-			} else {
-				this.onAfterRenderEvent();
 			}
+			return c;
 		},
 
+		//--------------------------------------------------------------------------------------------
+		getBackgroundColor: function(tag) {
+			var c = this.DisplayValues.defaultBackgroundColor;
+			for (var i = 0; i<this.OptionList.length; i++) {
+				if (this.OptionList[i].value == tag && this.OptionList[i].backgroundColor) {
+					c = this.OptionList[i].backgroundColor;
+				}
+			}
+			return c;
+		}
+
 	},
+
 
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	created: function() {
-		var p = this.findParent(); 
-		if (this.existingTags != null) {
-			this.DisplayValues.existingTags = this.existingTags;
-		} 
-		else if (this.tagField && p.ActiveFormData[this.tagField]) {
-			this.DisplayValues.existingTags = p.ActiveFormData[this.tagField].split(',');
+		for (var i=0; i<this.OptionList.length;i++) {
+			if (this.OptionList[i].selected == true) {
+				this.valueModel = this.OptionList[i].value;
+			}
 		}
 	},
+
+	//--------------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------------
+	computed: {
+
+		//--------------------------------------------------------------------------------------------
+		valueModel: {
+			get () { 
+				if (Array.isArray(this.value) ) {
+					return this.value;
+				} else if (this.value == null) {
+					return [];
+				} else {
+					var v = "" + this.value;
+					return v.split(",");
+				}
+			},
+			set (v) { this.$emit('change', v) },
+		},
+
+		//--------------------------------------------------------------------------------------------
+		AvailableOptions: {
+			get () {
+				return this.OptionList.filter(o => this.valueModel.includes(o.value) == false);
+			}
+		},
+
+	}
 
 }
 </script>

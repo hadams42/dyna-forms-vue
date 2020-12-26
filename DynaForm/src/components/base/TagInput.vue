@@ -20,6 +20,7 @@
 				:id="'tags-with-dropdown-' + name" 
 				v-model="valueModel" 
 				no-outer-focus 
+				add-on-change
 				separator=",;"
 				class="mb-2"
 			>
@@ -47,12 +48,19 @@
 						:style="{ 'color': option.backgroundColor == null ? DisplayValues.defaultBackgroundColor : option.backgroundColor }"
 						>{{ option.text }} </span>
 					</b-dropdown-item-button>
-					<b-input-group aria-controls="my-custom-tags-list">
+					<b-input-group 
+						v-if="DisplayValues.onlyExistingTags == false"
+						aria-controls="my-custom-tags-list"
+					>
           	<input
 							v-bind="inputAttrs"
 							v-on="inputHandlers"
 							:placeholder="DisplayValues.placeholder"
-							class="form-control">
+							class="form-control"
+							>
+							<b-input-group-append>
+            		<b-button @click="addTag()" variant="primary">Add</b-button>
+          		</b-input-group-append>
 	        </b-input-group>
 
         </template>
