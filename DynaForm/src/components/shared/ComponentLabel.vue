@@ -55,7 +55,9 @@ export default {
 		'locked',
 		'lockMessage',
 		'unlockable',
-		'requiredField'
+		'requiredField',
+		'adminUnlockable',
+		'isAdmin',	
 		],
 	
 	data () {
@@ -91,6 +93,11 @@ export default {
 			if (this.lockMessage != null && this.lockMessage != "") {
 				return;
 			}
+
+			if (this.isAdmin != false && this.adminUnlockable == true) {
+				return;
+			}
+
 			this.DisplayValues.locked = !this.DisplayValues.locked;
 			this.$emit("locked", this.DisplayValues.locked);
 		},

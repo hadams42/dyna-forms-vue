@@ -42,6 +42,7 @@
 			:messageDialog="MessageDialog"
 			:targets="ActiveSettings.targets"
 			:guid="ActiveGuid"
+			:isAdmin="isAdmin"
 			ref="ActiveComponent"
 			:containerInstanceId="containerInstanceId"
 		></component>
@@ -59,6 +60,7 @@
 		:messageDialog="MessageDialog"
 		:targets="ActiveSettings.targets"
 		:guid="ActiveGuid"
+		:isAdmin="isAdmin"
 		ref="ActiveComponent"
 		:containerInstanceId="containerInstanceId"
 	></component>
@@ -158,7 +160,8 @@ export default {
 		"modalId",
 		"modalCssClass",
 		"isWorkflowActivity",
-		"hideModalFormFooter"
+		"hideModalFormFooter",
+		"isAdmin"
 	],
 
 	data() {
@@ -990,7 +993,6 @@ export default {
 	//---------------------------------------------------------------------------------------------------
 	//---------------------------------------------------------------------------------------------------
 	created: function() {
-
 		//Fire onLoad event
 		this.LoadEvent();
 

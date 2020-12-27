@@ -13,6 +13,8 @@
 						:locked="DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 						:lockMessage="DisplayValues.readonlyMessage"
 						:unlockable="!(formReadOnlyLock || readOnlyLock)"
+						:isAdmin="this.isAdmin"
+						:adminUnlockable="this.adminUnlockable"
 						@locked="onLockToggle()"				
 					>
 					</component-label>

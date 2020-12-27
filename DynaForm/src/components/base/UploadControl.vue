@@ -9,6 +9,8 @@
 			:helpUrl="helpUrl"
 			:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 			:lockMessage="DisplayValues.readonlyMessage"
+			:isAdmin="this.isAdmin"
+			:adminUnlockable="this.adminUnlockable"
 			@locked="onLockToggle()"
 			:unlockable="!(formReadOnlyLock || readOnlyLock)"
 		>

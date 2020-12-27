@@ -11,6 +11,8 @@
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				:requiredField="rules != null && rules.required == true ? true : false"
+				:isAdmin="this.isAdmin"
+				:adminUnlockable="this.adminUnlockable"
 				@locked="onLockToggle()"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 			>

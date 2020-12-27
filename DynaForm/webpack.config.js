@@ -13,7 +13,8 @@ module.exports = {
     filename: 'build.js'
 	},
 	cache: {
-    type: 'filesystem',
+		type: 'filesystem',
+		cacheDirectory: path.resolve(__dirname, '.temp_cache'),
     buildDependencies: {
       config: [__filename]
     }

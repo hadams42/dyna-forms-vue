@@ -11,6 +11,8 @@
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				@locked="onLockToggle()"				
+				:isAdmin="this.isAdmin"
+				:adminUnlockable="this.adminUnlockable"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 			>
 			</component-label>
@@ -389,7 +391,7 @@ export default {
 				
 				//Function to update active point
 				//-------------------------------------------------------
-				function updateActivePoint(lat, lng, attributes) {
+				function updateActivePoint(lat, lng, attributes) {					
 					self.DisplayValues.ActivePoint.Longitude = lng;
 					self.DisplayValues.ActivePoint.Latitude = lat;
 					pushPinLayer.applyEdits({
@@ -502,6 +504,8 @@ export default {
 				//Record clicks
 				//-------------------------------------------------------
 				view.on("click", function(event) {
+					if (self.DisplayValues.readonly == true) return;
+
 					if (self.DisplayValues.ActivePoint.Latitude != null && self.DisplayValues.ConfirmChanges == true) {
 						this.showConfirmDialog(
 							"Confirm",

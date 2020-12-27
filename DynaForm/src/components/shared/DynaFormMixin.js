@@ -26,6 +26,7 @@ export default {
 		"targets",
 		"containerInstanceId",
 		"elementId",
+		"isAdmin"
 	],
 
   data() {

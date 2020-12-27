@@ -12,6 +12,8 @@
 				:lockMessage="DisplayValues.readonlyMessage"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 				:requiredField="rules != null && rules.required == true ? true : false"
+				:isAdmin="this.isAdmin"
+				:adminUnlockable="this.adminUnlockable"
 				@locked="onLockToggle()"				
 			>
 			</component-label>

@@ -27,7 +27,7 @@
 						:class="Utilities.GetColumnClass(typeof field.width == 'undefined' ? '12' : field.width, field.newRow, '')"
 						:key="index"
 					>
-						<div :class="field.customClasses" require="src/components/shared/ComponentTemplate.html"></div>
+						<div :class="field.customClasses" require="src/components/shared/FormComponentTemplate.html"></div>
 					</div>
 				</b-form-row>
 			</div>
@@ -48,7 +48,7 @@
 								v-for="(field, index3) in filterFields(ActiveSchema, level1_column)"
 								:key="index3"
 							>
-								<div require="src/components/shared/ComponentTemplate.html"></div>
+								<div require="src/components/shared/FormComponentTemplate.html"></div>
 							</div>
 							<div 				
 								v-for="(level2_row, index4) in level1_column.rows"
@@ -66,7 +66,7 @@
 											v-for="(field, index6) in filterFields(ActiveSchema, level2_column)"
 											:key="index6"
 										>
-											<div require="src/components/shared/ComponentTemplate.html"></div>
+											<div require="src/components/shared/FormComponentTemplate.html"></div>
 										</div>	
 									</div>
 								</b-form-row>

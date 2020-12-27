@@ -33,7 +33,8 @@ window["RenderDynaContainer"] = function(
 		IsWorkflowActivity=false,
 		ModalId,
 		ModalCssClass,
-		HideModalFormFooter=false
+		HideModalFormFooter=false,
+		IsAdmin=false
 		) {
 
 	//------------------------------------------------
@@ -56,6 +57,7 @@ window["RenderDynaContainer"] = function(
 				isWorkflowActivity: IsWorkflowActivity == null ? false : IsWorkflowActivity,
 				hideModalFormFooter: HideModalFormFooter == null ? false : HideModalFormFooter,
 				initialReadOnly: Settings.readOnly == null ? false : Settings.readOnly,
+				isAdmin: IsAdmin == null ? false : IsAdmin,
 			},
 			on: {
 				input: function(e) {

@@ -47,7 +47,8 @@ export default {
 		'helpUrl',
 		'maxWidth',
 		'autoFocusField',
-
+		'isAdmin',	
+		'adminUnlockable',
 	],
 
 	data () {
@@ -76,6 +77,12 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		onLockToggle: function(readonly=null) {
+
+console.log(this.isAdmin,this.adminUnlockable)
+			if (this.isAdmin != true && this.adminUnlockable == true) {
+				return;
+			}
+
 			if (!(this.formReadOnlyLock || this.readOnlyLock) && this.readonlyMessage == null) {
 
 				if (readonly === false) {
@@ -267,7 +274,6 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	created: function() {
-
 		//Listen for form data change event
 		this.onFilterEvent("_FormDataChange", 258, this.guid + this.formType, (self) => {
 			this.formDataChangeEvent();
