@@ -6,15 +6,11 @@
 			v-show="DisplayValues.hidden == false"
 		>
 			<b-container fluid>
-				<b-row v-if="label != '' && label != null" >
-					<b-col md="12">
-						<h2>{{label}}</h2>
-					</b-col>
-				</b-row>
 				<b-row v-if="itemArray != null && itemArray.length != 0 && DisplayValues.showButtonBar" 
 					class="icon-button-row"
 				>
 					<b-col md="12" class="mb-1" >
+				
 						<b-link
 							v-if="DisplayValues.buttons.showRefreshButton"
 							@click="refreshButtonClick"
@@ -58,7 +54,7 @@
 						</b-link>
 						<div class="total-count">Count: {{Utilities.FormatString(totalRows, "N0")}}</div>
 
-					</b-col>
+					</span>
 				</b-row>
 				<b-row>
 					<b-col xs="12" class="pl-0" >
@@ -408,7 +404,7 @@ export default {
       sortDescending: this.getLocalStorage(this.name+'_initialSortDescending') == null ? this.dataProvider == null ? false : this.dataProvider.initialSortDescending : this.getLocalStorage(this.name+'_initialSortDescending') === 'true',
 			pageSizeOptions: (this.dataProvider == null || this.dataProvider.pageSizeOptions == null) ? null : this.dataProvider.pageSizeOptions,
 			actionButtonSettings: {
-				visible: (this.actionButton == null || this.actionButton.visible == null) ? false : this.actionButton.visible,
+				visible: (this.actionButton == null || this.actionButton.visible == null || (this.computedReadOnly != false && this.isAdmin == false )) ? false : this.actionButton.visible,
 				options: (this.actionButton == null || this.actionButton.options == null) ? [] : this.actionButton.options,
 				optionsFunc: (this.actionButton == null || typeof this.actionButton.optionsFunc == "undefined") ? null : this.actionButton.optionsFunc,
 			}
@@ -565,6 +561,12 @@ export default {
 			} else {
 				this.DisplayValues.selectedRecordKeys = [];
 			}
+		},		
+
+
+		//--------------------------------------------------------------------------------------------
+		clearAll: function() {
+			this.DisplayValues.selectedRecordKeys = [];
 		},		
 
 		//--------------------------------------------------------------------------------------------

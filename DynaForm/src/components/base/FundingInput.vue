@@ -4,7 +4,9 @@
 			v-show="DisplayValues.visible"
 		>
 			<b-row>
-				<div class="funding-instructions" >
+				<div class="funding-instructions" 
+					v-if="DisplayValues.label != '' && DisplayValues.label != null"
+				>
 					<component-label
 						:forId="name"
 						:text="DisplayValues.label"
@@ -22,8 +24,10 @@
 			</b-row>
 
 			<b-row>
-				<div class="d-flex justify-content-center justify-content-lg-start flex-wrap">
-					<div class="funding-spinner">
+				<div class="d-flex justify-content-center justify-content-lg-start flex-wrap w-100">
+					<div class="funding-spinner"
+						v-if="computedReadOnly != true"
+					>
 						<b-form-spinbutton
 							class="bv-no-focus-ring"
 							v-model="percent"
@@ -35,7 +39,9 @@
 							@input="percentChange"
 						></b-form-spinbutton>
 					</div>
-					<div class="funding-amount">
+					<div class="funding-amount"
+						v-if="computedReadOnly != true"
+					>
 
 						<div class="funding-currency">
 							
@@ -72,7 +78,9 @@
 						</div>
 				</div>
 
-				<div class="budget-amount">
+				<div class="budget-amount"
+						v-if="computedReadOnly != true"
+				>
 					<div class="title">Total Budget</div>
 					<table>
 						<tr v-if="localCurrencyCode != 'USD'">
@@ -255,7 +263,7 @@ export default {
 			}
 			else {
 				var srcRate = this.getCurrency(sourceCurrencyCode).rate;
-				var usdAmount =  rate != 0 ? amount / srcRate : 0;
+				var usdAmount =  srcRate != 0 ? amount / srcRate : 0;
 				var destRate = this.getCurrency(destinationCurrencyCode).rate;
 				result = rate != 0 ? usdAmount * destRate : 0;
 			}
@@ -287,6 +295,8 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		update: function() {
+			if (this.computedReadOnly) return;
+
 			var sourceAmount = Math.round(this.rawAmount*100.0)/100;
 			var usdAmount = Math.round(this.getForexConversion(this.rawAmount, this.activeCurrencyCode, "USD")*100.0)/100;
 			var localAmount = Math.round(this.getForexConversion(usdAmount, "USD", this.localCurrencyCode)*100.0)/100;
@@ -298,6 +308,7 @@ export default {
 			});
 		},
 
+		//--------------------------------------------------------------------------------------------
 		init: function() {
 
 			this.percent = this.DisplayValues.data.percent;

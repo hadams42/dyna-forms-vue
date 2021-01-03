@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<b-form-group
-			class="number-input"			
+			:class="['number-input', name]"			
 			v-show="DisplayValues.visible"			
 		>
 			<component-label
