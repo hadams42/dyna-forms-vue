@@ -404,7 +404,7 @@ export default {
       sortDescending: this.getLocalStorage(this.name+'_initialSortDescending') == null ? this.dataProvider == null ? false : this.dataProvider.initialSortDescending : this.getLocalStorage(this.name+'_initialSortDescending') === 'true',
 			pageSizeOptions: (this.dataProvider == null || this.dataProvider.pageSizeOptions == null) ? null : this.dataProvider.pageSizeOptions,
 			actionButtonSettings: {
-				visible: (this.actionButton == null || this.actionButton.visible == null || (this.computedReadOnly != false && this.isAdmin == false )) ? false : this.actionButton.visible,
+				visible: (this.computedReadOnly == true) ? false : this.actionButton == null || this.actionButton.visible == null ? true : this.actionButton.visible,
 				options: (this.actionButton == null || this.actionButton.options == null) ? [] : this.actionButton.options,
 				optionsFunc: (this.actionButton == null || typeof this.actionButton.optionsFunc == "undefined") ? null : this.actionButton.optionsFunc,
 			}
@@ -505,6 +505,7 @@ export default {
 
 		//--------------------------------------------------------------
 		initializeLayoutClasses: function() {
+
 			switch (this.DisplayValues.activeTemplate) {
 				case "grid":
 					this.layoutClasses.list = "list-group list-group-horizontal";
