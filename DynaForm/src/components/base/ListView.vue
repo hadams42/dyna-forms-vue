@@ -192,7 +192,7 @@
 											tabindex="0"
 											:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length == data.item[field.key].length) && (field.helpText == null || field.helpText == '')"
 										>
-											<span v-html="getFormattedValue(data.item[field.key], field.key)"></span>
+											<div v-html="getFormattedValue(data.item[field.key], field.key)"></div>
 										</div>
 
 										<b-form-checkbox 
