@@ -1,7 +1,10 @@
 <template>
 		<b-form-group
 			:class="['checkbox-input', DisplayValues.mode, DisplayValues.customClasses, name]"
-			v-show="DisplayValues.visible"			
+			v-show="DisplayValues.visible"					
+		>
+		<div
+			@click="onLockToggle(false)"
 		>
 			<component-label
 				:forId="name"
@@ -10,11 +13,11 @@
 				:helpUrl="helpUrl"
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
+				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 				:requiredField="rules != null && rules.required == true ? true : false"
 				:isAdmin="this.isAdmin"
 				:adminUnlockable="this.adminUnlockable"
 				@locked="onLockToggle()"
-				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 			>
 			</component-label>
 
@@ -39,7 +42,6 @@
 				@change="fieldChangeEvent($event); fieldInputEvent($event)"
 			>
 				<div :class="[ valueModel == true ? 'checked' : 'unchecked']"
-					@click="onLockToggle(false)"
 				> 
 					{{OptionList != null && OptionList.length > 1 ? valueModel == true ? OptionList[0].text : OptionList[1].text : ''}}
 				</div>
@@ -60,7 +62,6 @@
 				@change="fieldChangeEvent($event); fieldInputEvent($event)"
 			>
 			</b-form-checkbox-group>
-
 			<b-form-invalid-feedback>
 				<ul
 					v-if="this.Validation.Status  > 0 && this.Validation.MessageList.length > 0"
@@ -78,7 +79,8 @@
 					</li>
 				</ul>
 			</b-form-invalid-feedback>
-		</b-form-group>
+		</div>
+	</b-form-group>
 </template>
 <script>
 /* The DynaForm Responsive Forms Engine. Copyright 2020 by The Infogetics Group, LLC
