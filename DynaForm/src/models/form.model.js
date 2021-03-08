@@ -69,13 +69,14 @@ export const FormModel = class FormModel {
 
 		//-------------------------------------------------------------------------------
 		//-------------------------------------------------------------------------------
-		this.RenderForm = function(FormId, AllowedActions, RenderAction, RecordKey = -1, PageLevelRecordKey = -1, ActorKey = null) 
+		this.RenderForm = function(FormId, AllowedActions, RenderAction, RecordKey = -1, PageLevelRecordKey = -1, FormLevelRecordKey = -1, ActorKey = null) 
 		{
 			var renderData = {
 				allowedActions: AllowedActions,
 				renderAction: RenderAction,
 				recordKey: RecordKey,
 				pageLevelRecordKey: PageLevelRecordKey,
+				formLevelRecordKey: FormLevelRecordKey,
 				actorKey: ActorKey
 			}
 

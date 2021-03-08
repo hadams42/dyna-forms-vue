@@ -410,7 +410,7 @@ export const Utilities = class Utilities {
 			form.method = method.toLowerCase();
 			form.action = url;
 			for (var property in data) {
-				if (data.hasOwnProperty(property)) {
+				if (data.hasOwnProperty(property) && data[property] != null) {
 					var input = document.createElement('input');
 					input.type = 'hidden';
 					input.name = property;

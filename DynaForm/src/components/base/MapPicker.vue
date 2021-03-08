@@ -277,7 +277,6 @@ export default {
 					//-------------------------------------------------------
 					getResults: function(params) {
 						try {
-							console.log("dddddddddddddddddddddddd", params);
 							return esriRequest(self.DisplayValues.ApiUrl + "/city-search", {
 								query:  {
 									k: "objectid:" + params.suggestResult.key,

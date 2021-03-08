@@ -510,6 +510,7 @@ export default {
 					this.ActiveSettings.form.serverApi.renderAction, 
 					this.ActiveSettings.form.serverApi.recordKey,
 					this.ActiveSettings.form.serverApi.pageLevelRecordKey,
+					this.ActiveSettings.form.serverApi.formLevelRecordKey,
 					this.ActiveSettings.form.serverApi.activity,
 					function() {
 						if (success != null) {
@@ -546,7 +547,7 @@ export default {
 
 		//Retrieve form from server and evaluate JS
 		//----------------------------------------------
-		RenderServerForm: function(formOrInstanceId, allowedActions, renderAction, recordKey, pageLevelRecordKey, activity, success, error) {
+		RenderServerForm: function(formOrInstanceId, allowedActions, renderAction, recordKey, pageLevelRecordKey, formLevelRecordKey, activity, success, error) {
 
 			var successCallback = function(form) {
 				if (form != null && form.DefinitionJS != null) {
@@ -603,6 +604,7 @@ export default {
 					renderAction,
 					recordKey,
 					pageLevelRecordKey,
+					formLevelRecordKey,
 					activity == null ? null : activity.actorKey,
 					successCallback.bind(this),
 					errorCallback.bind(this)

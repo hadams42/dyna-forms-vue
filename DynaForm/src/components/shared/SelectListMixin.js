@@ -119,7 +119,15 @@ export default {
 		updateFromLocalStorage() {
 			if (this.enableLocalStorage) {
 				var savedValue = localStorage[this.formType + "__" + this.name];
-				if (savedValue != null && savedValue != "") {
+				var savedValueExists = false;
+				for (var i=0; i<this.OptionList.length;i++) {
+					if (this.OptionList[i].value == savedValue) {
+						savedValueExists = true;
+						break;
+					}
+				}
+
+				if (savedValue != null && savedValue != "" && savedValueExists == true) {
 					this.valueModel = savedValue;
 				}
 				else {

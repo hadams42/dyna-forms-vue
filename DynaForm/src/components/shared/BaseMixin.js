@@ -78,7 +78,6 @@ export default {
 		//---------------------------------------------------------------------------------------------------
 		onLockToggle: function(readonly=null) {
 
-			console.log(this.isAdmin,this.adminUnlockable)
 			if (this.isAdmin != true && this.adminUnlockable == true) {
 				return;
 			}

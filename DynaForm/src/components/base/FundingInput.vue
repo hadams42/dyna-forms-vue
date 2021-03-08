@@ -33,8 +33,8 @@
 							v-model="percent"
 							:formatter-fn="formatSpinner"
 							min="0"
-							:step="percent >= Math.round(getMaxPercent() - 1) ? .1 : 1"
-							:max="getMaxPercent() + .05"
+							:step="percent >= Math.round(getMaxPercent() - .1) ? .001 : percent >= Math.round(getMaxPercent() - .5) ? .01 : percent >= Math.round(getMaxPercent() - 1) ? .1 : 1"
+							:max="getMaxPercent() + .1"
 							vertical
 							@input="percentChange"
 						></b-form-spinbutton>
@@ -60,7 +60,7 @@
 								@focus.native="$event.target.select()"	
 								@input="amountChange"
 								v-model="enteredAmount"
-								:max="maxAmount"
+								:max="maxAmount + 1"
 							></b-input>
 
 							<div class="funding-summary">
@@ -202,6 +202,7 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		percentChange: function(value) {
 			var usdAmount = this.budgetUsd * value / 100;
+			if (usdAmount > this.maxUsdAmount) usdAmount = this.maxUsdAmount;
 			var currentAmount = this.getForexConversion(usdAmount, "USD", this.activeCurrencyCode);
 			this.amountChange(currentAmount);
 		},
@@ -282,7 +283,8 @@ export default {
 		
 		//--------------------------------------------------------------------------------------------
 		formatSpinner: function(value, step) {
-			var d = this.percent >= Math.round(this.getMaxPercent() - 1) ? 10 : 1;
+			var d = this.percent >= Math.round(this.getMaxPercent() - .1) ? 1000 : this.percent >= Math.round(this.getMaxPercent() - .5) ? 100 : this.percent >= Math.round(this.getMaxPercent() - 1) ? 10 : 1
+
 			return Math.round(value*d)/d + "%";
 		},
 
@@ -336,8 +338,8 @@ export default {
 					}
 				}
 			}
-
 			this.maxUsdAmount = this.budgetUsd - otherUsdCommitments;
+
 			this.maxAmount = this.getForexConversion(this.maxUsdAmount, "USD", this.activeCurrencyCode)
 			this.update();
 		},

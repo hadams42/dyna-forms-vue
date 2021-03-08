@@ -96,13 +96,29 @@
 								H3
 							</button>
 
-							<!-- <button
+							<button
+								class="menubar__button"
+								:class="{ 'is-active': isActive.heading({ level: 4 }) }"
+								@click="commands.heading({ level: 4 })"
+							>
+								H4
+							</button>
+
+							<button
+								class="menubar__button"
+								:class="{ 'is-active': isActive.heading({ level: 5 }) }"
+								@click="commands.heading({ level: 5 })"
+							>
+								H5
+							</button>
+
+							<button
 								class="menubar__button"
 								:class="{ 'is-active': isActive.link() }"
 								@click="commands.link"
 							>
 								<i class="fas fa-link"></i>
-							</button> -->
+							</button>
 
 							<button
 								class="menubar__button"
@@ -118,14 +134,6 @@
 								@click="commands.ordered_list"
 							>
 								<i class="fas fa-list-ol"></i>
-							</button>
-
-							<button
-								class="menubar__button"
-								:class="{ 'is-active': isActive.blockquote() }"
-								@click="commands.blockquote"
-							>
-								<i class="fas fa-quote-right"></i>
 							</button>
 
 							<button
@@ -149,6 +157,12 @@
 								<i class="fas fa-redo-alt"></i>
 							</button>							
 
+							<button
+								class="menubar__button"
+								@click="showHtml"
+							>
+								<i class="fas fa-code"></i>
+							</button>							
 						</div>
 					</div>
 				</editor-menu-bar>
@@ -293,6 +307,17 @@ export default {
 		editorUpdated: function() {
 			if (this.editor != null) {
 				this.valueModel = this.editor.getHTML();
+			}
+		},
+
+		//--------------------------------------------------------------------------------------------
+		showHtml: function() {
+			if (this.editor != null) {
+				var result = window.prompt("Copy or paste raw HTML below:", this.editor.getHTML());
+				if (result != null && result != "") {
+					this.valueModel = result ;
+					this.updateEditor();
+				}
 			}
 		},
 

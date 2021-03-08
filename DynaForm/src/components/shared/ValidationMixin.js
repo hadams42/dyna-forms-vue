@@ -161,7 +161,7 @@ export default {
 		});
 
 		//Listen to bus for reset and clear validation errors
-		this.onFilterEvent("_Reset", 171, this.guid, (self) => {
+		this.onEvent("_Reset", 171, this.guid, (self) => {
 			this.Validation.MessageList = [];
 			this.Validation.Status = null;
 		});

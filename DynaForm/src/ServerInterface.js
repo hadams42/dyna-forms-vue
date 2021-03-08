@@ -48,7 +48,7 @@ export const ServerInterface = class ServerInterface {
 		//--------------------------------------------------------------
 		//Call remote render form function on server
 		//--------------------------------------------------------------
-		this.RenderForm = function(sender, formId, allowedActions, renderAction, recordKey, pageLevelRecordKey, actorKey, success, error) {
+		this.RenderForm = function(sender, formId, allowedActions, renderAction, recordKey, pageLevelRecordKey, formLevelRecordKey, actorKey, success, error) {
 			this.Log("RenderForm", arguments, sender);
 			//Render entire form on server
 			this.Form.RenderForm.call(
@@ -58,6 +58,7 @@ export const ServerInterface = class ServerInterface {
 					renderAction, 
 					recordKey, 
 					pageLevelRecordKey,
+					formLevelRecordKey,
 					actorKey
 			).then(function(responseJson) {
 				success(responseJson);

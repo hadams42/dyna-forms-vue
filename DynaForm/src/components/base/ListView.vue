@@ -53,8 +53,6 @@
 							<span class="icon-label small-size"></span>
 						</b-link>
 						<div class="total-count">Count: {{Utilities.FormatString(totalRows, "N0")}}</div>
-
-					</span>
 				</b-row>
 				<b-row>
 					<b-col xs="12" class="pl-0" >

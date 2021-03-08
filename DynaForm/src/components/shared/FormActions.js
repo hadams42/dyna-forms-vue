@@ -37,9 +37,12 @@ export const FormActions = class FormActions {
 			//--------- Static URL -----------
 			if (typeof Action.urlRedirect != "undefined" &&  Action.urlRedirect != null && Action.urlRedirect.href != null && Action.urlRedirect.href != "") {
 				redirectUrl = Action.urlRedirect.href;
-				data = {
-					recordKey: RecordKey,
-					instanceId: InstanceId
+				data = {};
+				if (Action.urlRedirect.isExternal !== true) {
+					data = {
+						recordKey: RecordKey,
+						instanceId: InstanceId
+					}
 				}
 				utilities.Redirect(redirectUrl, data, Action.urlRedirect.method == null || Action.urlRedirect.method == "" ? "get" : Action.urlRedirect.method);
 
@@ -47,6 +50,7 @@ export const FormActions = class FormActions {
 			}	else if (typeof Action.post != "undefined" &&  Action.post != null && Action.post.command != null && Action.post.command != "") {
 				var postCommand = {
 					recordKey: RecordKey,
+					formRecordKey: Action.post.formRecordKey,
 					instanceId: InstanceId,
 					command: Action.post.command,
 					data: Action.post.data
@@ -84,6 +88,7 @@ export const FormActions = class FormActions {
 				data = {
 					instanceId: InstanceId,
 					recordKey: Action.autoRedirect.recordKey == null ? RecordKey : Action.autoRedirect.recordKey,
+					formRecordKey: Action.autoRedirect.formRecordKey == null ? RecordKey : Action.autoRedirect.formRecordKey,
 					target: target,
 					command: renderCommand,
 					targetUrl: Action.autoRedirect.href == null ? Sender.targets[target] : Action.autoRedirect.href,

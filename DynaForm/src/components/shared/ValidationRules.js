@@ -84,6 +84,19 @@ export const ValidationRules = class ValidationRules {
 				}
 			} 
 
+			//Min Length
+			//--------------------------------
+			else if (type == "email") {
+				result.helpLabel = "Invalid email address format";
+
+				const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				result.status =  re.test(String(value).toLowerCase());
+
+				//Set result message
+				if (result.status == false) {
+					result.helpMessage = "Must be at a valid emails address in the format of xxxxxx@yyyyyyyy.zzz";
+				}
+			} 
 
 			//Min Length
 			//--------------------------------
@@ -161,8 +174,6 @@ export const ValidationRules = class ValidationRules {
 
 		};
 
-	
-	
 	}
 
 }
