@@ -33,7 +33,7 @@
 							v-model="percent"
 							:formatter-fn="formatSpinner"
 							min="0"
-							:step="percent >= Math.round(getMaxPercent() - .1) ? .001 : percent >= Math.round(getMaxPercent() - .5) ? .01 : percent >= Math.round(getMaxPercent() - 1) ? .1 : 1"
+							:step="percent >= Math.round(getMaxPercent() - .1) ? .01 : percent >= Math.round(getMaxPercent() - .5) ? .1 : percent >= Math.round(getMaxPercent() - 1) ? 1 : 1"
 							:max="getMaxPercent() + .1"
 							vertical
 							@input="percentChange"
@@ -44,7 +44,8 @@
 					>
 
 						<div class="funding-currency">
-							
+							<label>Select Source Currency</label>
+
 							<b-form-select 
 								class="select-currency"
 								v-model="selectedCurrencyCode" 
@@ -52,6 +53,7 @@
 								@change="currencyChange"
 								:options="DisplayValues.currencies"
 								value-field="code"
+								required
 								text-field="name"
 							></b-form-select>
 
@@ -118,6 +120,7 @@
 							</div>
 						</b-progress-bar>
 					</b-progress>
+					
 				</div>
 			</b-row>
 		</b-form-group>
@@ -154,6 +157,7 @@ export default {
 			budgetUsd: 0.00,
 			maxAmount: 0.0,
 			maxUsdAmount: 0.0,
+			otherUsdCommitments: 0.0,
 
 			DisplayValues: {
 				name: this.name,
@@ -256,17 +260,20 @@ export default {
 			}
 			else if (sourceCurrencyCode == "USD") {
 				var rate = this.getCurrency(destinationCurrencyCode).rate;
+				console.log(sourceCurrencyCode + ":" + destinationCurrencyCode + "@" + rate)
 				result = rate != 0 ? amount * rate : 0;
 			}
 			else if (destinationCurrencyCode == "USD") {
 				var rate = this.getCurrency(sourceCurrencyCode).rate;
+				console.log(sourceCurrencyCode + ":" + destinationCurrencyCode + "@" + rate)
 				result = rate != 0 ? amount / rate : 0;
 			}
 			else {
 				var srcRate = this.getCurrency(sourceCurrencyCode).rate;
 				var usdAmount =  srcRate != 0 ? amount / srcRate : 0;
 				var destRate = this.getCurrency(destinationCurrencyCode).rate;
-				result = rate != 0 ? usdAmount * destRate : 0;
+				result = usdAmount * destRate;
+				console.log(sourceCurrencyCode + ":" + destinationCurrencyCode + "@" + rate)
 			}
 			return result;
 		},
@@ -283,7 +290,7 @@ export default {
 		
 		//--------------------------------------------------------------------------------------------
 		formatSpinner: function(value, step) {
-			var d = this.percent >= Math.round(this.getMaxPercent() - .1) ? 1000 : this.percent >= Math.round(this.getMaxPercent() - .5) ? 100 : this.percent >= Math.round(this.getMaxPercent() - 1) ? 10 : 1
+			var d = this.percent >= Math.round(this.getMaxPercent() - .1) ? 100 : this.percent >= Math.round(this.getMaxPercent() - .5) ? 10 : this.percent >= Math.round(this.getMaxPercent() - 1) ? 1 : 1
 
 			return Math.round(value*d)/d + "%";
 		},
@@ -321,6 +328,7 @@ export default {
 
 			this.DisplayValues.currencies = this.DisplayValues.data.currencies;
 			this.DisplayValues.bars = this.DisplayValues.data.bars;
+			
 
 			this.selectedCurrencyCode = this.DisplayValues.data.currencyCode;
 			this.activeCurrencyCode = this.DisplayValues.data.currencyCode;
@@ -328,18 +336,24 @@ export default {
 
 			this.localCurrencyCode = this.DisplayValues.data.localCurrencyCode;
 
-			var otherUsdCommitments = 0;
+			this.otherUsdCommitments = 0;
 			if (this.DisplayValues.bars != null) {
 				for (var i=0; i<this.DisplayValues.bars.length; i++) {
 					if (this.DisplayValues.bars[i].isActive) {
 						this.activeBarIndex = i;
 					} else {
-						otherUsdCommitments += this.getForexConversion(this.DisplayValues.bars[i].amount, this.DisplayValues.bars[i].currency, "USD")
+						var usdAmount = this.getForexConversion(this.DisplayValues.bars[i].amount, this.DisplayValues.bars[i].currency, "USD")
+						this.otherUsdCommitments += usdAmount
+						console.log("converting " + this.DisplayValues.bars[i].amount + " in " + this.DisplayValues.bars[i].currency + " to usd = " + usdAmount)
 					}
 				}
 			}
-			this.maxUsdAmount = this.budgetUsd - otherUsdCommitments;
+			this.maxUsdAmount = this.budgetUsd - this.otherUsdCommitments;
 
+			console.log("max: " + this.maxUsdAmount)
+			console.log("budget: " + this.budgetUsd)
+			console.log("committed: " + this.otherUsdCommitments)
+			
 			this.maxAmount = this.getForexConversion(this.maxUsdAmount, "USD", this.activeCurrencyCode)
 			this.update();
 		},

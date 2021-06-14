@@ -599,6 +599,7 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		dataApi: function(ctx, callback) {
 			localStorage[this.name + "__CurrentPage"] = this.DisplayValues.currentPage; 
+			this.clearAll();
  			var currentTableHeight = this.$refs.listGroupContainer.clientHeight + 0;
 			this.DisplayValues.tableMinHeight = currentTableHeight;
 			this.ServerInterface.RenderPage(

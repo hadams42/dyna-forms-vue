@@ -126,7 +126,7 @@ export default {
 				color: this.color == null ? "default" : this.color,
 				backgroundColor: this.backgroundColor == null ? "default" : this.backgroundColor,
 				readonly: this.readonly == null ? false : this.readonly,
-				maxLength: this.maxLength == null ? "255" : this.maxLength,
+				maxLength: this.maxLength == null ? "4000" : this.maxLength,
 			},
 			//multilineValue: this.value,
 		}
