@@ -7,13 +7,15 @@
 	</div> -->
 	<div 
 		:class="['form-title']" 
-		v-if="ActiveFormSettings.title != null"
+		v-if="ActiveFormSettings.title != null && ActiveFormSettings.title != ''"
 		v-b-toggle="guid + 'Collapse'"
 	>{{ActiveFormSettings.title}}</div>
 	<b-collapse 
 			:id="guid + 'Collapse'" 
-			visible
+			:visible="getLocalStorage(formType + '__' + ActiveFormSettings.title) == 'true' ? false : true"
 			:class="[ActiveFormSettings.customClasses]" 
+			v-on:show="setLocalStorage(formType + '__' + ActiveFormSettings.title, false)"
+			v-on:hide="setLocalStorage(formType + '__' + ActiveFormSettings.title, true)"
 	>
 		<b-container fluid 
 			:class="['dyna-form', ActiveFormSettings.formType, ActiveFormSettings.isFlashProtected == true ? 'flash-protect' : '']"
@@ -203,6 +205,14 @@ export default {
 	//---------------------------------------------------------------------------------------------------
 	//---------------------------------------------------------------------------------------------------
   methods: {
+
+		getLocalStorage: function(key) {
+			return localStorage[key];
+		},
+
+		setLocalStorage: function(key, value) {
+			localStorage[key] = value;
+		},
 	},
 
 	//---------------------------------------------------------------------------------------------------
