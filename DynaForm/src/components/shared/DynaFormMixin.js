@@ -735,7 +735,7 @@ export default {
 		},
 
 		computedReadOnly: function() {
-			return (this.ActiveFormSettings.formReadOnly || this.containerReadOnly || this.ActiveFormData._ReadOnly == true ) ? true : false;
+			return (this.ActiveFormSettings.formReadOnly || this.containerReadOnly || this.ActiveFormData._ReadOnly == true || this.ActiveFormData._IsLocked == 1 ) ? true : false;
 		},
 
 		formReadOnlyLock: function() {

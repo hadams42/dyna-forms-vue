@@ -1,7 +1,7 @@
 <template>
 		<div 
 			:id="name"
-			class="list-view"
+			:class="['list-view', computedReadOnly ? 'readonly' : '']"
 			v-if="DisplayValues.visible"
 			v-show="DisplayValues.hidden == false"
 		>
@@ -185,7 +185,7 @@
 											:key="'data-' + index"
 											v-if="field.key !== 'isSelected'"
 											
-											:class="['non-editable-text', field.class]"
+											:class="['non-editable-text', field.class, data.item['_ReadOnly'] == true ? 'cell-readonly' : '']"
 											v-b-popover="{content: field.helpText == null || field.helpText == '' ? data.item[field.helpTextKey] : field.helpText, boundaryPadding: 20, placement: 'auto',  html: true, trigger: 'hover focus click blur'  }"
 											tabindex="0"
 											:disabled="(data.item[field.helpTextKey] == null || data.item[field.helpTextKey] == '' ||  data.item[field.helpTextKey].length == data.item[field.key].length) && (field.helpText == null || field.helpText == '')"
@@ -202,6 +202,8 @@
 											:checked="isRowSelected(data.item)"
 											:plain="true"
 											@change="checkboxChanged(data.item[keyField])"
+											@click="stopPropagation"
+
 										></b-form-checkbox> 
 
 										<div 
@@ -747,6 +749,11 @@ export default {
 		// Event Handlers
 		//--------------------------------------------------------------------------------------------
 		
+		stopPropagation: function(e) {
+			e.stopPropagation();
+		},
+
+
 		//--------------------------------------------------------------------------------------------
 		gridRendered: function() {
 			//if (this.DisplayValues.isInitialRender == false) {

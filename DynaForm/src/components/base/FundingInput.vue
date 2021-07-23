@@ -341,7 +341,8 @@ export default {
 				for (var i=0; i<this.DisplayValues.bars.length; i++) {
 					if (this.DisplayValues.bars[i].isActive) {
 						this.activeBarIndex = i;
-					} else {
+					} 
+					else {
 						var usdAmount = this.getForexConversion(this.DisplayValues.bars[i].amount, this.DisplayValues.bars[i].currency, "USD")
 						this.otherUsdCommitments += usdAmount
 						console.log("converting " + this.DisplayValues.bars[i].amount + " in " + this.DisplayValues.bars[i].currency + " to usd = " + usdAmount)

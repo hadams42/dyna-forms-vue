@@ -1,6 +1,6 @@
 <template>
 		<div 
-			class="grid-view"
+			:class="['grid-view', computedReadOnly ? 'readonly' : '']"
 			v-show="DisplayValues.visible"
 		>
 			<b-container fluid class="px-0">

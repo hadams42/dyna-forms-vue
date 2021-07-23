@@ -18,7 +18,7 @@
 			v-on:hide="setLocalStorage(formType + '__' + ActiveFormSettings.title, true)"
 	>
 		<b-container fluid 
-			:class="['dyna-form', ActiveFormSettings.formType, ActiveFormSettings.isFlashProtected == true ? 'flash-protect' : '']"
+			:class="['dyna-form', ActiveFormSettings.formType, ActiveFormSettings.isFlashProtected == true ? 'flash-protect' : '', computedReadOnly ? 'form-readonly' : '']"
 			v-show="ActiveFormData._Id > -1 || ActiveFormSettings.hideBlankForm == null || ActiveFormSettings.hideBlankForm == false"
 		>
 			<div v-if="layout==null" >
