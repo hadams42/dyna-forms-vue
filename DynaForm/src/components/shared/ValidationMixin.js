@@ -112,7 +112,7 @@ export default {
 									//Read in message and url if not already defined
 									var message = {};
 	
-									message.Text = (this.rules[thisRule].helpMessage != null && result.helpMessage == null) ? this.rules[thisRule].helpMessage : result.helpMessage; 
+									message.Text =  (this.rules[thisRule].helpMessage != null && result.helpMessage == null) ? this.rules[thisRule].helpMessage : result.helpMessage; 
 									message.Label = (this.rules[thisRule].helpLabel != null && result.helpLabel == null) ? result.helpMessage : result.helpLabel;
 									message.Url = (this.rules[thisRule].helpUrl != null && result.helpUrl == null) ? this.rules[thisRule].helpUrl : result.helpUrl; 
 	

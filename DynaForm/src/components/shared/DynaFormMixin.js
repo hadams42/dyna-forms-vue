@@ -131,6 +131,8 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		validationMessage: function(validation) {
+			if (validation.Status == 0) return "";
+
 			var message = "";
 			if (validation.MessageList != null && validation.MessageList.length > 0) {
 				for (var i=0; i<validation.MessageList.length; i++) {
@@ -166,6 +168,7 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		updateValidationCollectors: function(validation, isValid, pushFailedValidations) {
+
 			//Remove from list of fields waiting to be validated
 			this.UnvalidatedFields = this.UnvalidatedFields.filter(function(f) {
 				return f.FieldName != validation.FieldName

@@ -22,9 +22,11 @@ export const ValidationRules = class ValidationRules {
 			//Required
 			//--------------------------------
 			if (type == "required") {
-				result.helpLabel = "Required";
 				//Determine whether rule is enabled
-				if (rule.enabled == true || rule == true) {
+				if (rule === true) {
+
+					result.helpLabel = "Required";
+					
 					//Perform validation
 					if (value == null || value.length == 0) {
 						result.status = false;
@@ -41,6 +43,8 @@ export const ValidationRules = class ValidationRules {
 
 				}
 			} 
+
+			
 
 			//Min Value
 			//--------------------------------
@@ -165,7 +169,6 @@ export const ValidationRules = class ValidationRules {
 
 				}
 			} 
-
 
 
 			//Return validation result

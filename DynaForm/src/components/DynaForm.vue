@@ -79,7 +79,7 @@
 			</div>
 		</b-container>
 	</b-collapse>
-	<div v-if="ValidationCollector != null && ValidationCollector.length > 0 && ActiveFormSettings.showValidationSummary === true"
+	<div v-if="this.showValidationSummary() == true && ActiveFormSettings.showValidationSummary === true"
 		class="validation-summary text-danger">
 		<div class="font-weight-bolder"><i class="fas fa-exclamation-triangle"></i> 
 			The following fields have missing or invalid data</div>
@@ -212,6 +212,15 @@ export default {
 
 		setLocalStorage: function(key, value) {
 			localStorage[key] = value;
+		},
+
+		showValidationSummary: function() {
+			 if (this.ValidationCollector != null && this.ValidationCollector.length > 0) {
+				 for (var i=0; i<this.ValidationCollector.length; i++) {
+					 if (this.ValidationCollector[i].Status != 0) return true;
+				 }
+			 }
+			 return false;
 		},
 	},
 
