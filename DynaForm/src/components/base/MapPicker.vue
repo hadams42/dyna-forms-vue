@@ -92,6 +92,7 @@ export default {
 			'extentKm',
 			'filterQuery',
 			'apiUrl',
+			'featureLayers',
 			'initialPoint',
 			'longitudeField',
 			'latitudeField',
@@ -112,6 +113,7 @@ export default {
 				ConfirmationMessage: "Do you wish to add or change this location?",
 				Placeholder: this.placeholder == null ? "Enter search keywords": this.placeholder,
 				visible: this.visible == null ? true : this.visible,
+				FeatureLayers: this.featureLayers == null ? [] : this.featureLayers,
 				DisableWheel: this.disableWheel == null ? true : this.disableWheel,
 				ApiUrl: this.apiUrl, // == null ? "https://api-adresse.data.gouv.fr/search" : this.apiUrl, 
 				//FilterQuery: this.filterQuery == null ? "" : this.filterQuery, 
@@ -179,6 +181,7 @@ export default {
 			loadModules([
 	        //"esri/tasks/Locator",
 					"esri/Map",
+					"esri/Color",
 	        "esri/Graphic",
 	        "esri/request",
 					"esri/views/MapView",
@@ -193,6 +196,7 @@ export default {
 				options
 			).then(([
 					Map, 
+					Color,
         	Graphic,					
         	esriRequest,
 					MapView, 
@@ -332,6 +336,34 @@ export default {
 					}
         });
 
+
+				//-------------------------------------------------------
+				//Custom feature layers
+				//-------------------------------------------------------
+				var customFeatureLayers = [];
+				self.DisplayValues.FeatureLayers.forEach((feature) => {
+					var fillColor = Color.fromHex(feature.fill_color);
+					fillColor.a = feature.fill_opacity; 
+					var borderColor = Color.fromHex(feature.border_color);
+					borderColor.a = feature.border_opacity; 
+					customFeatureLayers.push(
+						new FeatureLayer({
+							url: feature.url,
+							renderer: {
+								type: "simple",
+								symbol: { 
+									type: "simple-fill",
+									color: fillColor, 
+									outline: {
+										color: borderColor,
+										width: 1
+									}
+								},
+							}
+						})
+					);
+				});
+				
 				//-------------------------------------------------------
 				//Pushpin Feature layer
 				//-------------------------------------------------------
@@ -374,6 +406,14 @@ export default {
 						}
 					}
 				});
+
+
+				//-------------------------------------------------------
+				function addCustomFeatureLayer() {
+					customFeatureLayers.forEach((l) => {
+						view.map.add(l);
+					});
+				}
 
 				//-------------------------------------------------------
 				function addPushPinLayer() {
@@ -442,11 +482,32 @@ export default {
 					updateActivePoint.call(this, event.result.extent.center.y, event.result.extent.center.x, event.result.feature.attributes);
 				}.bind(this));
 
+				//Create fill symbol helper
+				//-------------------------------------------------------
+				function createFillSymbol(value, color) {
+					return {
+						"value": value,
+						"symbol": {
+							"color": color,
+							"type": "simple-fill",
+							"style": "solid",
+							"outline": {
+								"style": "none"
+							}
+						},
+						"label": value
+					};
+				}
+
+
 				//-------------------------------------------------------
 				//Configure view
 				//-------------------------------------------------------
 				view.ui.add("lat-lon-widget", "bottom-left" );
+				
 				//view.ui.add(searchWidget, "top-right" );
+				
+				view.when().then(addCustomFeatureLayer);
 				view.when().then(addPushPinLayer);
 
 				//Function to update search text based on lat/lng

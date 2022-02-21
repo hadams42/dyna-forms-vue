@@ -41,7 +41,7 @@
 				:size="DisplayValues.size"
 				:no-resize="noResize"
 				@change="fieldChangeEvent($event)"
-				:maxLength="DisplayValues.maxLength*4"
+				:maxLength="DisplayValues.maxLength"
 			>
     	</b-textarea>
 
