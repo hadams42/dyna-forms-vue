@@ -8,6 +8,8 @@
 			:text="DisplayValues.label"
 			:helpText="helpText"
 			:helpUrl="helpUrl"
+			:kpiText="kpiText"
+			:kpiTitle="kpiTitle"
 			:unlockable="!(formReadOnlyLock || readOnlyLock)"
 		>
 		</component-label>

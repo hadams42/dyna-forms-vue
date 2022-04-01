@@ -53,6 +53,7 @@
 							<span class="icon-label small-size"></span>
 						</b-link>
 						<div class="total-count">Count: {{Utilities.FormatString(totalRows, "N0")}}</div>
+					</b-col>
 				</b-row>
 				<b-row>
 					<b-col xs="12" class="pl-0" >
@@ -551,12 +552,13 @@ export default {
 			if (isChecked) {
 				this.DisplayValues.selectedRecordKeys = [];
 				if (this.itemArray.length > 0) {
-					var startIndex = (this.DisplayValues.currentPage * this.computedRowsPerPage) - this.computedRowsPerPage;
-					var endIndex = (this.DisplayValues.currentPage * this.computedRowsPerPage); 
+					var startIndex = 0;
+					var endIndex = this.computedRowsPerPage; 
 					if (endIndex > this.itemArray.length) endIndex = this.itemArray.length;
 					for (var i = startIndex; i<endIndex; i++) 
 					{
-						this.DisplayValues.selectedRecordKeys.push(this.itemArray[i][this.keyField]);
+						var key = this.itemArray[i][this.keyField];
+						this.DisplayValues.selectedRecordKeys.push(key);
 					}
 				}
 			} else {

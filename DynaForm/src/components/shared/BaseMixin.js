@@ -42,9 +42,11 @@ export default {
 		'showConfirmDialog',
 		'containerInstanceId',
 		'persistSelection',
-		'helpText',
 		'readonlyMessage',
+		'helpText',
 		'helpUrl',
+		'kpiText',
+		'kpiTitle',
 		'maxWidth',
 		'autoFocusField',
 		'isAdmin',	
@@ -82,7 +84,7 @@ export default {
 				return;
 			}
 
-			if (!(this.formReadOnlyLock || this.readOnlyLock) && this.readonlyMessage == null) {
+			if (!(this.formReadOnlyLock || this.readOnlyLock) && (this.DisplayValues.readonlyMessage == null || this.DisplayValues.readonlyMessage == "")) {
 
 				if (readonly === false) {
 					this.DisplayValues.readonlyOverride = false;

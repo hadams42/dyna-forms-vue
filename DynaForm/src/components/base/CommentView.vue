@@ -5,20 +5,19 @@
 				:text="DisplayValues.label"
 				:helpText="helpText"
 				:helpUrl="helpUrl"
+				:kpiText="kpiText"
+				:kpiTitle="kpiTitle"
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 			>
 		</component-label>
 
-		<b-form :class="['comment-section', DisplayValues.isNarrow ? 'narrow' : '']">
+		<b-form :class="['comment-section', DisplayValues.isNarrow ? 'narrow' : '']"
+						@submit="onSubmit">
 			<div 
 				v-if="DisplayValues.showAddNew"
 				:class="[ 'write-new',  'justify-' + DisplayValues.justify ]"
-			>
-			<b-form 
-
-				@submit="onSubmit"
 			>
 				<div class="notification-group-container">
 					<span>{{notificationCaption}}</span>
@@ -60,7 +59,8 @@
 					>Add Comment
 					</b-button>
 				</div>
-			</b-form>
+			</div>
+		</b-form>
 		</div>
 
 

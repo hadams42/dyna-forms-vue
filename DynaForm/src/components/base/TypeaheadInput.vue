@@ -8,6 +8,8 @@
 				:text="DisplayValues.label"
 				:helpText="helpText"
 				:helpUrl="helpUrl"
+				:kpiText="kpiText"
+				:kpiTitle="kpiTitle"
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				:requiredField="rules != null && rules.required == true ? true : false"

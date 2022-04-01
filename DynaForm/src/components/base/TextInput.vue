@@ -8,6 +8,8 @@
 				:text="DisplayValues.label"
 				:helpText="helpText"
 				:helpUrl="helpUrl"
+				:kpiText="kpiText"
+				:kpiTitle="kpiTitle"
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
@@ -41,7 +43,7 @@
 				:size="DisplayValues.size"
 				:no-resize="noResize"
 				@change="fieldChangeEvent($event)"
-				:maxLength="DisplayValues.maxLength*4"
+				:maxLength="DisplayValues.maxLength"
 			>
     	</b-textarea>
 

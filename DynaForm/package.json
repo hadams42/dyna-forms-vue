@@ -15,7 +15,7 @@
     "bootstrap-scss": "^4.5.2",
     "bootstrap-vue": "^2.15.0",
     "debounce": "^1.2.0",
-    "esri-loader": "^2.10.0",
+    "esri-loader": "^2.16.0",
     "idempotent-babel-polyfill": "^6.26.0-1",
     "moment": "^2.24.0",
     "postcss-extract-media-query": "^2.0.0",

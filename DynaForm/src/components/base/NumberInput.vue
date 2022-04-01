@@ -9,6 +9,8 @@
 				:text="DisplayValues.label"
 				:helpText="helpText"
 				:helpUrl="helpUrl"
+				:kpiText="kpiText"
+				:kpiTitle="kpiTitle"
 				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				:requiredField="rules != null && rules.required == true ? true : false"
@@ -28,10 +30,11 @@
 			<b-form-input 
 				:id="name"
 				v-if="!(computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null))"						
-				type="number"
+				
 				:state="validationState"
 				:name="name"
-				:value="value == null ? 0 : value"
+				type="number"
+				v-model="valueModel"
 				:step="DisplayValues.step"
 				@focus.native="$event.target.select()"	
 				:pattern="DisplayValues.pattern"				
@@ -90,6 +93,9 @@ export default {
 
 	data () {
 		return {
+
+			valueModel: this.value == null ? 0 : this.value,
+
 			DisplayValues: {
 				size: this.size == null ? "sm" : this.size,
 				color: this.color == null ? "#6c757d" : this.color,		
@@ -107,6 +113,16 @@ export default {
 
 	created: function() {
 	},
+
+	watch: {
+			valueModel: function(newValue, oldValue) {
+				let result = Number(newValue.replace(",", "")).toString();
+				if (isNaN(result) == true) {
+					result = ""
+				}
+				this.$nextTick(() => this.valueModel = result);
+			}
+	}
 
 }
 </script>

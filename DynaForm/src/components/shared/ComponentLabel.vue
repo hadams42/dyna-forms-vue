@@ -26,7 +26,7 @@
 				tabindex="0"
 				v-b-popover.hover.click.blur.auto="lockMessage"
 			>
-				<i class="fas fa-lock"></i>
+				<i class="fas fa-lock"></i>				
 			</a>
 		</span>
 
@@ -34,6 +34,19 @@
 			class="required-indicator"
 			v-b-popover.hover.click.blur.auto="'Required'"
 		>*</span>
+
+
+		<a v-if="kpiText != null || kpiTitle != null"
+				class="kpi-icon"
+				:tabindex="-1"
+				href="#" 				
+		>
+			<span>
+				<img v-b-popover.hover.auto="kpiText" :title="kpiTitle" src="/images/kpi.png">
+			</span>
+
+		</a>
+
 
 	</label>
 </template>
@@ -51,7 +64,9 @@ export default {
 		'forId',
 		'text',
 		'helpText',
+		'kpiText',
 		'helpUrl',
+		'kpiTitle',
 		'locked',
 		'lockMessage',
 		'unlockable',
@@ -71,9 +86,6 @@ export default {
 			}
 		}
 	},
-
-
-
 
 	watch: {
 

@@ -12,6 +12,8 @@
 						:text="DisplayValues.label"
 						:helpText="helpText"
 						:helpUrl="helpUrl"
+						:kpiText="kpiText"
+						:kpiTitle="kpiTitle"
 						:locked="DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 						:lockMessage="DisplayValues.readonlyMessage"
 						:unlockable="!(formReadOnlyLock || readOnlyLock)"
