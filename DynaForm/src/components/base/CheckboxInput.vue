@@ -62,6 +62,7 @@
 				buttons
 				:disabled="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)"
 				@change="fieldChangeEvent($event); fieldInputEvent($event)"
+				@input="buttonInputEvent($event)"
 			>
 			</b-form-checkbox-group>
 			<b-form-invalid-feedback>
@@ -127,6 +128,26 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	methods: {
+
+		//--------------------------------------------------------------------------------------------
+		buttonInputEvent: function(value) {
+			if (value != null && value.length > 0) {
+				for (var z=0; z<value.length;z++) {
+					for (var i=0; i<this.OptionList.length;i++) {
+						if (this.OptionList[i].value == value[z] && this.OptionList[i].selected == false) {
+							var confirmText = this.OptionList[i].altText;
+							if (confirmText != null && confirmText != "") {
+								this.showMessageDialog(
+									"Notice",
+									confirmText
+								);
+								this.OptionList[i].selected = true;
+							}
+						}
+					}
+				}
+			}
+		},
 	},
 
 	//--------------------------------------------------------------------------------------------

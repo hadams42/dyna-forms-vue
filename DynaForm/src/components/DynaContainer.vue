@@ -295,16 +295,16 @@ export default {
 		},
 
 		//---------------------------------------------------------------------------------------------------
-		ShowConfirmDialog: function(Caption, Text, OnOk, OnCancel) {
+		ShowConfirmDialog: function(Caption, Text, OnOk, OnCancel, OkButtonText = "Ok", CancelButtonText = "Cancel") {
 			this.MessageDialog.Caption = Caption;
 			this.MessageDialog.Text = Text;
 			this.MessageDialog.YesButton.Visible = false;
 			this.MessageDialog.NoButton.Visible = false;
 			this.MessageDialog.CancelButton.Visible = true;
-			this.MessageDialog.CancelButton.Text = "Cancel";
+			this.MessageDialog.CancelButton.Text = CancelButtonText;
 			this.MessageDialog.CancelButton.OnClick = OnCancel;
 			this.MessageDialog.OkButton.Visible = true;
-			this.MessageDialog.OkButton.Text = "Ok";
+			this.MessageDialog.OkButton.Text = OkButtonText;
 			this.MessageDialog.OkButton.OnClick = OnOk;
 			this.MessageDialog.Show = true;
 		},
