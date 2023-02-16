@@ -208,7 +208,7 @@
 										></b-form-checkbox> 
 
 										<div 
-											v-if="field.key == 'actionButtons' && actionButtonSettings.visible && getOptions(item) != null && getOptions(item).length > 1"
+											v-if="field.key == 'actionButtons' && actionButtonSettings.visible && getOptions(item) != null && data.item['_ReadOnly'] == false && getOptions(item).length > 1"
 											:class="['action-button', layoutClasses.actionButton, field.class]"
 											:key="'action-button-' + index"
 											>
@@ -231,7 +231,7 @@
 										</div>
 
 										<div 
-											v-if="field.key == 'actionButtons' && actionButtonSettings.visible && getOptions(item) != null && getOptions(item).length == 1"
+											v-if="field.key == 'actionButtons' && actionButtonSettings.visible && getOptions(item) != null && data.item['_ReadOnly'] == false && getOptions(item).length == 1"
 											:class="['action-button', layoutClasses.actionButton, field.class]"
 											:key="'action-button-' + index"
 											>

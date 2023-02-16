@@ -88,7 +88,8 @@
 					<div class="title">Total Budget</div>
 					<table>
 						<tr v-if="localCurrencyCode != 'USD'">
-							<td class="amount">{{Utilities.FormatString(getForexConversion(budgetUsd, "USD", localCurrencyCode), "C0")}}</td>
+							<!-- <td class="amount">{{Utilities.FormatString(getForexConversion(budgetUsd, "USD", localCurrencyCode), "C0")}}</td> -->
+							<td class="amount">{{Utilities.FormatString(budgetLocal, "C0")}}</td>
 							<td class="currency">{{localCurrencyCode}}</td>
 						</tr>
 						<tr>
@@ -157,6 +158,7 @@ export default {
 			rawAmount: 0.0,
 			localCurrencyCode: null,
 			budgetUsd: 0.00,
+			budgetLocal: 0.00,
 			maxAmount: 0.0,
 			maxUsdAmount: 0.0,
 			otherUsdCommitments: 0.0,
@@ -324,6 +326,7 @@ export default {
 
 			this.percent = this.DisplayValues.data.percent;
 			this.budgetUsd = this.DisplayValues.data.budgetUsd;
+			this.budgetLocal  = this.DisplayValues.data.budgetLocal;
 			this.enteredAmount = this.DisplayValues.data.amount;
 			this.rawAmount = this.DisplayValues.data.amount;
 			this.DisplayValues.amount = this.DisplayValues.data.amount;

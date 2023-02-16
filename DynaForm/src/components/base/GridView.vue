@@ -12,7 +12,7 @@
 					</div>
 					<div 
 						:class="['pt-3','mb-2', DisplayValues.block == false ? '' : 'col']"
-						v-if="DisplayValues.buttons.showRefreshButton || DisplayValues.buttons.showDeleteButton || DisplayValues.buttons.showNewButton"
+						v-if="this.DisplayValues.currentRows.length > 0 && (DisplayValues.buttons.showRefreshButton || DisplayValues.buttons.showDeleteButton || DisplayValues.buttons.showNewButton || DisplayValues.buttons.showExportButton)"
 					>
 						<b-button
 							v-if="DisplayValues.buttons.showRefreshButton"							
@@ -49,7 +49,20 @@
 							<i class="icon small-size far fa-plus-square"></i>
 							<span class="icon-label small-size">New</span>
 						</b-button>
+
+						<b-button
+							v-if="DisplayValues.buttons.showExportButton"
+							@click="exportButtonClick"
+							variant="light"
+							size="sm"
+							:class="['icon-button button-input ml-0 rounded-0', DisplayValues.buttonAlignment == 'left' ? 'float-left' : 'float-right' ]"
+							type="button"
+						>
+							<i class="icon small-size fa fa-download"></i>
+							<span class="icon-label small-size">Export</span>
+						</b-button>
 					</div>
+
 
 				</b-row>
 				<b-row :class="[DisplayValues.block == false ? 'justify-content-center' : '']">
@@ -59,6 +72,7 @@
 							ref="vueTableContainer">
 							<b-table
 								ref="GridView"
+								:id="DisplayValues.tableId"
 								:key="DisplayValues.key"
 								:busy="DisplayValues.busy"
 								:stacked="DisplayValues.stackedWidth"
@@ -280,6 +294,7 @@ export default {
 		'multiSelect',
 		'fixedColumns',
 		'showNewButton',
+		'showExportButton',
 		'showDeleteButton',
 		'showRefreshButton',
 		'showConfirmDialog',
@@ -296,7 +311,8 @@ export default {
 		'buttonAlignment',
 		'minWidth',
 		'isStacked',
-		'onUpdateSummary'
+		'onUpdateSummary',
+		'exportTitle'
 	],
 		
 	data () {
@@ -305,6 +321,7 @@ export default {
 			ServerInterface: new ServerInterface(),
 			DisplayValues: {
 				key: 1,
+				tableId: this.guid + '_' + this.name + '__table',
 				name: this.name,
 				label: this.label,
 				visible: this.visible == null ? true : this.visible,				
@@ -316,6 +333,7 @@ export default {
 				selectedRecordKeys: [],
 				activeItemObject: null,
 				stackedWidth: this.isStacked != null ? this.isStacked : this.stackedWidth || false,
+				exportTitle: this.exportTitle != null ? this.exportTitle : "Exported Data",
 				currentRows: [],
 				dirtyIndicators: {},
 				inProcessSave: false,
@@ -330,6 +348,7 @@ export default {
 				buttonAlignment: this.buttonAlignment == null ? 'right' : this.buttonAlignment,
 				buttons: {
 					showNewButton: this.showNewButton == null ? true : this.showNewButton,
+					showExportButton: this.showExportButton == null ? false : this.showExportButton,
 					showDeleteButton: this.showDeleteButton == null ? true : this.showDeleteButton,
 					showRefreshButton: this.showRefreshButton == null ? true : this.showRefreshButton,
 				},
@@ -895,6 +914,8 @@ export default {
 			//this.$forceUpdate();
 		},
 
+
+
 		//--------------------------------------------------------------------------------------------
 		newButtonClick: function() {
 			if (this.onNewButtonClick != null && this.onNewButtonClick != "") {
@@ -904,6 +925,11 @@ export default {
 					p.ActiveFormData,
 				);
 			}
+		},
+
+		//--------------------------------------------------------------------------------------------
+		exportButtonClick: function() {
+			tableToExcel(this.DisplayValues.tableId, this.DisplayValues.exportTitle); return false;			
 		},
 
 		//--------------------------------------------------------------------------------------------
