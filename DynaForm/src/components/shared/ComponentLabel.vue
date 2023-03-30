@@ -1,7 +1,7 @@
 <template>
 	<label
 		:for="forId"
-		class="component-label"
+		:class="['component-label',readonly ? 'readonly' : '']"
 		v-if="text != null && text != ''"				
 	>
 		<span v-html="getTemplate()"></span>
@@ -48,6 +48,25 @@
 		</a>
 
 
+		<a v-if="editIcon === true && readonly == true"
+				class="edit-icon"
+				:tabindex="-1"
+				href="#" 
+				@click="editOn()"
+		>
+			<i class="fas fa-pen"></i>
+		</a>
+
+		<a v-if="editIcon === true && readonly == false"
+				class="save-icon"
+				:tabindex="-1"
+				href="#" 
+				@click="editOff()"
+		>
+			<i class="fas fa-check"></i>
+		</a>
+
+
 	</label>
 </template>
 
@@ -72,7 +91,9 @@ export default {
 		'unlockable',
 		'requiredField',
 		'adminUnlockable',
+		'editIcon',
 		'isAdmin',	
+		'readonly'
 		],
 	
 	data () {
@@ -112,6 +133,16 @@ export default {
 
 			this.DisplayValues.locked = !this.DisplayValues.locked;
 			this.$emit("locked", this.DisplayValues.locked);
+		},
+
+		//--------------------------------------------------------------------------------------------
+		editOn: function() {
+			this.$emit("editOn");
+		},
+
+		//--------------------------------------------------------------------------------------------
+		editOff: function(v) {
+			this.$emit("editOff");
 		},
 
 		//--------------------------------------------------------------------------------------------

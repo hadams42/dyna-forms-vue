@@ -141,6 +141,10 @@ export const Utilities = class Utilities {
 					case "RAW":
 						escapeHtml = false;
 						break;
+					case "RAW-CR":
+						escapeHtml = false;
+						result = result.replace("\r","<br>")
+						break;
 					case "CHECK":
 						result = result == "1" ? "&#x2611;" : "&#x2610;";
 						escapeHtml = false;

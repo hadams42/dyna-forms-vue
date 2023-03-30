@@ -314,11 +314,12 @@ export default {
 						if (match) {
 								if (match[1].includes(".")) {
 									var e = match[1].split(".");
-									v = p.ActiveFormData[e[0]][e[1]] || '';
+									v = p.ActiveFormData[e[0]][e[1]];
 								} else {
-									v = p.ActiveFormData[match[1]] || '';
+									v = p.ActiveFormData[match[1]];
 								}
 								//result = result.replace("{" + match[1] + "}", v);
+								if (v == null) v=''
 								result = this.Utilities.ReplaceAll(result, "{" + match[1] + "}", v);
 						}
 				} while (match);

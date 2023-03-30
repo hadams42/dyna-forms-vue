@@ -33,7 +33,7 @@
 					v-show="computedReadOnly == false"
 				>
 					{{getDropZoneLabel()}}
-					<p>
+					<br>
 					<div v-if="allowMultiple" class="mt-2 btn btn-light btn-sm">Click to Browse</div>
 					<div v-if="!allowMultiple" class="mt-2 btn btn-light btn-sm">Click to Browse</div>
 					<input 
@@ -102,31 +102,7 @@
 			>
 			</b-progress>
 		</div>
-		<b-form-input 
-				:id="name+'_validator'"
-				type="text"
-				:state="validationState"
-				:name="name+'_validator'"
-				:value="value"
-				style="display: none"
-		></b-form-input>
-		<b-form-invalid-feedback>
-			<ul
-				v-if="this.Validation.Status  > 0 && this.Validation.MessageList.length > 0"
-				class="help-block list-unstyled" 
-				style="padding-left: 4px; margin-bottom: 0"
-			>
-				<li v-for="(msg, index) in this.Validation.MessageList"
-					:key="index"
-				>
-				{{msg.Label}}
-					<a 
-						:href="msg.Url"
-						v-if="msg.Url != null"
-					><span class="glyphicon glyphicon-question-sign"></span></a>
-				</li>
-			</ul>
-		</b-form-invalid-feedback>
+		
   </b-form-group>
 </template>
 
@@ -221,7 +197,11 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		fileChangeEvent: function(e) {
-			this.files = e.target.files;
+			this.files = []
+			for (let i = 0; i < e.target.files.length; i++) {
+				const file = e.target.files[i]
+				this.files.push(file)
+			}			
 			if (this.DisplayValues.autoUpload) this.submitFiles();
 		},
 
@@ -261,7 +241,7 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		isFileImage: function(fileName) {
-			return ( /\.(jpe?g|png|gif)$/i.test( fileName ) ) ? true : false;
+			return ( /\.(jpe?g|png|gif|webp)$/i.test( fileName ) ) ? true : false;
 		},
 
 		//--------------------------------------------------------------------------------------------

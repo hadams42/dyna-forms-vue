@@ -22,10 +22,8 @@
 					:name="name"
 					:src="imageSourceUrl"
 					block
-					center
 					fluid
-					style="max-height: 200px"
-			>
+			/>
 		</div>
 	</b-form-group>
 </template>
@@ -45,7 +43,8 @@ export default {
 	components: { ComponentLabel },
 	
   props: [
-		'urlPrefix'
+		'urlPrefix',
+		'staticUrl'
 	],
 	
 	data () {
@@ -54,7 +53,8 @@ export default {
 				name: this.name,
 				label: this.label,
 				visible: this.visible == null ? true : this.visible,
-				urlPrefix: this.urlPrefix == null ? '/' : this.urlPrefix,
+				urlPrefix: this.urlPrefix == null ? null : this.urlPrefix,
+				staticUrl: this.staticUrl
 			}
 		}
 	},
@@ -125,9 +125,13 @@ export default {
 	computed: {		
 		imageSourceUrl: {
 			get () { 
-				return (this.value == null || this.value == "") ? IMAGE_PATH() + "no_image.png" : this.DisplayValues.urlPrefix + this.value; 
+				if (this.DisplayValues.staticUrl != null) {
+					return this.DisplayValues.staticUrl;
+				} else {
+					return (this.value == null || this.value == "") ? IMAGE_PATH() + "no_image.png" : this.DisplayValues.urlPrefix != null ? this.DisplayValues.urlPrefix + "/" : '' + this.value; 
 				}
-			},		
+			}
+		},		
 	}
 
 }

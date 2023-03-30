@@ -15,21 +15,25 @@
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 				:requiredField="rules != null && rules.required == true ? true : false"
 				:isAdmin="this.isAdmin"
+				:editIcon="this.editIcon"
 				:adminUnlockable="this.adminUnlockable"
+				:readonly="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)"
 				@locked="onLockToggle()"				
+				@editOn="onEditOn()"
+				@editOff="onEditOff()"
 			>
 			</component-label>
 			
 			<div 
-				:class="['form-control readonly', 'input-' + DisplayValues.size]"
-				v-if="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)"
-				:style="getReadOnlyStyle()"
+				:class="['form-control readonly', 'input-' + DisplayValues.size, (valueModel == null || valueModel == '' && placeholder != null && placeholder != '') ? 'readonly-placeholder' : ''] "
+				v-if="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null) && DisplayValues.nonEditable == false"
+				:style="getReadOnlyStyle() + '; white-space: pre-wrap;'"
 				@click="onLockToggle(false)"
-				v-html="getFormattedValue(valueModel)"
+				v-html="(valueModel != null && valueModel != '') ? getFormattedValue(valueModel) : getFormattedValue(placeholder)"
 			></div>
 
 			<b-textarea
-				v-if="DisplayValues.multiline == true && !(computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null))"
+				v-if="DisplayValues.multiline == true && (!(computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)) || DisplayValues.nonEditable == true)"
 				:id="name"
 				:name="name"
 				v-model="valueModel"
@@ -48,12 +52,13 @@
     	</b-textarea>
 
 			<b-form-input 
-				v-if="DisplayValues.multiline == false && !(computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null))"
+				v-if="DisplayValues.multiline == false && (!(computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)) || DisplayValues.nonEditable == true)"
 				:id="name"
 				type="text"
 				:state="validationState"
 				:size="DisplayValues.size"
 				:name="name"
+				:readonly="DisplayValues.nonEditable"
 				ref="textInput"
 				:value="valueModel"
 				:autofocus="autoFocusField==name ? true : false"
@@ -113,7 +118,9 @@ export default {
 		'backgroundColor',
 		'format',
 		'onEnterPressed',
-		'maxLength'
+		'maxLength',
+		'editIcon',
+		'nonEditable'
 		],
 	
 	data () {
@@ -129,6 +136,8 @@ export default {
 				backgroundColor: this.backgroundColor == null ? "default" : this.backgroundColor,
 				readonly: this.readonly == null ? false : this.readonly,
 				maxLength: this.maxLength == null ? "4000" : this.maxLength,
+				editIcon: this.editIcon == null ? false : this.editIcon,
+				nonEditable: this.nonEditable == null ? false : this.nonEditable, 
 			},
 			//multilineValue: this.value,
 		}
@@ -140,6 +149,27 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	methods: {
+
+		//---------------------------------------------------------------------------------------------------
+		onEditOn: function () {
+			console.log("Edit On");
+			this.DisplayValues.readonly = false;
+			this.DisplayValues.readonlyOverride = false;
+			var p = this.findParent(); 
+			p.readonly == false 
+			this.readonly == false
+		},
+
+
+		//---------------------------------------------------------------------------------------------------
+		onEditOff: function () {
+			console.log("Edit Off");
+			this.DisplayValues.readonly = true;
+			this.DisplayValues.readonlyOverride = true;
+			var p = this.findParent(); 
+			p.readonly == true 
+			this.readonly == true 
+		},
 
 		//--------------------------------------------------------------------------------------------
 		enterPressed: function() {
