@@ -10,47 +10,47 @@ import debounce from 'debounce'
 export default {
 
 	props: [
-		'name', 
-		'label',
-		'value',
-		'visible',
-		'hidden',
-		'readonly',
-		'rules',
-		'onRender',
-		'onAfterRender',
+		'adminUnlockable',
+		'autoFocusField',
+		'containerInstanceId',
+		'customClasses',
+		'debugMode',
 		'enableServerRender',
+		'formName',
 		'formReadOnly',
 		'formReadOnlyLock',
-		'readOnlyLock',
-		'onLoad',
-		'onChange',
-		'onInput',
-		'onFormDataChange',
-		'guid',
 		'formType',
-		'formName',
-		'newRow',
-		'instanceId',
-		'targets',
-		'customClasses',
-		'submitToServer',
-		'debugMode',
-		'showMessageDialog',
-		'hideMessageDialog',
-		'messageDialog',
-		'showConfirmDialog',
-		'containerInstanceId',
-		'persistSelection',
-		'readonlyMessage',
+		'guid',
 		'helpText',
 		'helpUrl',
+		'hidden',
+		'hideMessageDialog',
+		'instanceId',
+		'isAdmin',	
 		'kpiText',
 		'kpiTitle',
+		'label',
 		'maxWidth',
-		'autoFocusField',
-		'isAdmin',	
-		'adminUnlockable',
+		'messageDialog',
+		'name', 
+		'newRow',
+		'onAfterRender',
+		'onChange',
+		'onFormDataChange',
+		'onInput',
+		'onLoad',
+		'onRender',
+		'persistSelection',
+		'readOnlyLock',
+		'readonly',
+		'readonlyMessage',
+		'rules',
+		'showConfirmDialog',
+		'showMessageDialog',
+		'submitToServer',
+		'targets',
+		'value',
+		'visible',
 	],
 
 	data () {
@@ -98,6 +98,12 @@ export default {
 						this.DisplayValues.readonlyOverride = !this.DisplayValues.readonlyOverride;
 					}
 				}
+
+				this.$nextTick(() => {
+					try{
+					this.$refs.textInput.focus(); } catch(e){}
+				});
+				
 			}
 		},
 

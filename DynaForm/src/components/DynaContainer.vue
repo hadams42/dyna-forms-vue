@@ -183,7 +183,7 @@ export default {
 				Show: false,
 				Caption: "Confirm Delete",
 				Text: "Do you wish to delete this record?",
-				Size: "lg",
+				Size: "sm",
 				CustomClasses: "",
 				ReturnFocusTo: null,
 				YesButton: {
@@ -295,7 +295,7 @@ export default {
 		},
 
 		//---------------------------------------------------------------------------------------------------
-		ShowConfirmDialog: function(Caption, Text, OnOk, OnCancel, OkButtonText = "Ok", CancelButtonText = "Cancel") {
+		ShowConfirmDialog: function(Caption, Text, OnOk, OnCancel, OkButtonText = "Ok", CancelButtonText = "Cancel", Size = "lg") {
 			this.MessageDialog.Caption = Caption;
 			this.MessageDialog.Text = Text;
 			this.MessageDialog.YesButton.Visible = false;
@@ -307,6 +307,7 @@ export default {
 			this.MessageDialog.OkButton.Text = OkButtonText;
 			this.MessageDialog.OkButton.OnClick = OnOk;
 			this.MessageDialog.Show = true;
+			this.MessageDialog.Size = Size;
 		},
 
 

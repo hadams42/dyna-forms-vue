@@ -38,7 +38,6 @@
 					<div v-if="!allowMultiple" class="mt-2 btn btn-light btn-sm">Click to Browse</div>
 					<input 
 						type="file" 
-						accept="image/*"
 						style="display: none"
 						:multiple="allowMultiple"
 						class="input-file"
@@ -53,7 +52,7 @@
 					class="submit-button float-right mr-2" 
 					style="margin-top: .75rem"
 					v-on:click="submitFiles()" 
-					v-show="files.length > 0 && DisplayValues.autoUpload == false"
+					v-show="files.length > 0"
 				>Upload
 				</b-button>
 				<b-list-group>

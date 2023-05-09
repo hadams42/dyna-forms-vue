@@ -27,7 +27,7 @@
 						v-for="option in OptionList"
 						:key="option.value"
 						:block="block"
-						:disabled="option.disabled"
+						:disabled="option.disabled || DisplayValues.disabled"
 						:variant="getVariant(option)"
 						:class="[option.cssClass, option.value]"						
 						@click="buttonClicked(option)"
@@ -64,7 +64,7 @@
 						>
 							<b-button
 								:block="block"
-								:disabled="option.disabled"
+								:disabled="option.disabled || DisplayValues.disabled"
 								:variant="getVariant(option)"
 								:class="[option.cssClass, option.value]"								
 								@click="buttonClicked(option)"
@@ -117,7 +117,7 @@
 						>
 						<b-button
 							:block="block"
-							:disabled="option.disabled"
+							:disabled="option.disabled || DisplayValues.disabled"
 							:variant="option.variant != null ?  option.variant : option.active ? DisplayValues.activeVariant : DisplayValues.inactiveVariant"
 							:class="[option.cssClass, option.value]"
 							:style="{'margin': margin+'px', 'color': option.textColor || 'default', 'background-color': option.backgroundColor || 'default', 'border-radius': DisplayValues.buttonRadius }"
@@ -154,6 +154,7 @@
 					<b-button
 						size="sm"
 						style="margin-top: 2px; max-height: 30px;"
+						:disabled="DisplayValues.disabled"
 						:variant="DisplayValues.buttonVariant"
 						@click="buttonClicked()"
 						v-html="DisplayValues.buttonText"
@@ -199,7 +200,9 @@ export default {
 		'buttonRadius',
 		'onSelectionChange',
 		'emptyText',
-		'onGroupChange'
+		'onGroupChange',
+		'singleClickOnly',
+		'disabled'
 		],
 
 	data () {
@@ -223,6 +226,8 @@ export default {
 				groupLabel: this.groupLabel == null ? "" : this.groupLabel,
 				buttonRadius: this.buttonRadius == null ? 0 : this.buttonRadius,
 				emptyText: this.emptyText == null ? "" : this.emptyText,
+				singleClickOnly: this.singleClickOnly == null ? false : this.singleClickOnly,
+				disabled: this.disabled == null ? false : this.disabled
 			}
 		}
 	},
@@ -255,6 +260,12 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		buttonClicked: function(option=null) {
+			if (this.DisplayValues.singleClickOnly)  
+			{
+				this.DisplayValues.disabled = true;
+				setTimeout(function() { this.DisplayValues.disabled = false; }.bind(this), 2000);
+			}
+
 			if (this.readonly == true) return;
 			
 			if (option != null) {

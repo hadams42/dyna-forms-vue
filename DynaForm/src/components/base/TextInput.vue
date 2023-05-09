@@ -158,6 +158,10 @@ export default {
 			var p = this.findParent(); 
 			p.readonly == false 
 			this.readonly == false
+
+			this.$nextTick(() => {
+				this.$refs.textInput.focus();
+			});
 		},
 
 
