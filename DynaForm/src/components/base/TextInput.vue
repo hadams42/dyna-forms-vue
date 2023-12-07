@@ -27,7 +27,7 @@
 			<div 
 				:class="['form-control readonly', 'input-' + DisplayValues.size, (valueModel == null || valueModel == '' && placeholder != null && placeholder != '') ? 'readonly-placeholder' : ''] "
 				v-if="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null) && DisplayValues.nonEditable == false"
-				:style="getReadOnlyStyle() + '; white-space: pre-wrap;'"
+				:style="getReadOnlyStyle() + getReadOnlyTextareaStyle()"
 				@click="onLockToggle(false)"
 				v-html="(valueModel != null && valueModel != '') ? getFormattedValue(valueModel) : getFormattedValue(placeholder)"
 			></div>
@@ -46,6 +46,7 @@
 				ref="textInput"
 				:size="DisplayValues.size"
 				:no-resize="noResize"
+				@blur.native="onEditOff()"
 				@change="fieldChangeEvent($event)"
 				:maxLength="DisplayValues.maxLength"
 			>
@@ -63,6 +64,7 @@
 				:value="valueModel"
 				:autofocus="autoFocusField==name ? true : false"
 				@focus.native="$event.target.select()"				
+				@blur.native="onEditOff()"
 				:class="customClasses"
 				:style="{'color': DisplayValues.color, 'background-color': DisplayValues.backgroundColor, 'max-width': DisplayValues.maxWidth > 0 ? DisplayValues.maxWidth + 'px' : 'unset' }"
 				@change="fieldChangeEvent($event)"
@@ -152,7 +154,6 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		onEditOn: function () {
-			console.log("Edit On");
 			this.DisplayValues.readonly = false;
 			this.DisplayValues.readonlyOverride = false;
 			var p = this.findParent(); 
@@ -167,12 +168,13 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		onEditOff: function () {
-			console.log("Edit Off");
-			this.DisplayValues.readonly = true;
-			this.DisplayValues.readonlyOverride = true;
-			var p = this.findParent(); 
-			p.readonly == true 
-			this.readonly == true 
+			if (this.DisplayValues.editIcon == true) {
+				this.DisplayValues.readonly = true;
+				this.DisplayValues.readonlyOverride = true;
+				var p = this.findParent(); 
+				p.readonly == true 
+				this.readonly == true 
+			}
 		},
 
 		//--------------------------------------------------------------------------------------------

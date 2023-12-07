@@ -15,6 +15,19 @@
 						v-if="this.DisplayValues.currentRows.length > 0 && (DisplayValues.buttons.showRefreshButton || DisplayValues.buttons.showDeleteButton || DisplayValues.buttons.showNewButton || DisplayValues.buttons.showExportButton)"
 					>
 						<b-button
+							v-if="DisplayValues.buttons.showNewButton"
+							@click="newButtonClick"
+							variant="light"
+							size="sm"
+							:class="['icon-button button-input ml-0 rounded-0', DisplayValues.buttonAlignment == 'left' ? 'float-left' : 'float-right' ]"
+							type="button"
+						>
+							<i class="icon small-size far fa-plus-square"></i>
+							<span class="icon-label small-size">New</span>
+						</b-button>
+
+
+						<b-button
 							v-if="DisplayValues.buttons.showRefreshButton"							
 							@click="refreshButtonClick"
 							size="sm"
@@ -36,18 +49,6 @@
 						>
 							<i class="icon small-size far fa-trash-alt"></i>
 							<span class="icon-label small-size">Delete</span>
-						</b-button>
-
-						<b-button
-							v-if="DisplayValues.buttons.showNewButton"
-							@click="newButtonClick"
-							variant="light"
-							size="sm"
-							:class="['icon-button button-input ml-0 rounded-0', DisplayValues.buttonAlignment == 'left' ? 'float-left' : 'float-right' ]"
-							type="button"
-						>
-							<i class="icon small-size far fa-plus-square"></i>
-							<span class="icon-label small-size">New</span>
 						</b-button>
 
 						<b-button

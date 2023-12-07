@@ -32,16 +32,6 @@
 						</b-link>
 
 						<b-link
-							v-if="DisplayValues.buttons.showNewButton"
-							@click="newButtonClick"
-							class="new-button icon-button button-input ml-3"
-							type="button"
-						>
-							<i class="icon small-size far fa-plus-square"></i>
-							<span class="icon-label small-size"></span>
-						</b-link>
-
-						<b-link
 							v-if="DisplayValues.buttons.showTemplateButton"
 							@click="templateButtonClick"
 							class="template-button icon-button button-input ml-3"
@@ -52,7 +42,18 @@
 							<i v-if="DisplayValues.activeTemplate == 'report'" :class="['icon','small-size', DisplayValues.reportTemplateIcon ]"></i>
 							<span class="icon-label small-size"></span>
 						</b-link>
+
 						<div class="total-count">Count: {{Utilities.FormatString(totalRows, "N0")}}</div>
+
+						<b-link
+							v-if="DisplayValues.buttons.showNewButton"
+							@click="newButtonClick"
+							class="new-button icon-button button-input ml-3"
+							type="button"
+						>
+							<i class="icon small-size far fa-plus-square"></i>
+							<span class="icon-label small-size">Add New</span>
+						</b-link>
 					</b-col>
 				</b-row>
 				<b-row>
@@ -145,7 +146,7 @@
 									:items="items"
 									:fields="fields"
 									:current-page.sync="DisplayValues.currentPage"
-									:per-page.sync="dataProvider.rowsPerPage"
+									:per-page.sync="computedRowsPerPage"
 									:sort-by.sync="sortBy"
 									:sort-desc.sync="sortDescending"
 									:responsive="true"
@@ -998,7 +999,10 @@ export default {
 			},
 
 			set (v) {
-				this.dataProvider.rowsPerPage = v;
+				this.$nextTick(function() {
+					this.dataProvider.rowsPerPage = v;
+				});
+
 				localStorage[this.name+'_rowsPerPage'] = v;
 			}
 

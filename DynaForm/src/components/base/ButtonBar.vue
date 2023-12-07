@@ -8,7 +8,6 @@
 		</div>
 		<b-form-group
 			:class="['button-bar', name]"
-			:id="name"
 			v-show="DisplayValues.visible && (computedReadOnly == false || alwaysShow == true) && OptionList != null && OptionList.length > 0"
 			:style="DisplayValues.hidden ? 'visibility: hidden' : ''"
 			:label="DisplayValues.label"

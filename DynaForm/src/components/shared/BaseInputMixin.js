@@ -73,7 +73,7 @@ export default {
 					cssStyle = "height: calc(2.25rem + 2px); overflow-y: auto;";
 				} 
 				else {
-					cssStyle = "height: inherit";
+					cssStyle = "height: inherit;";
 				}
 			} 
 			else if (this.DisplayValues.multiline == true && this.DisplayValues.readonlyShowAll == false) {
@@ -87,15 +87,28 @@ export default {
 			
 
 			if (this.DisplayValues.color != null) {
-				cssStyle =  cssStyle + "; color: " + this.DisplayValues.color;
+				cssStyle =  cssStyle + "; color: " + this.DisplayValues.color + ";";
 			}
 
 			if (this.DisplayValues.backgroundColor != null) {
-				cssStyle =  cssStyle + "; background-color: " + this.DisplayValues.backgroundColor;
+				cssStyle =  cssStyle + "; background-color: " + this.DisplayValues.backgroundColor + ";";
 			}
 
 			return cssStyle;
-		}
+		},
+
+		//--------------------------------------------------------------------------------------------
+		getReadOnlyTextareaStyle: function() {
+			var cssStyle = "";
+			if(this.value != null && this.value != "" && this.value.includes("<p>")) {
+				cssStyle = "";
+			} 
+			else {
+				cssStyle = "white-space: pre-wrap;";
+			}
+
+			return cssStyle;
+		},
 
 
 	},

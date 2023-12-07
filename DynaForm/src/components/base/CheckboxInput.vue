@@ -167,7 +167,7 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	computed: {
 		valueModel: {
-			get () { return (!this.value) ? false : this.value },
+			get () { return (!this.value) ? false : true },
 			set (v) { 
 				//this.value = v
 				this.$emit('change', v) 
