@@ -21,8 +21,13 @@
 			</component-label>
 
 			<div 
+				class="read-only-placeholder"
+				v-if="readonly_placeholder != null && valueModel == null && DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true)"
+				>{{readonly_placeholder}}</div>
+
+			<div 
 				:class="['form-control readonly', 'input-' + DisplayValues.size]"
-				v-if="DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null))"
+				v-if="(valueModel != null && valueModel != '') || !(DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true))"
 				:style="getReadOnlyStyle()"
 				@click="onLockToggle(false)"
 			>{{findValueText(valueModel)}}</div>
@@ -92,6 +97,7 @@ export default {
 				rows: this.rows == null ? 10 : this.rows,
 				includeValues: this.includeValues == null ? false : this.includeValues,
 				renderOnChange: this.renderOnChange == null ? false : this.renderOnChange,
+				readonly_placeholder: this.readonly_placeholder == null ? "" : this.readonly_placeholder,
 			},
 			busy: false,
  			typeaheadQuery: '',

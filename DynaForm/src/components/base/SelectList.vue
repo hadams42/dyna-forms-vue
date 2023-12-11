@@ -21,8 +21,14 @@
 			>
 			</component-label>
 
+			<div 
+			  class="read-only-placeholder"
+				v-if="readonly_placeholder != null && valueModel == null && DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true)"
+			>{{readonly_placeholder}}</div>
+
 			<b-form-select 
 				:id="name"
+				v-if="(valueModel != null && valueModel != '') || !(DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true))"
 				v-model="valueModel"
 				:state="validationState"
 				:autofocus="autoFocusField==name ? true : false"
@@ -101,6 +107,7 @@ export default {
 				align: this.align == null ? "ltr" : this.align,
 				customClasses: this.customClasses == null ? '' : this.customClasses,
 				placeholder: this.placeholder == null ? null : this.placeholder,
+				readonly_placeholder: this.readonly_placeholder == null ? false : this.readonly_placeholder,
 			}
 		}
 	},

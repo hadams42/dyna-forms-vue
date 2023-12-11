@@ -15,6 +15,7 @@ export default {
 		'showEmptyOptionText', 
 		'showAllOption', 
 		'showAllOptionText',
+		'readonly_placeholder'
 	],
 
 	data() {
