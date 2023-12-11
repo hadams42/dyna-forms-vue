@@ -77,6 +77,75 @@
 					</b-form-row>
 				</div>
 			</div>
+			<div v-if="secondaryLayout != null" >
+
+				<div 
+					v-if="secondaryLayoutTitleCollapsed != null && secondaryLayoutTitleCollapsed != ''"
+					class="secondary-layout"
+				>
+					<div class="secondary-layout-title">
+						<b-link
+							type="button"
+							v-b-toggle="'SecondaryCollapse'" 
+						>
+							<span
+								v-html="this.getSecondaryLayoutTitle()"
+							> 
+							</span>
+						</b-link>					
+					</div>
+
+					<b-collapse 
+						id="SecondaryCollapse" 
+					>				
+						<div v-for="(level1_row, index1) in secondaryLayout.rows"
+						:key="index1"
+						>
+							<b-form-row 
+									:class="[Utilities.GetRowClass(level1_row.align), level1_row.customClasses]"					
+									>
+								<div 
+										v-for="(level1_column, index2) in filterColumns(level1_row.columns)"
+										:key="index2"
+										:class="Utilities.GetColumnClass(level1_column.width, false, level1_column.customClasses)"
+										>
+									<div 
+											v-for="(field, index3) in filterFields(ActiveSchema, level1_column)"
+											:key="index3"
+											>
+										<div require="src/components/shared/FormComponentTemplate.html"></div>
+									</div>
+									<div 				
+											v-for="(level2_row, index4) in level1_column.rows"
+											:key="index4"
+											>
+										<b-form-row 
+												:class="Utilities.GetRowClass(level2_row.align)"
+												>
+											<div 
+													v-for="(level2_column, index5) in filterColumns(level2_row.columns)"
+													:key="index5"
+													:class="Utilities.GetColumnClass(level2_column.width, false, level2_column.customClasses)"
+													>
+												<div 
+														v-for="(field, index6) in filterFields(ActiveSchema, level2_column)"
+														:key="index6"
+														>
+													<div require="src/components/shared/FormComponentTemplate.html"></div>
+												</div>	
+											</div>
+										</b-form-row>
+									</div>
+								</div>
+							</b-form-row>
+						</div>
+					</b-collapse>
+
+				</div>				
+
+			</div>
+			
+
 		</b-container>
 	</b-collapse>
 	<div v-if="this.showValidationSummary() == true && ActiveFormSettings.showValidationSummary === true"
@@ -222,6 +291,10 @@ export default {
 			 }
 			 return false;
 		},
+
+		getSecondaryLayoutTitle: function(key) {
+			return this.secondaryLayoutTitleCollapsed;
+		}
 	},
 
 	//---------------------------------------------------------------------------------------------------
