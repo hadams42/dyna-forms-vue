@@ -104,6 +104,7 @@ export default {
 		'options', 
 		'switch', 
 		'mode',
+		'multi',
 		'block',
 		],
 
@@ -116,6 +117,7 @@ export default {
 				options: this.options == null ? [] : this.options,
 				switch: this.switch == null ? true : this.switch,
 				mode: this.mode == null ? 'radio' : this.mode,
+				multi: this.multi == null ? false : this.multi,
 				block: this.block == null ? false : this.block,
 				customClasses: this.customClasses == null ? '' : this.customClasses,
 			}
@@ -167,9 +169,16 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	computed: {
 		valueModel: {
-			get () { return (!this.value) ? false : true },
+			get () { 
+				if (this.DisplayValues.multi == false) {
+					return (!this.value) ? false : true 
+				}
+				else {
+					return this.value;
+				}
+			},
 			set (v) { 
-				//this.value = v
+				//sthis.value = v
 				this.$emit('change', v) 
 			},
 		},

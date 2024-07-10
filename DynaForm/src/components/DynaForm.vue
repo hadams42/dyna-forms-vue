@@ -1,5 +1,5 @@
 <template>
-<div> 
+<div :class="[ActiveFormSettings.customClasses]" > 
 	<!-- <div class="global-loading-spinner"
 		v-show="IsLoading"
 	>
@@ -13,7 +13,6 @@
 	<b-collapse 
 			:id="guid + 'Collapse'" 
 			:visible="getLocalStorage(formType + '__' + ActiveFormSettings.title) == 'true' ? false : true"
-			:class="[ActiveFormSettings.customClasses]" 
 			v-on:show="setLocalStorage(formType + '__' + ActiveFormSettings.title, false)"
 			v-on:hide="setLocalStorage(formType + '__' + ActiveFormSettings.title, true)"
 	>

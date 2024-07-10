@@ -51,18 +51,16 @@
 		<a v-if="editIcon === true && readonly == true"
 				class="edit-icon"
 				:tabindex="-1"
-				href="#" 
-				@click="editOn()"
-		>
+				href="javascript: function x() {editOff(); return false;}" 
+		>read
 			<i class="fas fa-pen"></i>
 		</a>
 
 		<a v-if="editIcon === true && readonly == false"
 				class="save-icon"
 				:tabindex="-1"
-				href="#" 
-				@click="editOff()"
-		>
+				href="javascript: function x() {editOff(); return false;}" 
+		>edit
 			<i class="fas fa-check"></i>
 		</a>
 

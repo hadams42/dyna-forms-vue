@@ -22,15 +22,15 @@
 
 			<div 
 				class="read-only-placeholder"
-				v-if="readonly_placeholder != null && valueModel == null && DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true)"
+				v-if="readonly_placeholder != null && valueModel == null && (DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true))"
 				>{{readonly_placeholder}}</div>
 
-			<div 
+			<!-- <div 
 				:class="['form-control readonly', 'input-' + DisplayValues.size]"
 				v-if="(valueModel != null && valueModel != '') || !(DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true))"
 				:style="getReadOnlyStyle()"
 				@click="onLockToggle(false)"
-			>{{findValueText(valueModel)}}</div>
+			>{{findValueText(valueModel)}}</div> -->
 
 			<base-typeahead
 				v-if="!(computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)) && !DisplayValues.disabled && !busy && OptionList.length != 0"
@@ -81,7 +81,8 @@ export default {
 		'includeValues',
 		'allowShowAll',
 		'disabled',
-		'renderOnChange'
+		'renderOnChange',
+		'readonly_placeholder'
 		],
 
 	data () {

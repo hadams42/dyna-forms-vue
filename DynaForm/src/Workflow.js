@@ -13,7 +13,7 @@ export const Workflow = class Workflow {
 				"_TriggerWorkflowActivity",
 				self.containerInstanceId, 
 				activity,
-				);		
+			);		
 		};
 
 		//--------------------------------------------------------------------------------------------
