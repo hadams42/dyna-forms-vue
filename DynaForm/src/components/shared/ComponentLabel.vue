@@ -51,8 +51,8 @@
 		<a v-if="editIcon === true && readonly == true"
 				class="edit-icon"
 				:tabindex="-1"
-				href="javascript: function x() {editOff(); return false;}" 
-		>read
+				href="javascript: function x() {editOn(); return false;}" 
+		>
 			<i class="fas fa-pen"></i>
 		</a>
 
@@ -60,7 +60,7 @@
 				class="save-icon"
 				:tabindex="-1"
 				href="javascript: function x() {editOff(); return false;}" 
-		>edit
+		>
 			<i class="fas fa-check"></i>
 		</a>
 
