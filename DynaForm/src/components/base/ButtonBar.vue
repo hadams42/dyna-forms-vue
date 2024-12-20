@@ -6,6 +6,7 @@
 		>
 			{{DisplayValues.emptyText}}
 		</div>
+		<div class="indeterminate-progress-bar" v-if="DisplayValues.loading && this.showProgressBar"></div>
 		<b-form-group
 			:class="['button-bar', name]"
 			v-show="DisplayValues.visible && (computedReadOnly == false || alwaysShow == true) && OptionList != null && OptionList.length > 0"
@@ -26,16 +27,15 @@
 						v-for="option in OptionList"
 						:key="option.value"
 						:block="block"
-						:disabled="option.disabled || DisplayValues.disabled"
+						:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading"
 						:variant="getVariant(option)"
 						:class="[option.cssClass, option.value]"						
-						@click="buttonClicked(option)"
+						@click="buttonClicked($event, option)"
 					>
 						<i v-if="option.icon != null && option.icon != ''" 
 							:class="option.icon"
 						></i>
-						<span v-html="getTemplate(option.text)">
-						</span>
+						<span v-html="getTemplate(option.text)"></span>
 					</b-button>
 				</b-button-group>
 			</div>
@@ -63,10 +63,10 @@
 						>
 							<b-button
 								:block="block"
-								:disabled="option.disabled || DisplayValues.disabled"
+								:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading"
 								:variant="getVariant(option)"
 								:class="[option.cssClass, option.value]"								
-								@click="buttonClicked(option)"
+								@click="buttonClicked($event, option)"
 								:size="size"
 							>
 								<i v-if="option.icon != null && option.icon != ''"
@@ -116,11 +116,11 @@
 						>
 						<b-button
 							:block="block"
-							:disabled="option.disabled || DisplayValues.disabled"
+							:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading"
 							:variant="option.variant != null ?  option.variant : option.active ? DisplayValues.activeVariant : DisplayValues.inactiveVariant"
 							:class="[option.cssClass, option.value]"
 							:style="{'margin': margin+'px', 'color': option.textColor || 'default', 'background-color': option.backgroundColor || 'default', 'border-radius': DisplayValues.buttonRadius }"
-							@click="buttonClicked(option)"
+							@click="buttonClicked($event, option)"
 							:size="size"
 						>
 							<i v-if="option.icon != null && option.icon != ''"
@@ -153,11 +153,12 @@
 					<b-button
 						size="sm"
 						style="margin-top: 2px; max-height: 30px;"
-						:disabled="DisplayValues.disabled"
+						:disabled="DisplayValues.disabled || DisplayValues.loading"
 						:variant="DisplayValues.buttonVariant"
-						@click="buttonClicked()"
-						v-html="DisplayValues.buttonText"
-					></b-button>
+						@click="buttonClicked($event)"												
+					>
+					<span v-html="DisplayValues.buttonText"></span>
+				</b-button>
 				</b-input-group-append>
 				</b-input-group>
 			</div>
@@ -201,7 +202,8 @@ export default {
 		'emptyText',
 		'onGroupChange',
 		'singleClickOnly',
-		'disabled'
+		'disabled',
+		'showProgressBar'
 		],
 
 	data () {
@@ -213,6 +215,7 @@ export default {
 				name: this.name,
 				label: this.label,
 				size: this.size,
+				loading: false,
 				selectSize: this.selectSize,
 				visible: this.visible == null ? true : this.visible,
 				options: this.options == null ? [] : this.options,
@@ -258,15 +261,17 @@ export default {
 		},
 
 		//--------------------------------------------------------------------------------------------
-		buttonClicked: function(option=null) {
+		buttonClicked: function(event, option=null) {
+			if (this.readonly == true) return;
+
 			if (this.DisplayValues.singleClickOnly)  
 			{
-				this.DisplayValues.disabled = true;
-				setTimeout(function() { this.DisplayValues.disabled = false; }.bind(this), 2000);
+				this.DisplayValues.loading = true;
+				if (this.showProgressBar) {
+					this.disableButtons();
+				}
 			}
 
-			if (this.readonly == true) return;
-			
 			if (option != null) {
 				this.updateByOption(option);
 			} else {
@@ -405,6 +410,7 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		groupChangeEvent: function() {
+			this.DisplayValues.loading = false;
 			var p = this.findParent(); 
 			if (this.onGroupChange != null && this.onGroupChange != "") {
 				this.onGroupChange.call(this,
@@ -476,6 +482,7 @@ export default {
 			//Verify a value is selected
 			if (option == null || option.value == null) {
 				console.log("No value specified for button bar click.");
+				this.DisplayValues.loading = false;
 				return;
 			}
 
@@ -503,6 +510,7 @@ export default {
 						}.bind(this)
 					);
 				}
+				this.DisplayValues.loading = false;
 				return; 				
 			}
 			//Else if per-button action is specified
@@ -520,6 +528,7 @@ export default {
 			} 
 			//Else no valid action is specified...
 			else {
+				this.DisplayValues.loading = false;
 				return;
 			} 
 
@@ -536,7 +545,7 @@ export default {
 				function(cbAction, e) { //Error callback
 				}.bind(this)
 			)
-
+			this.DisplayValues.loading = false;
 		},
 
 	},

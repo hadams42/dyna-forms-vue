@@ -379,7 +379,7 @@ export default {
 					this.onItemSelected(item);
 				} 
 				else {
-					console.log("No onItemSelected(item) func property specified.");
+					console.log("Error: No onItemSelected(item) func property specified.");
 				}
 			}
 

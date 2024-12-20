@@ -264,12 +264,12 @@ export default {
 			}
 			else if (sourceCurrencyCode == "USD") {
 				var rate = this.getCurrency(destinationCurrencyCode).rate;
-				console.log(sourceCurrencyCode + ":" + destinationCurrencyCode + "@" + rate)
+				//console.log(sourceCurrencyCode + ":" + destinationCurrencyCode + "@" + rate)
 				result = rate != 0 ? amount * rate : 0;
 			}
 			else if (destinationCurrencyCode == "USD") {
 				var rate = this.getCurrency(sourceCurrencyCode).rate;
-				console.log(sourceCurrencyCode + ":" + destinationCurrencyCode + "@" + rate)
+				//console.log(sourceCurrencyCode + ":" + destinationCurrencyCode + "@" + rate)
 				result = rate != 0 ? amount / rate : 0;
 			}
 			else {
@@ -277,7 +277,7 @@ export default {
 				var usdAmount =  srcRate != 0 ? amount / srcRate : 0;
 				var destRate = this.getCurrency(destinationCurrencyCode).rate;
 				result = usdAmount * destRate;
-				console.log(sourceCurrencyCode + ":" + destinationCurrencyCode + "@" + rate)
+				//console.log(sourceCurrencyCode + ":" + destinationCurrencyCode + "@" + rate)
 			}
 			return result;
 		},
@@ -350,15 +350,15 @@ export default {
 					else {
 						var usdAmount = this.getForexConversion(this.DisplayValues.bars[i].amount, this.DisplayValues.bars[i].currency, "USD")
 						this.otherUsdCommitments += usdAmount
-						console.log("converting " + this.DisplayValues.bars[i].amount + " in " + this.DisplayValues.bars[i].currency + " to usd = " + usdAmount)
+						//console.log("converting " + this.DisplayValues.bars[i].amount + " in " + this.DisplayValues.bars[i].currency + " to usd = " + usdAmount)
 					}
 				}
 			}
 			this.maxUsdAmount = this.budgetUsd - this.otherUsdCommitments;
 
-			console.log("max: " + this.maxUsdAmount)
-			console.log("budget: " + this.budgetUsd)
-			console.log("committed: " + this.otherUsdCommitments)
+			//console.log("max: " + this.maxUsdAmount)
+			//console.log("budget: " + this.budgetUsd)
+			//console.log("committed: " + this.otherUsdCommitments)
 			
 			this.maxAmount = this.getForexConversion(this.maxUsdAmount, "USD", this.activeCurrencyCode)
 			this.update();

@@ -35,7 +35,7 @@
 				:disabled="DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true)"
 				:multiple="multi"
 				:dir="DisplayValues.align"
-				:class="[ DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true) ? 'readonly' : '', DisplayValues.customClasses, 'form-control']"
+				:class="[ validationClass, DisplayValues.disabled || busy || OptionList.length == 0 || (computedReadOnly == true && DisplayValues.readonlyOverride == null) || (DisplayValues.readonlyOverride == true) ? 'readonly' : '', DisplayValues.customClasses, 'form-control']"
 				:select-size="DisplayValues.rows"
 				:size="DisplayValues.size"
 				:style="{'color': DisplayValues.color }"

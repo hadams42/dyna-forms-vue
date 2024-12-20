@@ -9,8 +9,18 @@
 				<b-row v-if="itemArray != null && itemArray.length != 0 && DisplayValues.showButtonBar" 
 					class="icon-button-row"
 				>
-					<b-col md="12" class="mb-1" >
+					<div class>
 				
+						<b-link
+							v-if="DisplayValues.buttons.showNewButton"
+							@click="newButtonClick"
+							class="new-button icon-button button-input ml-3"
+							type="button"
+						>
+							<i class="icon small-size far fa-plus-square"></i>
+							<span class="icon-label small-size">Add New</span>
+						</b-link>
+
 						<b-link
 							v-if="DisplayValues.buttons.showRefreshButton"
 							@click="refreshButtonClick"
@@ -43,18 +53,9 @@
 							<span class="icon-label small-size"></span>
 						</b-link>
 
-						<div class="total-count">Count: {{Utilities.FormatString(totalRows, "N0")}}</div>
+						<span class="total-count">Count: {{Utilities.FormatString(totalRows, "N0")}}</span>
 
-						<b-link
-							v-if="DisplayValues.buttons.showNewButton"
-							@click="newButtonClick"
-							class="new-button icon-button button-input ml-3"
-							type="button"
-						>
-							<i class="icon small-size far fa-plus-square"></i>
-							<span class="icon-label small-size">Add New</span>
-						</b-link>
-					</b-col>
+					</div>
 				</b-row>
 				<b-row>
 					<b-col xs="12" class="pl-0" >
@@ -545,7 +546,9 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		refreshGrid: function() {
 			//this.DisplayValues.currentPage = 1;
-			this.debounce(this.updateGridKey(), 200);
+			this.$nextTick(function() {
+				this.updateGridKey();
+			});
 		},
 
 		//--------------------------------------------------------------------------------------------
@@ -773,6 +776,7 @@ export default {
 		actionClick: function(action, selectedRecordKey) {
 			//Perform local onclick if defined
 			if (action.onClick != null && typeof action.onClick != "object") {
+				console.log("LocalAction:", action, this.instanceId, selectedRecordKey, this.DisplayValues)
 				var p = this.findParent();
 				action.onClick.call(this,
 					this.DisplayValues,
@@ -788,6 +792,7 @@ export default {
 			} 
 			//Else perform server actioon
 			else {
+				console.log("ServerAction:", action, this.instanceId, selectedRecordKey, this.DisplayValues)
 				this.FormActions.ServerAction(this, action, this.instanceId, selectedRecordKey, this.DisplayValues);
 			}
 		},

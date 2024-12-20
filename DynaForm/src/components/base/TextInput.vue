@@ -1,6 +1,6 @@
 <template>
 		<b-form-group 
-			:class="['text-input', name ]"
+			:class="['text-input', name, 'is-invalid' ]"
 			v-show="DisplayValues.visible"
 		>
 			<component-label
@@ -25,7 +25,7 @@
 			</component-label>
 			
 			<div 
-				:class="['form-control readonly', 'input-' + DisplayValues.size, (valueModel == null || valueModel == '' && placeholder != null && placeholder != '') ? 'readonly-placeholder' : ''] "
+				:class="['form-control readonly','input-' + DisplayValues.size, validationClass, (valueModel == null || valueModel == '' && placeholder != null && placeholder != '') ? 'readonly-placeholder' : ''] "
 				v-if="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null) && DisplayValues.nonEditable == false"
 				:style="getReadOnlyStyle() + getReadOnlyTextareaStyle()"
 				@click="onLockToggle(false)"

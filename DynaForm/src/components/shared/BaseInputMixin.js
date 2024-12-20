@@ -100,7 +100,7 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		getReadOnlyTextareaStyle: function() {
 			var cssStyle = "";
-			if(this.value != null && this.value != "" && this.value.includes("<p>")) {
+			if(typeof this.value === 'string' && this.value.includes("<p>")) {
 				cssStyle = "";
 			} 
 			else {

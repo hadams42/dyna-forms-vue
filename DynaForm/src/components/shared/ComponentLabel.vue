@@ -11,6 +11,7 @@
 				:tabindex="-1"
 				href="#" 
 				:disabled="helpText == null || helpText == ''"
+				@click.prevent="() => {}"
 				v-b-popover.hover.click.blur.auto="helpText"
 		>
 			<i class="fas fa-info-circle"></i>
@@ -47,11 +48,10 @@
 
 		</a>
 
-
 		<a v-if="editIcon === true && readonly == true"
 				class="edit-icon"
 				:tabindex="-1"
-				href="javascript: function x() {editOn(); return false;}" 
+				@click="editOn()" 
 		>
 			<i class="fas fa-pen"></i>
 		</a>
@@ -59,7 +59,7 @@
 		<a v-if="editIcon === true && readonly == false"
 				class="save-icon"
 				:tabindex="-1"
-				href="javascript: function x() {editOff(); return false;}" 
+				onclick="this.editOff(); return false;" 
 		>
 			<i class="fas fa-check"></i>
 		</a>
@@ -136,11 +136,13 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		editOn: function() {
 			this.$emit("editOn");
+			return false;
 		},
 
 		//--------------------------------------------------------------------------------------------
 		editOff: function(v) {
 			this.$emit("editOff");
+			return false;
 		},
 
 		//--------------------------------------------------------------------------------------------
