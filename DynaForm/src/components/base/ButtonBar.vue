@@ -6,7 +6,7 @@
 		>
 			{{DisplayValues.emptyText}}
 		</div>
-		<div class="indeterminate-progress-bar" v-if="DisplayValues.loading && this.showProgressBar"></div>
+		<div class="indeterminate-progress-bar" v-if="showProgressBar && singleClickOnly"></div>
 		<b-form-group
 			:class="['button-bar', name]"
 			v-show="DisplayValues.visible && (computedReadOnly == false || alwaysShow == true) && OptionList != null && OptionList.length > 0"
@@ -203,7 +203,6 @@ export default {
 		'onGroupChange',
 		'singleClickOnly',
 		'disabled',
-		'showProgressBar'
 		],
 
 	data () {
@@ -212,10 +211,10 @@ export default {
 			GroupList: [],
 			SelectedGroupIndex: 0,
 			DisplayValues: {
+				self: this,
 				name: this.name,
 				label: this.label,
 				size: this.size,
-				loading: false,
 				selectSize: this.selectSize,
 				visible: this.visible == null ? true : this.visible,
 				options: this.options == null ? [] : this.options,
@@ -229,7 +228,7 @@ export default {
 				buttonRadius: this.buttonRadius == null ? 0 : this.buttonRadius,
 				emptyText: this.emptyText == null ? "" : this.emptyText,
 				singleClickOnly: this.singleClickOnly == null ? false : this.singleClickOnly,
-				disabled: this.disabled == null ? false : this.disabled
+				disabled: this.disabled == null ? false : this.disabled,
 			}
 		}
 	},
@@ -262,14 +261,13 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		buttonClicked: function(event, option=null) {
-			if (this.readonly == true) return;
+			if (this.readonly == true) {
+				return;
+			}
 
 			if (this.DisplayValues.singleClickOnly)  
 			{
-				this.DisplayValues.loading = true;
-				if (this.showProgressBar) {
-					this.disableButtons();
-				}
+				//feature depricated
 			}
 
 			if (option != null) {
@@ -410,7 +408,7 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		groupChangeEvent: function() {
-			this.DisplayValues.loading = false;
+			this.showProgressBar = false;
 			var p = this.findParent(); 
 			if (this.onGroupChange != null && this.onGroupChange != "") {
 				this.onGroupChange.call(this,
@@ -482,13 +480,18 @@ export default {
 			//Verify a value is selected
 			if (option == null || option.value == null) {
 				console.log("No value specified for button bar click.");
-				this.DisplayValues.loading = false;
+				this.showProgressBar = false;
 				return;
 			}
 
 			//Persist group selection if appropriate
 			if (this.persistSelection) {
 				localStorage["___" + this.formType + "_" + this.name] = this.SelectedGroupIndex;
+			}
+
+			if (this.singleClickOnly) {
+			 	this.showProgressBar = true;
+			 	return;
 			}
 
 			//Prepare action object
@@ -510,7 +513,7 @@ export default {
 						}.bind(this)
 					);
 				}
-				this.DisplayValues.loading = false;
+				this.showProgressBar = false;
 				return; 				
 			}
 			//Else if per-button action is specified
@@ -528,7 +531,7 @@ export default {
 			} 
 			//Else no valid action is specified...
 			else {
-				this.DisplayValues.loading = false;
+				this.showProgressBar = false;
 				return;
 			} 
 
@@ -545,7 +548,7 @@ export default {
 				function(cbAction, e) { //Error callback
 				}.bind(this)
 			)
-			this.DisplayValues.loading = false;
+			this.showProgressBar = false;
 		},
 
 	},
