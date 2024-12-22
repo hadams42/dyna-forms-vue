@@ -211,7 +211,6 @@ export default {
 			GroupList: [],
 			SelectedGroupIndex: 0,
 			DisplayValues: {
-				self: this,
 				name: this.name,
 				label: this.label,
 				size: this.size,
@@ -492,30 +491,23 @@ export default {
 			 	this.showProgressBar = true;
 			}
 
-			console.log("0");
-
 			//Prepare action object
 			var action = {};
 
 			//Perform client action if specified
 			if (typeof option.onClick != "undefined" && option.onClick != null) {
-				console.log("1");
 
 				//Call option's onClick event 
 				if (option.onClick != null && option.onClick != "") {
-					console.log("2");
 					var p = this.findParent();
 					option.onClick.call(this,
 						this.DisplayValues,
 						p.ActiveFormData,
 						function(cmd, parameters) {
-							console.log("Validation [1sa]", this.Validation);
 							this.FormActions.LocalAction(this, this.formType, this.guid, cmd, parameters);
-							console.log("Validation [1sb]", this.Validation);
 						}.bind(this)
 						,function(e) {
 							console.log("Error: ", e, this.name);
-							console.log("Validation [1e]", this.Validation);
 						}.bind(this)
 					);
 				}
@@ -523,12 +515,10 @@ export default {
 			}
 			//Else if per-button action is specified
 			else if (typeof option.action != undefined && option.action != null) {
-				console.log("3");
 				action = option.action;
 			}
 			//Else if global post command is specified, create action object
 			else if (typeof this.postCommand != "undefined" && this.postCommand != null) {
-				console.log("4");
 				action = {
 					post: {
 						command: this.postCommand,
@@ -541,7 +531,6 @@ export default {
 				this.showProgressBar = false;
 				return;
 			} 
-			console.log("5");
 
 			//Perform server action
 			var p = this.findParent();
@@ -552,11 +541,9 @@ export default {
 				this.DisplayValues,
 				function(cbAction) { //Success callback
 					this.updateOptions(this.DisplayValues.options);
-					console.log("Validation [2s]", this.Validation);
 				}.bind(this),
 				function(cbAction, e) { //Error callback
 					console.log("Error: ", e, this.name);
-					console.log("Validation [2e]", this.Validation);
 				}.bind(this)
 			);
 			return; 				
