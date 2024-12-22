@@ -372,7 +372,7 @@ export default {
 					submitAction,
 					function(e) {
 						console.log("Error: ", e, this.name);
-						this.progressBarOff(1);
+						this.progressBarOff();
 					}.bind(this)
 				);
 				//Trigger after submit event if not cancelled
@@ -393,7 +393,7 @@ export default {
 						}.bind(this),
 						function(cbAction, redirectUrl, e) {
 							console.log("SUBMIT ERROR:", e);
-							this.progressBarOff(2);
+							this.progressBarOff();
 							this.showMessageDialog("Form Error", e != null ? e.message || e : "", function() {
 								this.afterSubmitCancelEvent(cbAction, redirectUrl);
 							}.bind(this));
@@ -407,7 +407,7 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		afterSubmitCancelEvent: function(submitAction=null, redirectUrl=null) {
-			this.progressBarOff(3);
+			this.progressBarOff();
 
 			//Submit functions are disabled for sub-forms
 			 if (this.isSubForm) return;
@@ -447,7 +447,7 @@ export default {
 					redirectUrl,
 					function(e) { //error callback
 						console.log("Error: ", e, this.name);
-						this.progressBarOff(4);
+						this.progressBarOff();
 					}.bind(this)
 				);
 				if (cancelled != true && redirectUrl != null) {
@@ -569,7 +569,7 @@ export default {
 				this.validationSuccessEvent(true, submitAction);
 			} else if (this.UnvalidatedFields.length == 0 && this.ValidationCollector.length != 0) {
 				this.validationFailedEvent();
-				this.progressBarOff(5);
+				this.progressBarOff();
 			} else if (this.UnvalidatedFields.length == 0 && this.ValidationCollector.length == 0) {
 				this.validationSuccessEvent(false, submitAction);
 			}
@@ -601,7 +601,6 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		progressBarOff: function(v) {
-			console.log("hiding progress bar", v)
 			this.$nextTick(function() {
 				this.showProgressBar = false;
 			});		
@@ -609,7 +608,6 @@ export default {
 		
 		//---------------------------------------------------------------------------------------------------
 		progressBarOn: function() {
-			console.log("showing progress bar")
 			this.$nextTick(function() {
 				this.showProgressBar = true;
 			});		

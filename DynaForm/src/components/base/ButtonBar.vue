@@ -17,7 +17,7 @@
 				<b-button-group
 					:style="block == true ? {'width': '100%'} : {}"
 					:id="name"
-					:disabled="computedReadOnly"
+					:disabled="computedReadOnly || showProgressBar"
 					:multiple="true"
 					:size="size"
 					:vertical="direction == 'vertical'"
@@ -26,7 +26,7 @@
 						v-for="option in OptionList"
 						:key="option.value"
 						:block="block"
-						:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading"
+						:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading || showProgressBar"
 						:variant="getVariant(option)"
 						:class="[option.cssClass, option.value]"						
 						@click="buttonClicked($event, option)"
@@ -51,7 +51,7 @@
 					<label for="name"> {{groupLabel}} {{group.label}}</label><br>
 					<b-button-group
 						:style="block == true ? {'width': '100%'} : {}"
-						:disabled="computedReadOnly"
+						:disabled="computedReadOnly || showProgressBar"
 						:multiple="true"
 						:size="size"
 						:vertical="direction == 'vertical'"
@@ -62,7 +62,7 @@
 						>
 							<b-button
 								:block="block"
-								:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading"
+								:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading || showProgressBar"
 								:variant="getVariant(option)"
 								:class="[option.cssClass, option.value]"								
 								@click="buttonClicked($event, option)"
@@ -104,7 +104,7 @@
 				<b-button-group		
 						v-if="GroupList[SelectedGroupIndex] != null"				
 						:style="block == true ? {'width': '100%'} : {}"
-						:disabled="computedReadOnly"
+						:disabled="computedReadOnly || showProgressBar"
 						:multiple="true"
 						size="sm"
 						:vertical="direction == 'vertical'"
@@ -115,7 +115,7 @@
 						>
 						<b-button
 							:block="block"
-							:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading"
+							:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading || showProgressBar"
 							:variant="option.variant != null ?  option.variant : option.active ? DisplayValues.activeVariant : DisplayValues.inactiveVariant"
 							:class="[option.cssClass, option.value]"
 							:style="{'margin': margin+'px', 'color': option.textColor || 'default', 'background-color': option.backgroundColor || 'default', 'border-radius': DisplayValues.buttonRadius }"
@@ -136,7 +136,7 @@
 				<b-form-select 
 					:id="name"
 					v-model="valueModel"
-					:disabled="computedReadOnly && alwaysShow == false"
+					:disabled="(computedReadOnly && alwaysShow == false) || showProgressBar"
 					:select-size="DisplayValues.selectSize"
 					@change="fieldInputEvent"
 				>
@@ -152,7 +152,7 @@
 					<b-button
 						size="sm"
 						style="margin-top: 2px; max-height: 30px;"
-						:disabled="DisplayValues.disabled || DisplayValues.loading"
+						:disabled="DisplayValues.disabled || DisplayValues.loading || showProgressBar"
 						:variant="DisplayValues.buttonVariant"
 						@click="buttonClicked($event)"												
 					>
