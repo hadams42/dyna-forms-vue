@@ -64,7 +64,6 @@ export default {
 		'customButtonClass',
 		'variant',
 		'type',
-		'singleClickOnly'
 		],
 
 	data () {
@@ -84,7 +83,6 @@ export default {
 				size: this.size == null ? "sm" : this.size,
 				type: this.type == null ? "button" : this.type,
 				template: this.template,
-				singleClickOnly: this.singleClickOnly == null ? false : this.singleClickOnly,
 			}
 
 		}
@@ -129,11 +127,6 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		buttonClicked: function() {
-			if (this.DisplayValues.singleClickOnly) {
-				this.DisplayValues.disabled = true;
-				setTimeout(function() { this.DisplayValues.disabled = false; }.bind(this), 2000);
-			}
-
 			if (typeof this.action != "undefined" && this.action != null) {
 				var p = this.findParent();
 				//If local action is defined, then perform it

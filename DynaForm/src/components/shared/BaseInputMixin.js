@@ -16,7 +16,6 @@ export default {
 	data () {
 		return {
 			debounceTime: 500,
-			showProgressBar: false,
 		}
 	},
 

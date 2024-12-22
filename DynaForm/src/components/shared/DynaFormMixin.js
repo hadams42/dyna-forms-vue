@@ -32,7 +32,7 @@ export default {
 		"targets",
 		"containerInstanceId",
 		"elementId",
-		"isAdmin"
+		"isAdmin",
 	],
 
   data() {
@@ -55,6 +55,7 @@ export default {
 			ValidationCollector: [],
 			UnvalidatedFields: [],
 			ActiveFieldList: [],
+			showProgressBar: false,
 			IsLoading: false,
 			formType: 'default',
     };
@@ -295,6 +296,7 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		submit: function(submitAction="Auto", validate=true) {
+			this.progressBarOn();
 			this.ActiveFormSettings.enableValidation = validate;
 			this.beforeSubmitEvent(submitAction);
 		},
@@ -316,7 +318,9 @@ export default {
 					}.bind(this)
 				);
 			}	
-			if (cancel === true) return;
+			if (cancel === true) {
+				return;
+			}
 
 			//Trigger validation event if validation is not disabled and submit was not cancelled
 			if (this.ActiveFormSettings.enableValidation != false) {
@@ -368,6 +372,7 @@ export default {
 					submitAction,
 					function(e) {
 						console.log("Error: ", e, this.name);
+						this.progressBarOff(1);
 					}.bind(this)
 				);
 				//Trigger after submit event if not cancelled
@@ -388,6 +393,7 @@ export default {
 						}.bind(this),
 						function(cbAction, redirectUrl, e) {
 							console.log("SUBMIT ERROR:", e);
+							this.progressBarOff(2);
 							this.showMessageDialog("Form Error", e != null ? e.message || e : "", function() {
 								this.afterSubmitCancelEvent(cbAction, redirectUrl);
 							}.bind(this));
@@ -401,6 +407,8 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		afterSubmitCancelEvent: function(submitAction=null, redirectUrl=null) {
+			this.progressBarOff(3);
+
 			//Submit functions are disabled for sub-forms
 			 if (this.isSubForm) return;
 
@@ -439,6 +447,7 @@ export default {
 					redirectUrl,
 					function(e) { //error callback
 						console.log("Error: ", e, this.name);
+						this.progressBarOff(4);
 					}.bind(this)
 				);
 				if (cancelled != true && redirectUrl != null) {
@@ -560,6 +569,7 @@ export default {
 				this.validationSuccessEvent(true, submitAction);
 			} else if (this.UnvalidatedFields.length == 0 && this.ValidationCollector.length != 0) {
 				this.validationFailedEvent();
+				this.progressBarOff(5);
 			} else if (this.UnvalidatedFields.length == 0 && this.ValidationCollector.length == 0) {
 				this.validationSuccessEvent(false, submitAction);
 			}
@@ -589,7 +599,21 @@ export default {
 			}.bind(this));
 		},
 
-
+		//---------------------------------------------------------------------------------------------------
+		progressBarOff: function(v) {
+			console.log("hiding progress bar", v)
+			this.$nextTick(function() {
+				this.showProgressBar = false;
+			});		
+		},
+		
+		//---------------------------------------------------------------------------------------------------
+		progressBarOn: function() {
+			console.log("showing progress bar")
+			this.$nextTick(function() {
+				this.showProgressBar = true;
+			});		
+		},
 	},
 	
 	//---------------------------------------------------------------------------------------------------

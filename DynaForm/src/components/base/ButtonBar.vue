@@ -6,7 +6,6 @@
 		>
 			{{DisplayValues.emptyText}}
 		</div>
-		<div class="indeterminate-progress-bar" v-if="showProgressBar && singleClickOnly"></div>
 		<b-form-group
 			:class="['button-bar', name]"
 			v-show="DisplayValues.visible && (computedReadOnly == false || alwaysShow == true) && OptionList != null && OptionList.length > 0"
@@ -201,7 +200,6 @@ export default {
 		'onSelectionChange',
 		'emptyText',
 		'onGroupChange',
-		'singleClickOnly',
 		'disabled',
 		],
 
@@ -210,6 +208,7 @@ export default {
 			OptionList: [],
 			GroupList: [],
 			SelectedGroupIndex: 0,
+			Parent: this.findParent(),
 			DisplayValues: {
 				name: this.name,
 				label: this.label,
@@ -226,7 +225,6 @@ export default {
 				groupLabel: this.groupLabel == null ? "" : this.groupLabel,
 				buttonRadius: this.buttonRadius == null ? 0 : this.buttonRadius,
 				emptyText: this.emptyText == null ? "" : this.emptyText,
-				singleClickOnly: this.singleClickOnly == null ? false : this.singleClickOnly,
 				disabled: this.disabled == null ? false : this.disabled,
 			}
 		}
@@ -262,11 +260,6 @@ export default {
 		buttonClicked: function(event, option=null) {
 			if (this.readonly == true) {
 				return;
-			}
-
-			if (this.DisplayValues.singleClickOnly)  
-			{
-				//feature depricated
 			}
 
 			if (option != null) {
@@ -407,7 +400,6 @@ export default {
 
 		//--------------------------------------------------------------------------------------------
 		groupChangeEvent: function() {
-			this.showProgressBar = false;
 			var p = this.findParent(); 
 			if (this.onGroupChange != null && this.onGroupChange != "") {
 				this.onGroupChange.call(this,
@@ -487,10 +479,6 @@ export default {
 				localStorage["___" + this.formType + "_" + this.name] = this.SelectedGroupIndex;
 			}
 
-			if (this.singleClickOnly) {
-			 	this.showProgressBar = true;
-			}
-
 			//Prepare action object
 			var action = {};
 
@@ -528,7 +516,6 @@ export default {
 			} 
 			//Else no valid action is specified...
 			else {
-				this.showProgressBar = false;
 				return;
 			} 
 

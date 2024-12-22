@@ -1,10 +1,6 @@
 <template>
 <div :class="[ActiveFormSettings.customClasses]" > 
-	<!-- <div class="global-loading-spinner"
-		v-show="IsLoading"
-	>
-  	<b-spinner label="Loading..."></b-spinner>
-	</div> -->
+	<div class="indeterminate-progress-bar" v-if="showProgressBar"></div>
 	<div 
 		:class="['form-title']" 
 		v-if="ActiveFormSettings.title != null && ActiveFormSettings.title != ''"
