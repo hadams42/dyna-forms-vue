@@ -4,6 +4,7 @@
 		v-show="DisplayValues.visible && (computedReadOnly == false || alwaysShow == true)"
 		:style="DisplayValues.hidden ? 'visibility: hidden' : ''"
 	>
+	Progress Bar {{ showProgressBar }}
 		<b-link
 			v-if="icon != null && icon != ''"
 			@click="buttonClicked"
@@ -64,7 +65,8 @@ export default {
 		'customButtonClass',
 		'variant',
 		'type',
-		'singleClickOnly'
+		'singleClickOnly',
+		'showProgressBar'
 		],
 
 	data () {
@@ -168,8 +170,7 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		setDisableWhileWaiting: function(isWaiting) {
 			this.$nextTick(function() {
-				this.DisplayValues.disableWhileWaiting = isWaiting;
-				console.log("ButtonInput disableWhileWaiting", isWaiting)
+				this.DisplayValues.disableWhileWaiting = isWaiting && this.singleClickOnly && this.showProgressBar;
 				this.$forceUpdate();
 			});
 		},

@@ -1,5 +1,6 @@
 <template>
 	<div>
+		Progress Bar {{ showProgressBar }}
 		<div v-if="(OptionList == null || OptionList.length == 0) && DisplayValues.emptyText != '' && DisplayValues.visible == true"
 			v-show="DisplayValues.hidden == false"
 			class="empty-text"
@@ -201,7 +202,8 @@ export default {
 		'emptyText',
 		'onGroupChange',
 		'disabled',
-		'singleClickOnly'
+		'singleClickOnly',
+		'showProgressBar'
 		],
 
 	data () {
@@ -308,8 +310,7 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		setDisableWhileWaiting: function(isWaiting) {
 			this.$nextTick(function() {
-				this.DisplayValues.disableWhileWaiting = isWaiting;
-				console.log("ButtonBar disableWhileWaiting", isWaiting)
+				this.DisplayValues.disableWhileWaiting = isWaiting && this.singleClickOnly && this.showProgressBar;
 				this.$forceUpdate();
 			});
 		},

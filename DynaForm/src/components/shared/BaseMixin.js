@@ -51,6 +51,8 @@ export default {
 		'targets',
 		'value',
 		'visible',
+		'showProgressBar'
+
 	],
 
 	data () {
