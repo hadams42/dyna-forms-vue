@@ -64,8 +64,7 @@ export default {
 		'customButtonClass',
 		'variant',
 		'type',
-		'singleClickOnly',
-		'showProgressBar'
+		'singleClickOnly'
 		],
 
 	data () {
