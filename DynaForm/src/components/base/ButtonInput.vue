@@ -4,7 +4,6 @@
 		v-show="DisplayValues.visible && (computedReadOnly == false || alwaysShow == true)"
 		:style="DisplayValues.hidden ? 'visibility: hidden' : ''"
 	>
-	Progress Bar {{ showProgressBar }}
 		<b-link
 			v-if="icon != null && icon != ''"
 			@click="buttonClicked"
@@ -33,7 +32,7 @@
 			:size="size"
 			:block="DisplayValues.block"
 			:variant="DisplayValues.variant"
-			:disabled="DisplayValues.disabled"
+			:disabled="DisplayValues.disabled ||  (DisplayValues.disableWhileWaiting && showProgressBar)"
 			:type="DisplayValues.type"
 			v-html="getTemplate()"
 			>
@@ -132,7 +131,7 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		buttonClicked: function() {
 			if (typeof this.action != "undefined" && this.action != null) {
-				this.setDisableWhileWaiting(true);
+				this.setDisabledWhileWaiting(true);
 				var p = this.findParent();
 				//If local action is defined, then perform it
 				if (this.action.onClick != null && this.action.onClick != "") {
@@ -143,7 +142,7 @@ export default {
 							this.FormActions.LocalAction(this, this.formType, this.guid, cmd, parameters);
 						}.bind(this)
 						,function(e) {
-							this.setDisableWhileWaiting(false);
+							this.setDisabledWhileWaiting(false);
 							console.log("Error: ", e, this.name);
 						}.bind(this)
 						,this.name //value
@@ -151,7 +150,7 @@ export default {
 				} 
 				//Else if server action is defined then perform it
 				else {
-					this.setDisableWhileWaiting(true);
+					this.setDisabledWhileWaiting(true);
 					this.FormActions.ServerAction(this, 
 						this.action, 
 						this.instanceId, 
@@ -160,7 +159,7 @@ export default {
 						null, //Sucess callback. Used by button bar, etc.
 						function(cbAction, e) { //Error callback
 							console.log("Error: ", e, this.name);
-							this.setDisableWhileWaiting(false);
+							this.setDisabledWhileWaiting(false);
 							}.bind(this), //Error callback. Used by button bar, etc.
 						)
 				}			
@@ -168,9 +167,9 @@ export default {
 		},
 
 		//--------------------------------------------------------------------------------------------
-		setDisableWhileWaiting: function(isWaiting) {
+		setDisabledWhileWaiting: function(isWaiting) {
 			this.$nextTick(function() {
-				this.DisplayValues.disableWhileWaiting = isWaiting && this.singleClickOnly && this.showProgressBar;
+				this.DisplayValues.disableWhileWaiting = isWaiting && this.singleClickOnly;
 				this.$forceUpdate();
 			});
 		},

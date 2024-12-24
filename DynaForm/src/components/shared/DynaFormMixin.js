@@ -55,7 +55,7 @@ export default {
 			ValidationCollector: [],
 			UnvalidatedFields: [],
 			ActiveFieldList: [],
-			showProgressBar: false,
+			ShowProgressBar: false,
 			IsLoading: false,
 			formType: 'default',
     };
@@ -602,7 +602,7 @@ export default {
 		//---------------------------------------------------------------------------------------------------
 		progressBarOff: function(v) {
 			this.$nextTick(function() {
-				this.showProgressBar = false;
+				this.ShowProgressBar = false;
 				this.emitEvent("_Wait", this.guid, this.formType);
 			});		
 		},
@@ -610,7 +610,7 @@ export default {
 		//---------------------------------------------------------------------------------------------------
 		progressBarOn: function() {
 			this.$nextTick(function() {
-				this.showProgressBar = true;
+				this.ShowProgressBar = true;
 			});		
 		},
 	},

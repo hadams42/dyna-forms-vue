@@ -1,6 +1,6 @@
 <template>
 <div :class="[ActiveFormSettings.customClasses]" > 
-	<div class="indeterminate-progress-bar" v-if="showProgressBar"></div>
+	<div class="indeterminate-progress-bar" v-if="ShowProgressBar"></div>
 	<div 
 		:class="['form-title']" 
 		v-if="ActiveFormSettings.title != null && ActiveFormSettings.title != ''"

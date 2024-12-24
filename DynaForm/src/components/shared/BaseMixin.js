@@ -51,8 +51,6 @@ export default {
 		'targets',
 		'value',
 		'visible',
-		'showProgressBar'
-
 	],
 
 	data () {
@@ -67,6 +65,7 @@ export default {
 				readonlyOverride: null,
 				hidden: this.hidden == null ? false : this.hidden,
 				maxWidth: this.maxWidth == null ? 0 : this.maxWidth,
+				showProgressBar: false,
 			},
 
 			debounce: debounce,
