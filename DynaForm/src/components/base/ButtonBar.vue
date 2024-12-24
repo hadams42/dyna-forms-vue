@@ -4,7 +4,7 @@
 			v-show="DisplayValues.hidden == false"
 			class="empty-text"
 		>
-			{{DisplayValues.emptyText}}
+			{{DisplayValues.emptyText}}			
 		</div>
 		<b-form-group
 			:class="['button-bar', name]"
@@ -17,7 +17,7 @@
 				<b-button-group
 					:style="block == true ? {'width': '100%'} : {}"
 					:id="name"
-					:disabled="computedReadOnly || showProgressBar"
+					:disabled="computedReadOnly || DisplayValues.disableWhileWaiting"
 					:multiple="true"
 					:size="size"
 					:vertical="direction == 'vertical'"
@@ -26,7 +26,7 @@
 						v-for="option in OptionList"
 						:key="option.value"
 						:block="block"
-						:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading || showProgressBar"
+						:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading || DisplayValues.disableWhileWaiting"
 						:variant="getVariant(option)"
 						:class="[option.cssClass, option.value]"						
 						@click="buttonClicked($event, option)"
@@ -51,7 +51,7 @@
 					<label for="name"> {{groupLabel}} {{group.label}}</label><br>
 					<b-button-group
 						:style="block == true ? {'width': '100%'} : {}"
-						:disabled="computedReadOnly || showProgressBar"
+						:disabled="computedReadOnly || DisplayValues.disableWhileWaiting"
 						:multiple="true"
 						:size="size"
 						:vertical="direction == 'vertical'"
@@ -62,7 +62,7 @@
 						>
 							<b-button
 								:block="block"
-								:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading || showProgressBar"
+								:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading || DisplayValues.disableWhileWaiting"
 								:variant="getVariant(option)"
 								:class="[option.cssClass, option.value]"								
 								@click="buttonClicked($event, option)"
@@ -104,7 +104,7 @@
 				<b-button-group		
 						v-if="GroupList[SelectedGroupIndex] != null"				
 						:style="block == true ? {'width': '100%'} : {}"
-						:disabled="computedReadOnly || showProgressBar"
+						:disabled="computedReadOnly || DisplayValues.disableWhileWaiting"
 						:multiple="true"
 						size="sm"
 						:vertical="direction == 'vertical'"
@@ -115,7 +115,7 @@
 						>
 						<b-button
 							:block="block"
-							:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading || showProgressBar"
+							:disabled="option.disabled || DisplayValues.disabled || DisplayValues.loading || DisplayValues.disableWhileWaiting"
 							:variant="option.variant != null ?  option.variant : option.active ? DisplayValues.activeVariant : DisplayValues.inactiveVariant"
 							:class="[option.cssClass, option.value]"
 							:style="{'margin': margin+'px', 'color': option.textColor || 'default', 'background-color': option.backgroundColor || 'default', 'border-radius': DisplayValues.buttonRadius }"
@@ -136,7 +136,7 @@
 				<b-form-select 
 					:id="name"
 					v-model="valueModel"
-					:disabled="(computedReadOnly && alwaysShow == false) || showProgressBar"
+					:disabled="(computedReadOnly && alwaysShow == false) || DisplayValues.disableWhileWaiting"
 					:select-size="DisplayValues.selectSize"
 					@change="fieldInputEvent"
 				>
@@ -152,7 +152,7 @@
 					<b-button
 						size="sm"
 						style="margin-top: 2px; max-height: 30px;"
-						:disabled="DisplayValues.disabled || DisplayValues.loading || showProgressBar"
+						:disabled="DisplayValues.disabled || DisplayValues.loading || DisplayValues.disableWhileWaiting"
 						:variant="DisplayValues.buttonVariant"
 						@click="buttonClicked($event)"												
 					>
@@ -201,6 +201,7 @@ export default {
 		'emptyText',
 		'onGroupChange',
 		'disabled',
+		'singleClickOnly'
 		],
 
 	data () {
@@ -208,11 +209,11 @@ export default {
 			OptionList: [],
 			GroupList: [],
 			SelectedGroupIndex: 0,
-			Parent: this.findParent(),
 			DisplayValues: {
 				name: this.name,
 				label: this.label,
 				size: this.size,
+				disableWhileWaiting: false,
 				selectSize: this.selectSize,
 				visible: this.visible == null ? true : this.visible,
 				options: this.options == null ? [] : this.options,
@@ -301,8 +302,17 @@ export default {
 			//Perform clicked action
 			if (cancel != true) {
 				this.performButtonAction(option);
-			}
+			} 
 		},		
+
+		//--------------------------------------------------------------------------------------------
+		setDisableWhileWaiting: function(isWaiting) {
+			this.$nextTick(function() {
+				this.DisplayValues.disableWhileWaiting = isWaiting;
+				console.log("ButtonBar disableWhileWaiting", isWaiting)
+				this.$forceUpdate();
+			});
+		},
 
 		//--------------------------------------------------------------------------------------------
 		getTemplate: function(s) {
@@ -453,8 +463,6 @@ export default {
 			}
 		},
 
-
-
 		//--------------------------------------------------------------------------------------------
 		//Button bars support both onClick, with local actions, and server actions
 		performButtonAction: function(option=null) {
@@ -487,6 +495,7 @@ export default {
 
 				//Call option's onClick event 
 				if (option.onClick != null && option.onClick != "") {
+					this.setDisableWhileWaiting(true);
 					var p = this.findParent();
 					option.onClick.call(this,
 						this.DisplayValues,
@@ -496,6 +505,7 @@ export default {
 						}.bind(this)
 						,function(e) {
 							console.log("Error: ", e, this.name);
+							this.setDisableWhileWaiting(false);
 						}.bind(this)
 					);
 				}
@@ -520,6 +530,7 @@ export default {
 			} 
 
 			//Perform server action
+			this.setDisableWhileWaiting(true);
 			var p = this.findParent();
 			this.FormActions.ServerAction(this, 
 				action, 
@@ -531,6 +542,7 @@ export default {
 				}.bind(this),
 				function(cbAction, e) { //Error callback
 					console.log("Error: ", e, this.name);
+					this.setDisableWhileWaiting(false);
 				}.bind(this)
 			);
 			return; 				
@@ -547,6 +559,7 @@ export default {
 		if (this.mode == "dropdown" && this.showEmptyOption != true && this.value == null && this.OptionList != null && this.OptionList.length > 0) {
 			this.valueModel = this.OptionList[0].value;
 		}
+
 	},
 	
 	//--------------------------------------------------------------------------------------------

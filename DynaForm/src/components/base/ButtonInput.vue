@@ -64,6 +64,7 @@ export default {
 		'customButtonClass',
 		'variant',
 		'type',
+		'singleClickOnly'
 		],
 
 	data () {
@@ -76,6 +77,7 @@ export default {
 				label: this.label,
 				visible: this.visible == null ? true : this.visible,
 				hidden: this.hidden == null ? false : this.hidden,
+				disableWhileWaiting: false,				
 				disabled: this.disabled == null ? false : this.disabled,
 				block: this.block == null ? true : this.block,
 				variant: this.variant == null ? "secondary" : this.variant,
@@ -128,6 +130,7 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		buttonClicked: function() {
 			if (typeof this.action != "undefined" && this.action != null) {
+				this.setDisableWhileWaiting(true);
 				var p = this.findParent();
 				//If local action is defined, then perform it
 				if (this.action.onClick != null && this.action.onClick != "") {
@@ -138,6 +141,7 @@ export default {
 							this.FormActions.LocalAction(this, this.formType, this.guid, cmd, parameters);
 						}.bind(this)
 						,function(e) {
+							this.setDisableWhileWaiting(false);
 							console.log("Error: ", e, this.name);
 						}.bind(this)
 						,this.name //value
@@ -145,31 +149,30 @@ export default {
 				} 
 				//Else if server action is defined then perform it
 				else {
+					this.setDisableWhileWaiting(true);
 					this.FormActions.ServerAction(this, 
 						this.action, 
 						this.instanceId, 
 						p.ActiveFormData._Id, 
 						this.DisplayValues,
 						null, //Sucess callback. Used by button bar, etc.
-						null, //Error callback. Used by button bar, etc.
+						function(cbAction, e) { //Error callback
+							console.log("Error: ", e, this.name);
+							this.setDisableWhileWaiting(false);
+							}.bind(this), //Error callback. Used by button bar, etc.
 						)
 				}			
 			} 
 		},
 
-		// //--------------------------------------------------------------------------------------------
-		// loadFieldEvent: function() {
-		// 	if (this.onLoad != null && this.onLoad != "") {
-		// 		var p = this.findParent(); 
-		// 		this.onLoad.call(this,
-		// 			this.DisplayValues,
-		// 			p.ActiveFormData,
-		// 			function(e) {
-		// 				console.log("Error: ", e, this.name);
-		// 			}.bind(this)
-		// 		);
-		// 	}			
-		// },
+		//--------------------------------------------------------------------------------------------
+		setDisableWhileWaiting: function(isWaiting) {
+			this.$nextTick(function() {
+				this.DisplayValues.disableWhileWaiting = isWaiting;
+				console.log("ButtonInput disableWhileWaiting", isWaiting)
+				this.$forceUpdate();
+			});
+		},
 
 		//--------------------------------------------------------------------------------------------
 		renderField: function(watchedField) {

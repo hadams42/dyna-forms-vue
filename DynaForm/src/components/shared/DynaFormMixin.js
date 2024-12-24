@@ -603,6 +603,7 @@ export default {
 		progressBarOff: function(v) {
 			this.$nextTick(function() {
 				this.showProgressBar = false;
+				this.emitEvent("_Wait", this.guid, this.formType);
 			});		
 		},
 		
