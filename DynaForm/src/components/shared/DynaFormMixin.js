@@ -601,17 +601,22 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		progressBarOff: function(v) {
-			this.$nextTick(function() {
-				this.ShowProgressBar = false;
-				this.emitEvent("_Wait", this.guid, this.formType);
-			});		
+			if (this.ShowProgressBar != false) {
+				//this.$nextTick(function() {
+					this.ShowProgressBar = false;
+					this.emitEvent("_Wait", this.guid, false);
+				//});		
+			}
 		},
 		
 		//---------------------------------------------------------------------------------------------------
 		progressBarOn: function() {
-			this.$nextTick(function() {
-				this.ShowProgressBar = true;
-			});		
+			if (this.ShowProgressBar != true) {
+				//this.$nextTick(function() {
+					this.ShowProgressBar = true;
+					this.emitEvent("_Wait", this.guid, true);
+				//});		
+			}
 		},
 	},
 	
@@ -664,6 +669,22 @@ export default {
 				this.showLoadingSpinner();
 			} else {
 				this.hideLoadingSpinner();
+			}
+		});
+
+		//---------------------------------------------------------
+		//Wait Event Handler
+		//---------------------------------------------------------
+		//Listen to bus for wait
+		this.onEvent("_Wait", (self, incomingGuid, isWaiting) => {
+			console.log("incomingGuid/iswaiting", incomingGuid, isWaiting)
+			console.log("this.onEvent: this.guid", this.guid, "incomingGuid:", incomingGuid, this.guid === incomingGuid)
+			if (this.guid !== incomingGuid) {
+				if (isWaiting) {
+					this.progressBarOn();
+				} else {
+					this.progressBarOff();
+				}
 			}
 		});
 
