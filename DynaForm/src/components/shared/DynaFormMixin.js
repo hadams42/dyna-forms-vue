@@ -602,20 +602,20 @@ export default {
 		//---------------------------------------------------------------------------------------------------
 		progressBarOff: function(v) {
 			if (this.ShowProgressBar != false) {
-				//this.$nextTick(function() {
+				this.$nextTick(function() {
 					this.ShowProgressBar = false;
 					this.emitEvent("_Wait", this.guid, false);
-				//});		
+				});		
 			}
 		},
 		
 		//---------------------------------------------------------------------------------------------------
 		progressBarOn: function() {
 			if (this.ShowProgressBar != true) {
-				//this.$nextTick(function() {
+				this.$nextTick(function() {
 					this.ShowProgressBar = true;
 					this.emitEvent("_Wait", this.guid, true);
-				//});		
+				});		
 			}
 		},
 	},
@@ -680,11 +680,9 @@ export default {
 			console.log("incomingGuid/iswaiting", incomingGuid, isWaiting)
 			console.log("this.onEvent: this.guid", this.guid, "incomingGuid:", incomingGuid, this.guid === incomingGuid)
 			if (this.guid !== incomingGuid) {
-				if (isWaiting) {
-					this.progressBarOn();
-				} else {
-					this.progressBarOff();
-				}
+				this.$nextTick(function() {
+						this.ShowProgressBar = isWaiting;
+				});		
 			}
 		});
 
