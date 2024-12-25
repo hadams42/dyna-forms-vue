@@ -1,7 +1,8 @@
 <template>
 <div :class="[ActiveFormSettings.customClasses]" > 
-	<div class="indeterminate-progress-bar" v-if="IsFormProgressBarVisible"></div>
-	FormId: {{ formId }} IsFormProgressBarVisible: {{ IsFormProgressBarVisible }}
+	<div class="indeterminate-progress-bar-container">
+		<div class="indeterminate-progress-bar" v-if="IsFormProgressBarVisible && ActiveFormSettings.showProgressBar"></div>
+	</div>
 	<div 
 		:class="['form-title']" 
 		v-if="ActiveFormSettings.title != null && ActiveFormSettings.title != ''"
@@ -9,6 +10,7 @@
 	>{{ActiveFormSettings.title}}</div>
 	<b-collapse 
 			:id="guid + 'Collapse'" 
+			v-if="ActiveSchema && ActiveSchema.length > 0"
 			:visible="getLocalStorage(formType + '__' + ActiveFormSettings.title) == 'true' ? false : true"
 			v-on:show="setLocalStorage(formType + '__' + ActiveFormSettings.title, false)"
 			v-on:hide="setLocalStorage(formType + '__' + ActiveFormSettings.title, true)"
