@@ -11,7 +11,7 @@ export default {
 		'defaultValue',
 		'enableLocalStorage',
 		'autoRender',
-		'showProgressBar',
+		'isLocalProgressBarVisible',
 	],
 
 	data () {

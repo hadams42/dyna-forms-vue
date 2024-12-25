@@ -32,7 +32,7 @@
 			:size="size"
 			:block="DisplayValues.block"
 			:variant="DisplayValues.variant"
-			:disabled="DisplayValues.disabled ||  (DisplayValues.disableWhileWaiting && showProgressBar)"
+			:disabled="DisplayValues.disabled ||  (DisplayValues.disableWhileWaiting && isLocalProgressBarVisible)"
 			:type="DisplayValues.type"
 			v-html="getTemplate()"
 			>

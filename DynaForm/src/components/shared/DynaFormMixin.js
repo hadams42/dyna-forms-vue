@@ -55,7 +55,7 @@ export default {
 			ValidationCollector: [],
 			UnvalidatedFields: [],
 			ActiveFieldList: [],
-			ShowProgressBar: false,
+			IsFormProgressBarVisible: false,
 			IsLoading: false,
 			formType: 'default',
     };
@@ -610,9 +610,9 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		progressBarOff: function() {
-			if (this.ShowProgressBar != false) {
+			if (this.IsFormProgressBarVisible != false) {
 				this.$nextTick(function() {
-					this.ShowProgressBar = false;
+					this.IsFormProgressBarVisible = false;
 					this.emitEvent("_Wait", this.guid, false);
 					console.log("this.emitEvent('_Wait', this.guid, false); [1]")
 				});		
@@ -621,9 +621,9 @@ export default {
 		
 		//---------------------------------------------------------------------------------------------------
 		progressBarOn: function() {
-			if (this.ShowProgressBar != true) {
+			if (this.IsFormProgressBarVisible != true) {
 				this.$nextTick(function() {
-					this.ShowProgressBar = true;
+					this.IsFormProgressBarVisible = true;
 					this.emitEvent("_Wait", this.guid, true);
 					console.log("this.emitEvent('_Wait', this.guid, true); [2]")
 				});		
@@ -690,7 +690,7 @@ export default {
 		this.onEvent("_Wait", (self, incomingGuid, isWaiting) => {
 			if (this.guid !== incomingGuid) {
 				this.$nextTick(function() {
-						this.ShowProgressBar = isWaiting;
+						this.IsFormProgressBarVisible = isWaiting;
 				});		
 			}
 		});
