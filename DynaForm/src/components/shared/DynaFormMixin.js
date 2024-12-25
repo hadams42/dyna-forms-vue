@@ -296,10 +296,14 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		submit: function(submitAction="Auto", validate=true) {
-			this.progressBarOn();
+			this.$nextTick(function() {
+				this.progressBarOn();
+				console.log("this.progressBarOn();")
+			});
+
 			this.ActiveFormSettings.enableValidation = validate;
 			this.beforeSubmitEvent(submitAction);
-		},
+	},
 
 		//---------------------------------------------------------------------------------------------------
 		beforeSubmitEvent: function(submitAction=null) {
@@ -463,7 +467,10 @@ export default {
 		validationFailedEvent: function() {
 			 //Submit functions are disabled for sub-forms
 			 if (this.isSubForm) return;
-
+			 
+			 this.progressBarOff()
+			 console.log("validationFailedEvent, call this.progressBarOff()")
+			 
 			//Call client side afterSubmit event handler if defined
 			if (this.ActiveFormSettings != null && this.ActiveFormSettings.onValidationFailed != null && this.ActiveFormSettings.onValidationFailed != "") {
 				this.ActiveFormSettings.onValidationFailed.call(this,
@@ -564,12 +571,14 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		handleValidationResult: function(isSubmit, submitAction=null) {
+			console.log("fddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 			//If all fields have passed validation, then submit the form now
 			if (this.ValidationCollector.length == 0 && this.UnvalidatedFields.length == 0 && isSubmit == true) {
 				this.validationSuccessEvent(true, submitAction);
+				//this.progressBarOff();
 			} else if (this.UnvalidatedFields.length == 0 && this.ValidationCollector.length != 0) {
-				this.validationFailedEvent();
 				this.progressBarOff();
+				this.validationFailedEvent();
 			} else if (this.UnvalidatedFields.length == 0 && this.ValidationCollector.length == 0) {
 				this.validationSuccessEvent(false, submitAction);
 			}
@@ -600,11 +609,12 @@ export default {
 		},
 
 		//---------------------------------------------------------------------------------------------------
-		progressBarOff: function(v) {
+		progressBarOff: function() {
 			if (this.ShowProgressBar != false) {
 				this.$nextTick(function() {
 					this.ShowProgressBar = false;
 					this.emitEvent("_Wait", this.guid, false);
+					console.log("this.emitEvent('_Wait', this.guid, false); [1]")
 				});		
 			}
 		},
@@ -615,6 +625,7 @@ export default {
 				this.$nextTick(function() {
 					this.ShowProgressBar = true;
 					this.emitEvent("_Wait", this.guid, true);
+					console.log("this.emitEvent('_Wait', this.guid, true); [2]")
 				});		
 			}
 		},
@@ -677,8 +688,6 @@ export default {
 		//---------------------------------------------------------
 		//Listen to bus for wait
 		this.onEvent("_Wait", (self, incomingGuid, isWaiting) => {
-			console.log("incomingGuid/iswaiting", incomingGuid, isWaiting)
-			console.log("this.onEvent: this.guid", this.guid, "incomingGuid:", incomingGuid, this.guid === incomingGuid)
 			if (this.guid !== incomingGuid) {
 				this.$nextTick(function() {
 						this.ShowProgressBar = isWaiting;
