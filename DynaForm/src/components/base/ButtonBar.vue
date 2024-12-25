@@ -1,9 +1,5 @@
 <template>
 	<div>
-		<div>
-			DisplayValues.disableWhileWaiting: {{ DisplayValues.disableWhileWaiting }} 
-			isLocalProgressBarVisible: {{ isLocalProgressBarVisible }}
-		</div>
 		<div v-if="(OptionList == null || OptionList.length == 0) && DisplayValues.emptyText != '' && DisplayValues.visible == true"
 			v-show="DisplayValues.hidden == false"
 			class="empty-text"

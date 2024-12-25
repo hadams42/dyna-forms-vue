@@ -4,6 +4,10 @@
 		v-show="DisplayValues.visible && (computedReadOnly == false || alwaysShow == true)"
 		:style="DisplayValues.hidden ? 'visibility: hidden' : ''"
 	>
+	<div>
+		DisplayValues.disableWhileWaiting: {{ DisplayValues.disableWhileWaiting }} 
+		singleClickOnly: {{ singleClickOnly }}
+	</div>
 		<b-link
 			v-if="icon != null && icon != ''"
 			@click="buttonClicked"
@@ -79,6 +83,7 @@ export default {
 				hidden: this.hidden == null ? false : this.hidden,
 				disableWhileWaiting: false,				
 				disabled: this.disabled == null ? false : this.disabled,
+				disableWhileWaiting: false,				
 				block: this.block == null ? true : this.block,
 				variant: this.variant == null ? "secondary" : this.variant,
 				customButtonClass: this.customButtonClass == null ? "" : this.customButtonClass,
