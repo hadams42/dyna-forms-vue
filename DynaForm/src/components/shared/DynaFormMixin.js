@@ -305,8 +305,6 @@ export default {
 			//Submit functions are disabled for sub-forms
 			if (this.isSubForm) return;
 
-			this.progressBarOn();
-
 			//Call client side beforeSubmit event handler if defined
 			var cancel = false;
 			if (this.ActiveFormSettings != null && this.ActiveFormSettings.onBeforeSubmit != null && this.ActiveFormSettings.onBeforeSubmit != "") {
@@ -329,6 +327,7 @@ export default {
 			}
 			//Else go directly to submission
 			else {
+				this.progressBarOn();
 				this.submitEvent(submitAction);
 			}
 
