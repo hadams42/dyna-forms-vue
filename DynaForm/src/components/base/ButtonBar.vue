@@ -493,15 +493,13 @@ console.log("a")
 			//Prepare action object
 			var action = {};
 
+			this.setDisabledWhileWaiting(true);
+
 			//Perform client action if specified
 			if (typeof option.onClick != "undefined" && option.onClick != null) {
-				console.log("b")
 
 				//Call option's onClick event 
 				if (option.onClick != null && option.onClick != "") {
-					console.log("c")
-
-					this.setDisabledWhileWaiting(true);
 					var p = this.findParent();
 					option.onClick.call(this,
 						this.DisplayValues,
@@ -519,13 +517,10 @@ console.log("a")
 			}
 			//Else if per-button action is specified
 			else if (typeof option.action != undefined && option.action != null) {
-				console.log("d")
-
 				action = option.action;
 			}
 			//Else if global post command is specified, create action object
 			else if (typeof this.postCommand != "undefined" && this.postCommand != null) {
-				console.log("e")
 
 				action = {
 					post: {
@@ -536,13 +531,10 @@ console.log("a")
 			} 
 			//Else no valid action is specified...
 			else {
-				console.log("g", option)
 				return;
 			} 
-			console.log("f")
 
 			//Perform server action
-			this.setDisabledWhileWaiting(true);
 			var p = this.findParent();
 			this.FormActions.ServerAction(this, 
 				action, 

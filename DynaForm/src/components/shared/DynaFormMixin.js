@@ -305,6 +305,8 @@ export default {
 			//Submit functions are disabled for sub-forms
 			if (this.isSubForm) return;
 
+			this.progressBarOn();
+
 			//Call client side beforeSubmit event handler if defined
 			var cancel = false;
 			if (this.ActiveFormSettings != null && this.ActiveFormSettings.onBeforeSubmit != null && this.ActiveFormSettings.onBeforeSubmit != "") {
@@ -327,7 +329,6 @@ export default {
 			}
 			//Else go directly to submission
 			else {
-				this.progressBarOn();
 				this.submitEvent(submitAction);
 			}
 
@@ -607,24 +608,18 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		progressBarOff: function() {
-			if (this.IsFormProgressBarVisible != false) {
-				this.$nextTick(function() {
-					this.IsFormProgressBarVisible = false;
-					this.emitEvent("_Wait", this.guid, false);
-					console.log("this.emitEvent('_Wait', this.guid, false); [1]")
-				});		
-			}
+			this.$nextTick(function() {
+				this.IsFormProgressBarVisible = false;
+				this.emitEvent("_Wait", this.guid, false);
+			});		
 		},
 		
 		//---------------------------------------------------------------------------------------------------
 		progressBarOn: function() {
-			if (this.IsFormProgressBarVisible != true) {
-				this.$nextTick(function() {
-					this.IsFormProgressBarVisible = true;
-					this.emitEvent("_Wait", this.guid, true);
-					console.log("this.emitEvent('_Wait', this.guid, true); [2]")
-				});		
-			}
+			this.$nextTick(function() {
+				this.IsFormProgressBarVisible = true;
+				this.emitEvent("_Wait", this.guid, true);
+			});		
 		},
 	},
 	
