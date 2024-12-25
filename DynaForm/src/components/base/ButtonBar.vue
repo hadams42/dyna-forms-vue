@@ -1,5 +1,9 @@
 <template>
 	<div>
+		<div>
+			DisplayValues.disableWhileWaiting: {{ DisplayValues.disableWhileWaiting }} 
+			isLocalProgressBarVisible: {{ isLocalProgressBarVisible }}
+		</div>
 		<div v-if="(OptionList == null || OptionList.length == 0) && DisplayValues.emptyText != '' && DisplayValues.visible == true"
 			v-show="DisplayValues.hidden == false"
 			class="empty-text"
@@ -299,7 +303,7 @@ export default {
 			//Update value model
 			this.valueModel = option.value;
 
-			//Perform clicked action
+			//Perform clicked action. if any
 			if (cancel != true) {
 				this.performButtonAction(option);
 			} 
@@ -465,7 +469,7 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		//Button bars support both onClick, with local actions, and server actions
 		performButtonAction: function(option=null) {
-
+console.log("a")
 			//No value is specified when in dropdown mode
 			if (option == null) {
 				for (var i=0; i<this.OptionList.length; i++) {
@@ -491,9 +495,12 @@ export default {
 
 			//Perform client action if specified
 			if (typeof option.onClick != "undefined" && option.onClick != null) {
+				console.log("b")
 
 				//Call option's onClick event 
 				if (option.onClick != null && option.onClick != "") {
+					console.log("c")
+
 					this.setDisabledWhileWaiting(true);
 					var p = this.findParent();
 					option.onClick.call(this,
@@ -512,10 +519,14 @@ export default {
 			}
 			//Else if per-button action is specified
 			else if (typeof option.action != undefined && option.action != null) {
+				console.log("d")
+
 				action = option.action;
 			}
 			//Else if global post command is specified, create action object
 			else if (typeof this.postCommand != "undefined" && this.postCommand != null) {
+				console.log("e")
+
 				action = {
 					post: {
 						command: this.postCommand,
@@ -525,8 +536,10 @@ export default {
 			} 
 			//Else no valid action is specified...
 			else {
+				console.log("g", option)
 				return;
 			} 
+			console.log("f")
 
 			//Perform server action
 			this.setDisabledWhileWaiting(true);

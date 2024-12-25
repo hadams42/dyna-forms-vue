@@ -296,11 +296,6 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		submit: function(submitAction="Auto", validate=true) {
-			this.$nextTick(function() {
-				this.progressBarOn();
-				console.log("this.progressBarOn();")
-			});
-
 			this.ActiveFormSettings.enableValidation = validate;
 			this.beforeSubmitEvent(submitAction);
 	},
@@ -309,6 +304,8 @@ export default {
 		beforeSubmitEvent: function(submitAction=null) {
 			//Submit functions are disabled for sub-forms
 			if (this.isSubForm) return;
+
+			this.progressBarOn();
 
 			//Call client side beforeSubmit event handler if defined
 			var cancel = false;
@@ -467,10 +464,7 @@ export default {
 		validationFailedEvent: function() {
 			 //Submit functions are disabled for sub-forms
 			 if (this.isSubForm) return;
-			 
-			 this.progressBarOff()
-			 console.log("validationFailedEvent, call this.progressBarOff()")
-			 
+		 
 			//Call client side afterSubmit event handler if defined
 			if (this.ActiveFormSettings != null && this.ActiveFormSettings.onValidationFailed != null && this.ActiveFormSettings.onValidationFailed != "") {
 				this.ActiveFormSettings.onValidationFailed.call(this,
@@ -571,15 +565,19 @@ export default {
 
 		//---------------------------------------------------------------------------------------------------
 		handleValidationResult: function(isSubmit, submitAction=null) {
-			console.log("fddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+			console.log("Validation start")
 			//If all fields have passed validation, then submit the form now
 			if (this.ValidationCollector.length == 0 && this.UnvalidatedFields.length == 0 && isSubmit == true) {
+				console.log("Validation success [1]")
+				this.progressBarOn();
 				this.validationSuccessEvent(true, submitAction);
-				//this.progressBarOff();
 			} else if (this.UnvalidatedFields.length == 0 && this.ValidationCollector.length != 0) {
+				console.log("Validation failed")
 				this.progressBarOff();
 				this.validationFailedEvent();
 			} else if (this.UnvalidatedFields.length == 0 && this.ValidationCollector.length == 0) {
+				console.log("Validation success [2]")
+				//this.progressBarOn();
 				this.validationSuccessEvent(false, submitAction);
 			}
 		},
@@ -688,11 +686,9 @@ export default {
 		//---------------------------------------------------------
 		//Listen to bus for wait
 		this.onEvent("_Wait", (self, incomingGuid, isWaiting) => {
-			if (this.guid !== incomingGuid) {
-				this.$nextTick(function() {
-						this.IsFormProgressBarVisible = isWaiting;
-				});		
-			}
+			this.$nextTick(function() {
+					this.IsFormProgressBarVisible = isWaiting;
+			});		
 		});
 
 		//---------------------------------------------------------
