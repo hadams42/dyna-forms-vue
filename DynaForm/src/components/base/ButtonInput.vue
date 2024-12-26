@@ -81,7 +81,6 @@ export default {
 				label: this.label,
 				visible: this.visible == null ? true : this.visible,
 				hidden: this.hidden == null ? false : this.hidden,
-				disableWhileWaiting: false,				
 				disabled: this.disabled == null ? false : this.disabled,
 				disableWhileWaiting: false,				
 				block: this.block == null ? true : this.block,
@@ -146,8 +145,8 @@ export default {
 							this.FormActions.LocalAction(this, this.formType, this.guid, cmd, parameters);
 						}.bind(this)
 						,function(e) {
-							this.setDisabledWhileWaiting(false);
 							console.log("Error: ", e, this.name);
+							this.setDisabledWhileWaiting(false);
 						}.bind(this)
 						,this.name //value
 					);
@@ -160,12 +159,15 @@ export default {
 						this.instanceId, 
 						p.ActiveFormData._Id, 
 						this.DisplayValues,
-						null, //Sucess callback. Used by button bar, etc.
+						function() {
+							this.setDisabledWhileWaiting(false);
+							console.log("setDisabledWhileWaiting(false) [1]")
+						}.bind(this), //Sucess callback. Used by button bar, etc.
 						function(cbAction, e) { //Error callback
 							console.log("Error: ", e, this.name);
 							this.setDisabledWhileWaiting(false);
-							}.bind(this), //Error callback. Used by button bar, etc.
-						)
+						}.bind(this), //Error callback. Used by button bar, etc.
+					)
 				}			
 			} 
 		},
