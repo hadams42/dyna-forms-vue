@@ -4,10 +4,6 @@
 		v-show="DisplayValues.visible && (computedReadOnly == false || alwaysShow == true)"
 		:style="DisplayValues.hidden ? 'visibility: hidden' : ''"
 	>
-	<div>
-		DisplayValues.disableWhileWaiting: {{ DisplayValues.disableWhileWaiting }} 
-		singleClickOnly: {{ singleClickOnly }}
-	</div>
 		<b-link
 			v-if="icon != null && icon != ''"
 			@click="buttonClicked"
