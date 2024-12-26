@@ -693,7 +693,7 @@ console.log("d6")
 		//Listen to bus for wait
 		this.onEvent("_Wait", (self, incomingGuid, isWaiting) => {
 			this.$nextTick(function() {
-					this.IsFormProgressBarVisible = isWaiting && this.ActiveFormSettings.showProgressBar;
+					this.IsFormProgressBarVisible = isWaiting;// && this.ActiveFormSettings.showProgressBar;
 			});		
 		});
 
