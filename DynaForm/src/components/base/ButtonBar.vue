@@ -465,7 +465,6 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		//Button bars support both onClick, with local actions, and server actions
 		performButtonAction: function(option=null) {
-console.log("a")
 			//No value is specified when in dropdown mode
 			if (option == null) {
 				for (var i=0; i<this.OptionList.length; i++) {

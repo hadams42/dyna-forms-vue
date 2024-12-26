@@ -306,12 +306,10 @@ export default {
 			if (this.isSubForm) return;
 
 			this.progressBarOn();
-			console.log("a0")
 
 			//Call client side beforeSubmit event handler if defined
 			var cancel = false;
 			if (this.ActiveFormSettings != null && this.ActiveFormSettings.onBeforeSubmit != null && this.ActiveFormSettings.onBeforeSubmit != "") {
-console.log("a1")
 				cancel = this.ActiveFormSettings.onBeforeSubmit.call(this,
 					this.ActiveFormSettings,
 					this.ActiveFormData,
@@ -327,12 +325,10 @@ console.log("a1")
 
 			//Trigger validation event if validation is not disabled and submit was not cancelled
 			if (this.ActiveFormSettings.enableValidation != false) {
-				console.log("b1")
 				this.beforeValidateFormEvent(true, submitAction);
 			}
 			//Else go directly to submission
 			else {
-				console.log("c1")
 				this.submitEvent(submitAction);
 			}
 
@@ -371,7 +367,6 @@ console.log("a1")
 		submitEvent: function(submitAction=null) {
 			//Call local submit handler if server submit is not enabled
 			if (this.ActiveFormSettings != null && this.ActiveFormSettings.onSubmit != null && this.ActiveFormSettings.submitToServer == false && this.ActiveFormSettings.onSubmit != "") {
-console.log("d1")
 				var cancel = this.ActiveFormSettings.onSubmit.call(this,
 					this.ActiveFormSettings,
 					this.ActiveFormData,
@@ -383,24 +378,20 @@ console.log("d1")
 				);
 				//Trigger after submit event if not cancelled
 				if (cancel == null || cancel == false) {
-console.log("d2")
 					this.afterSubmitEvent(submitAction);
 					this.progressBarOff();					
 				} else {
-console.log("d3")
 					this.afterSubmitCancelEvent(submitAction);
 					this.progressBarOff();					
 				}
 			}	
 			//Else submit to server binder		
 			else if (this.ActiveFormSettings != null && this.ActiveFormSettings.submitToServer == true) { 
-console.log("d4")
 				this.ServerInterface.SubmitForm(this,
 						this.instanceId, 
 						this.ActiveFormData, 
 						submitAction,
 						function(cbAction, redirectUrl) {
-console.log("d5")
 							this.afterSubmitEvent(cbAction, redirectUrl);
 							this.progressBarOff();
 						}.bind(this),
@@ -414,7 +405,6 @@ console.log("d5")
 				);
 			}
 			else {
-console.log("d6")
 				this.afterSubmitEvent(cbAction, redirectUrl);
 				this.progressBarOff();				
 			}
