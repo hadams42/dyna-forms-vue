@@ -221,8 +221,9 @@ export default {
 				}
 
 				//Trigger update event on this field
-				this.$set(this.ActiveFormData, changedField, value);
+				this.$set(this.ActiveFormData, changedField, value); 
 				this.$forceUpdate();
+				
 
 				this.emitEvent("FieldChanged", this.guid, this.formType, changedField, value, this.ActiveFormData);
 

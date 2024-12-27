@@ -4,6 +4,13 @@
 		:class="['component-label',readonly ? 'readonly' : '']"
 		v-if="text != null && text != ''"				
 	>
+		<span
+			v-if="numberLabel != null && numberLabel != ''"
+			class="number-label"
+		>
+			{{ numberLabel }}
+		</span>
+		
 		<span v-html="getTemplate()"></span>
 		
 		<a v-if="helpText != null || helpUrl != null"
@@ -84,6 +91,7 @@ export default {
 		'kpiText',
 		'helpUrl',
 		'kpiTitle',
+		'numberLabel',
 		'locked',
 		'lockMessage',
 		'unlockable',

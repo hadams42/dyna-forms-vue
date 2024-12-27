@@ -29,6 +29,7 @@ export default {
 		'isAdmin',	
 		'kpiText',
 		'kpiTitle',
+		'numberLabel',
 		'label',
 		'maxWidth',
 		'messageDialog',
