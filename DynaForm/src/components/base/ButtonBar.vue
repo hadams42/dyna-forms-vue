@@ -151,6 +151,7 @@
 				<b-input-group-append>
 					<b-button
 						size="sm"
+						tabindex="-1"
 						style="margin-top: 2px; max-height: 30px;"
 						:disabled="DisplayValues.disabled || DisplayValues.loading || (DisplayValues.disableWhileWaiting && isLocalProgressBarVisible)"
 						:variant="DisplayValues.buttonVariant"

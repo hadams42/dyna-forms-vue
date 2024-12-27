@@ -20,6 +20,7 @@
 			<b-input-group-append>
 				<b-btn 
 					variant="light"
+					tabindex="-1"
 					:size="size"
 					v-on:mousedown="secondaryButtonClick"
 				>

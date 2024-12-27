@@ -30,6 +30,8 @@
 				v-if="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null) && DisplayValues.nonEditable == false"
 				:style="getReadOnlyStyle() + getReadOnlyTextareaStyle()"
 				@click="onLockToggle(false)"
+				@focus="onLockToggle(false)"
+				tabindex="0"
 				v-html="(valueModel != null && valueModel != '') ? getFormattedValue(valueModel) : getFormattedValue(placeholder)"
 			></div>
 

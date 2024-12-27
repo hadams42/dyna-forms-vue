@@ -1,85 +1,46 @@
 <template>
-		<b-form-group
-			:class="['checkbox-input', DisplayValues.mode, DisplayValues.customClasses, name]"
-			v-show="DisplayValues.visible"					
-		>
-		<div
-			@click="onLockToggle(false)"
-		>
-			<component-label
-				:forId="name"
-				:text="DisplayValues.label"
-				:helpText="helpText"
-				:helpUrl="helpUrl"
-				:kpiText="kpiText"
-				:kpiTitle="kpiTitle"
+	<b-form-group :class="['checkbox-input', DisplayValues.mode, DisplayValues.customClasses, name]"
+		v-show="DisplayValues.visible">
+		<div @click="onLockToggle(false)">
+			<component-label :forId="name" :text="DisplayValues.label" :helpText="helpText" :helpUrl="helpUrl"
+				:kpiText="kpiText" :kpiTitle="kpiTitle" 
 				:numberLabel="DisplayValues.numberLabel"
 				:locked="DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
-				:lockMessage="DisplayValues.readonlyMessage"
-				:unlockable="!(formReadOnlyLock || readOnlyLock)"
-				:requiredField="rules != null && rules.required == true ? true : false"
-				:isAdmin="isAdmin"
-				:adminUnlockable="adminUnlockable"
-				@locked="onLockToggle()"
-			>
+				:lockMessage="DisplayValues.readonlyMessage" :unlockable="!(formReadOnlyLock || readOnlyLock)"
+				:requiredField="rules != null && rules.required == true ? true : false" :isAdmin="isAdmin"
+				:adminUnlockable="adminUnlockable" @locked="onLockToggle()">
 			</component-label>
 
 			<b-form-radio-group
 				v-if="DisplayValues.switch == false && OptionList != null && OptionList.length > 1 && DisplayValues.mode == 'radio'"
-				v-model="valueModel"
-				:state="validationState"
-				:options="OptionList"
+				v-model="valueModel" :state="validationState" :options="OptionList"
 				:disabled="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)"
-				value-field="value"
-				text-field="text"
-				@change="fieldChangeEvent($event); fieldInputEvent($event)"				
-			></b-form-radio-group>
+				value-field="value" text-field="text"
+				@change="fieldChangeEvent($event); fieldInputEvent($event)"></b-form-radio-group>
 
-			<b-form-checkbox 
+			<b-form-checkbox
 				v-if="DisplayValues.mode == 'radio' && (DisplayValues.switch == true || OptionList == null || OptionList.length <= 1)"
-				:id="name"
-				v-model="valueModel"
-				:state="validationState"
+				:id="name" v-model="valueModel" :state="validationState"
 				:disabled="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)"
-				:switch="DisplayValues.switch"
-				@change="fieldChangeEvent($event); fieldInputEvent($event)"
-			>
-				<div :class="[ valueModel == true ? 'checked' : 'unchecked']"
-				> 
-					{{OptionList != null && OptionList.length > 1 ? valueModel == true ? OptionList[0].text : OptionList[1].text : ''}}
+				:switch="DisplayValues.switch" @change="fieldChangeEvent($event); fieldInputEvent($event)">
+				<div :class="[valueModel == true ? 'checked' : 'unchecked']">
+					{{ OptionList != null && OptionList.length > 1 ? valueModel == true ? OptionList[0].text : OptionList[1].text :
+						'' }}
 				</div>
 			</b-form-checkbox>
 
-			<b-form-checkbox-group 
-				v-if="DisplayValues.mode == 'buttons'"
-				:id="name"
-				v-model="valueModel"
-				:options="OptionList"
-				html-field="text"
-				value-field="value"
-				:state="validationState"
-				size="sm"
-				:class="[DisplayValues.block ? 'block' : '']"
-				buttons
+			<b-form-checkbox-group v-if="DisplayValues.mode == 'buttons'" :id="name" v-model="valueModel" :options="OptionList"
+				html-field="text" value-field="value" :state="validationState" size="sm"
+				:class="[DisplayValues.block ? 'block' : '']" buttons
 				:disabled="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)"
-				@change="fieldChangeEvent($event); fieldInputEvent($event)"
-				@input="buttonInputEvent($event)"
-			>
+				@change="fieldChangeEvent($event); fieldInputEvent($event)" @input="buttonInputEvent($event)">
 			</b-form-checkbox-group>
 			<b-form-invalid-feedback>
-				<ul
-					v-if="this.Validation.Status  > 0 && this.Validation.MessageList.length > 0"
-					class="help-block list-unstyled" 
-					style="padding-left: 4px; margin-bottom: 0"
-				>
-					<li v-for="(msg, index) in this.Validation.MessageList"
-						:key="index"
-					>
-					{{msg.Label}}
-						<a 
-							:href="msg.Url"
-							v-if="msg.Url != null"
-						><span class="glyphicon glyphicon-question-sign"></span></a>
+				<ul v-if="this.Validation.Status > 0 && this.Validation.MessageList.length > 0" class="help-block list-unstyled"
+					style="padding-left: 4px; margin-bottom: 0">
+					<li v-for="(msg, index) in this.Validation.MessageList" :key="index">
+						{{ msg.Label }}
+						<a :href="msg.Url" v-if="msg.Url != null"><span class="glyphicon glyphicon-question-sign"></span></a>
 					</li>
 				</ul>
 			</b-form-invalid-feedback>
@@ -98,18 +59,18 @@ import ComponentLabel from "../shared/ComponentLabel";
 
 export default {
 	name: 'CheckboxInput',
-		
+
 	components: { ComponentLabel },
-	
-  props: [
-		'options', 
-		'switch', 
+
+	props: [
+		'options',
+		'switch',
 		'mode',
 		'multi',
 		'block',
-		],
+	],
 
-	data () {
+	data() {
 		return {
 			DisplayValues: {
 				name: this.name,
@@ -121,22 +82,23 @@ export default {
 				multi: this.multi == null ? false : this.multi,
 				block: this.block == null ? false : this.block,
 				customClasses: this.customClasses == null ? '' : this.customClasses,
+				numberLabel: this.numberLabel ? this.numberLabel : null,
 			}
 		}
 	},
 
-	mixins:[baseInputMixin, selectListMixin, validationMixin],
-	
+	mixins: [baseInputMixin, selectListMixin, validationMixin],
+
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	methods: {
 
 		//--------------------------------------------------------------------------------------------
-		buttonInputEvent: function(value) {
+		buttonInputEvent: function (value) {
 			if (value != null && value.length > 0) {
-				for (var z=0; z<value.length;z++) {
-					for (var i=0; i<this.OptionList.length;i++) {
+				for (var z = 0; z < value.length; z++) {
+					for (var i = 0; i < this.OptionList.length; i++) {
 						if (this.OptionList[i].value == value[z] && this.OptionList[i].selected == false) {
 							var confirmText = this.OptionList[i].altText;
 							if (confirmText != null && confirmText != "") {
@@ -157,30 +119,43 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	created() {
-			for (var i=0; i<this.OptionList.length;i++) {
-				if (this.OptionList[i].selected == true) {
-					this.valueModel = this.OptionList[i].value;
-				}
+
+		var p = this.findParent();
+		if (p.ActiveFormSettings.showQuestionNumbers == true) {
+			if (this.numberLabel && this.numberLabel > 0) {
+				p.inputIndex = this.numberLabel - 1;
 			}
+			p.inputIndex = p.inputIndex != null ? p.inputIndex + 1 : 1;
+			this.DisplayValues.numberLabel = p.inputIndex;
+		}
+		else {
+			this.DisplayValues.numberLabel = null;
+		}
+
+		for (var i = 0; i < this.OptionList.length; i++) {
+			if (this.OptionList[i].selected == true) {
+				this.valueModel = this.OptionList[i].value;
+			}
+		}
 
 	},
-	
+
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	computed: {
 		valueModel: {
-			get () { 
+			get() {
 				if (this.DisplayValues.multi == false) {
-					return (!this.value) ? false : true 
+					return (!this.value) ? false : true
 				}
 				else {
 					return this.value;
 				}
 			},
-			set (v) { 
+			set(v) {
 				//sthis.value = v
-				this.$emit('change', v) 
+				this.$emit('change', v)
 			},
 		},
 
