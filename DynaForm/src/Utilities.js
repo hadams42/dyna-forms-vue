@@ -40,7 +40,6 @@ export const Utilities = class Utilities {
 		this.GetColumnClass = function(width, newRow=false, customClasses="") {
 			var prefixList = [
 				"col-",
-				//"col-sm-",
 				"col-md-",
 				"col-lg-",
 				"col-xl-",

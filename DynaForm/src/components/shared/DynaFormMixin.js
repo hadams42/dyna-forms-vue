@@ -683,7 +683,7 @@ export default {
 		//Listen to bus for wait
 		this.onEvent("_Wait", (self, incomingGuid, isWaiting) => {
 			this.$nextTick(function() {
-					this.IsFormProgressBarVisible = isWaiting;// && this.ActiveFormSettings.showProgressBar;
+					this.IsFormProgressBarVisible = isWaiting;
 			});		
 		});
 
@@ -725,7 +725,7 @@ export default {
 			});
 		}
 
-		//Listen to bus for local validation results
+		//Listen to bus for validation results
 		this.onFilterEvent("_FieldValidationResult", 603, this.guid + this.formType, (self, qualifiedFieldName, validation, isSubmit=false, submitAction=null) => {
 			//Convert validation status
 			var isValid = (validation.Status > 0 && self.DisplayValues != null && self.DisplayValues.visible !== false) ? false : true;
