@@ -13,13 +13,13 @@
 				:helpUrl="helpUrl"
 				:kpiText="kpiText"
 				:kpiTitle="kpiTitle"
-				:numberLabel="numberLabel"
-				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
+				:numberLabel="DisplayValues.numberLabel"
+				:locked="DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 				:requiredField="rules != null && rules.required == true ? true : false"
-				:isAdmin="this.isAdmin"
-				:adminUnlockable="this.adminUnlockable"
+				:isAdmin="isAdmin"
+				:adminUnlockable="adminUnlockable"
 				@locked="onLockToggle()"
 			>
 			</component-label>

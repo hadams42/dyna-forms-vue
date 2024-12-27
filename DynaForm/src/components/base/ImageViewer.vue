@@ -10,8 +10,8 @@
 			:helpUrl="helpUrl"
 			:kpiText="kpiText"
 			:kpiTitle="kpiTitle"
-			:numberLabel="numberLabel"
-			:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
+			:numberLabel="DisplayValues.numberLabel"
+			:locked="DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 			:lockMessage="DisplayValues.readonlyMessage"
 			:unlockable="!(formReadOnlyLock || readOnlyLock)"
 		>

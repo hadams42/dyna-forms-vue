@@ -10,14 +10,14 @@
 				:helpUrl="helpUrl"
 				:kpiText="kpiText"
 				:kpiTitle="kpiTitle"
-				:numberLabel="numberLabel"
-				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
+				:numberLabel="DisplayValues.numberLabel"
+				:locked="DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 				:requiredField="rules != null && rules.required == true ? true : false"
-				:isAdmin="this.isAdmin"
-				:editIcon="this.editIcon"
-				:adminUnlockable="this.adminUnlockable"
+				:isAdmin="isAdmin"
+				:editIcon="editIcon"
+				:adminUnlockable="adminUnlockable"
 				:readonly="computedReadOnly && (DisplayValues.readonlyOverride == true || DisplayValues.readonlyOverride == null)"
 				@locked="onLockToggle()"				
 				@editOn="onEditOn()"
@@ -141,6 +141,7 @@ export default {
 				maxLength: this.maxLength == null ? "4000" : this.maxLength,
 				editIcon: this.editIcon == null ? false : this.editIcon,
 				nonEditable: this.nonEditable == null ? false : this.nonEditable, 
+				numberLabel: this.numberLabel ? this.numberLabel : null,
 			},
 			//multilineValue: this.value,
 		}
@@ -205,6 +206,17 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	created: function() {
+		var p = this.findParent(); 
+		if (p.ActiveFormSettings.showQuestionNumbers == true) {
+			if (this.numberLabel && this.numberLabel > 0) {
+				p.inputIndex = this.numberLabel - 1;
+			}
+			p.inputIndex = p.inputIndex != null ? p.inputIndex + 1 : 1;
+			this.DisplayValues.numberLabel = p.inputIndex;
+		}
+		else {
+			this.DisplayValues.numberLabel = null;
+		}
 	},
 
 	//--------------------------------------------------------------------------------------------

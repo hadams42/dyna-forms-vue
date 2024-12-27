@@ -10,12 +10,12 @@
 				:helpUrl="helpUrl"
 				:kpiText="kpiText"
 				:kpiTitle="kpiTitle"
-				:numberLabel="numberLabel"
-				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
+				:numberLabel="DisplayValues.numberLabel"
+				:locked="DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				@locked="onLockToggle()"				
-				:isAdmin="this.isAdmin"
-				:adminUnlockable="this.adminUnlockable"
+				:isAdmin="isAdmin"
+				:adminUnlockable="adminUnlockable"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 			>
 			</component-label>

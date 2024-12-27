@@ -1,7 +1,7 @@
 <template>
 	<b-form-group class="gallery-view " v-show="DisplayValues.visible">
 		<component-label :forId="name" :text="DisplayValues.label" :helpUrl="helpUrl"
-			:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
+			:locked="DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 			:lockMessage="DisplayValues.readonlyMessage" :unlockable="!(formReadOnlyLock || readOnlyLock)">
 		</component-label>
 

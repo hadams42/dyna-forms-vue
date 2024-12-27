@@ -10,7 +10,7 @@
 			:helpUrl="helpUrl"
 			:kpiText="kpiText"
 			:kpiTitle="kpiTitle"
-			:numberLabel="numberLabel"
+			:numberLabel="DisplayValues.numberLabel"
 			:unlockable="!(formReadOnlyLock || readOnlyLock)"
 		>
 		</component-label>

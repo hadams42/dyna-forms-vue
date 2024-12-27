@@ -10,13 +10,13 @@
 				:helpUrl="helpUrl"
 				:kpiText="kpiText"
 				:kpiTitle="kpiTitle"
-				:numberLabel="numberLabel"
-				:locked="this.DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
+				:numberLabel="DisplayValues.numberLabel"
+				:locked="DisplayValues.locked !== false && (computedReadOnly || DisplayValues.readonly)"
 				:lockMessage="DisplayValues.readonlyMessage"
 				:unlockable="!(formReadOnlyLock || readOnlyLock)"
 				:requiredField="rules != null && rules.required == true ? true : false"
-				:isAdmin="this.isAdmin"
-				:adminUnlockable="this.adminUnlockable"
+				:isAdmin="isAdmin"
+				:adminUnlockable="adminUnlockable"
 				@locked="onLockToggle()"				
 			>
 			</component-label>
@@ -417,6 +417,17 @@ export default {
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	created: function() {
+		var p = this.findParent(); 
+		if (p.ActiveFormSettings.showQuestionNumbers == true) {		
+			if (this.numberLabel && this.numberLabel > 0) {
+				p.inputIndex = this.numberLabel - 1;
+			}
+			p.inputIndex = p.inputIndex != null ? p.inputIndex + 1 : 1;
+			this.DisplayValues.numberLabel = p.inputIndex;
+		}
+		else {
+			this.DisplayValues.numberLabel = null;
+		}
 	},
 
 	//--------------------------------------------------------------------------------------------
