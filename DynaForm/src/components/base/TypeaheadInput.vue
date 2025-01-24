@@ -100,6 +100,7 @@ export default {
 				includeValues: this.includeValues == null ? false : this.includeValues,
 				renderOnChange: this.renderOnChange == null ? false : this.renderOnChange,
 				readonly_placeholder: this.readonly_placeholder == null ? "" : this.readonly_placeholder,
+				numberLabel: this.numberLabel ? this.numberLabel : null,
 			},
 			busy: false,
  			typeaheadQuery: '',
@@ -196,8 +197,21 @@ export default {
 				this.busy = false;
 				this.updateQuery(self.valueModel);
 			});
-
 		}
+
+		//Set number label
+		var p = this.findParent(); 
+		if (p.ActiveFormSettings.showQuestionNumbers == true) {
+			if (this.numberLabel && this.numberLabel > 0) {
+				p.inputIndex = this.numberLabel - 1;
+			}
+			p.inputIndex = p.inputIndex != null ? p.inputIndex + 1 : 1;
+			this.DisplayValues.numberLabel = p.inputIndex;
+		}
+		else {
+			this.DisplayValues.numberLabel = null;
+		}
+
 	},
 	
 	//--------------------------------------------------------------------------------------------
