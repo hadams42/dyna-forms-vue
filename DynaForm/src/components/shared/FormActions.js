@@ -28,7 +28,7 @@ export const FormActions = class FormActions {
 		//Perform Server Actions
 		//--------------------------------------------------------------
 		this.ServerAction = function(Sender, Action, InstanceId, RecordKey, Display=null) {
-			this.Log("ServerAction", arguments, Sender);
+			//this.Log("ServerAction", arguments, Sender);
 			//Set initial values
 			var utilities = new Utilities();
 			var redirectUrl = AUTO_REDIRECT_URL();

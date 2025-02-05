@@ -24,6 +24,22 @@
 			<i class="fas fa-info-circle"></i>
 		</a>
 
+		<a v-if="editIcon === true && readonly == true"
+				class="edit-icon"
+				:tabindex="-1"
+				@click="editOn()" 
+		>
+			<i class="fas fa-pen"></i>
+		</a>
+
+		<a v-if="editIcon === true && readonly == false"
+				class="save-icon"
+				:tabindex="-1"
+				onclick="this.editOff(); return false;" 
+		>
+			<i class="fas fa-check"></i>
+		</a>
+
 		<span v-if="DisplayValues.initialState == true && DisplayValues.unlockable == true"
 			>
 			<a v-if="DisplayValues.locked == true && (lockMessage == null || lockMessage)"
@@ -31,7 +47,7 @@
 				href="#"
 				@click="toggleLock()"
 				:disabled="lockMessage == null || lockMessage == ''"
-				tabindex="0"
+				tabindex="-1"
 				v-b-popover.hover.click.blur.auto="lockMessage"
 			>
 				<i class="fas fa-lock"></i>				
@@ -54,23 +70,6 @@
 			</span>
 
 		</a>
-
-		<a v-if="editIcon === true && readonly == true"
-				class="edit-icon"
-				:tabindex="-1"
-				@click="editOn()" 
-		>
-			<i class="fas fa-pen"></i>
-		</a>
-
-		<a v-if="editIcon === true && readonly == false"
-				class="save-icon"
-				:tabindex="-1"
-				onclick="this.editOff(); return false;" 
-		>
-			<i class="fas fa-check"></i>
-		</a>
-
 
 	</label>
 </template>
