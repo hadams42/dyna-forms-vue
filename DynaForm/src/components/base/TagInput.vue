@@ -33,6 +33,7 @@
           <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
             <li v-for="tag in tags" :key="tag" class="list-inline-item">
               <b-form-tag
+							  :disabled="getBackgroundColor(tag) == '#2f557e'"
                 @remove="removeTag(tag)"
                 :title="tag"
 								separator=","
@@ -42,7 +43,8 @@
             </li>
           </ul>
 					<b-dropdown-item-button
-						v-for="option in AvailableOptions"
+						v-for="option in AvailableOptions.filter(o => o.backgroundColor !== '#2f557e')"
+
 						:key="option.value"
 						:value="option.value"
 						@click="onOptionClick({ option, addTag })"
@@ -202,7 +204,7 @@ export default {
 		//--------------------------------------------------------------------------------------------
 		AvailableOptions: {
 			get () {
-				return this.OptionList.filter(o => this.valueModel.includes(o.value) == false);
+				return this.OptionList ? this.OptionList.filter(o => this.valueModel.includes(o.value) == false) : null;
 			}
 		},
 
