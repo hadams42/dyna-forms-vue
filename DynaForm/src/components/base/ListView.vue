@@ -8,8 +8,8 @@
 			<b-container fluid>
 
 				<b-row class="new-button-row">
+
 					<b-link
-								ref="targetElement"
 								v-if="DisplayValues.buttons.showNewButton"
 								@click="newButtonClick"
 								class="new-button icon-button button-input ml-3"
@@ -17,7 +17,6 @@
 							>
 								<i class="icon small-size far fa-plus-square"></i>
 								<span class="icon-label small-size">Add New</span>
-								<div id="tour_tooltip" class="tour_tooltip">The Add New button has moved here</div>
 					</b-link>
 				</b-row>
 
@@ -362,9 +361,6 @@ export default {
 
 			ServerInterface: new ServerInterface(),
 
-			showTooltip: false,
-			tooltipPosition: { top: 0, left: 0 },
-
 			DisplayValues: {
 				key: 1,
 				name: this.name,
@@ -422,7 +418,8 @@ export default {
 	},
 
 	mixins: [ baseInputMixin ],
-  //--------------------------------------------------------------------------------------------
+
+	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 	methods: {
@@ -971,38 +968,8 @@ export default {
 			return this.DisplayValues.selectedRecordKeys.includes(item[this.keyField]);
 		},
 
-		//--------------------------------------------------------------------------------------------
-		positionTooltip() {
-				const target = this.$refs.targetElement;
-				if (target) {
-						const rect = target.getBoundingClientRect();
-						this.tooltipPosition = {
-								top: rect.bottom + window.scrollY + 10,
-								left: rect.left + window.scrollX
-						};
-				}
-		},
-
-		//--------------------------------------------------------------------------------------------
-		hideTooltip() {
-				this.showTooltip = false;
-				localStorage.setItem("hasSeenTooltip", "true");
-		}
-
 
 	},
-
-
-	//--------------------------------------------------------------------------------------------
-	//--------------------------------------------------------------------------------------------
-	//--------------------------------------------------------------------------------------------
-	mounted() {
-        if (!localStorage.getItem("hasSeenTooltip")) {
-            this.showTooltip = true;
-            this.$nextTick(this.positionTooltip);
-        }
-    },
-
 
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
